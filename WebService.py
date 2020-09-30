@@ -1,8 +1,8 @@
-from BaseHTTPServer import BaseHTTPRequestHandler
 import cgi
 import simplejson as json
-from androidDevices import AndroidDevices as Devices
-device = devices()
+from Devices import AndroidDevices as Devices
+from http.server import BaseHTTPRequestHandler
+device = Devices()
 class TodoHandler(BaseHTTPRequestHandler):
     TODOS = []
     def do_GET(self):
@@ -26,6 +26,8 @@ class TodoHandler(BaseHTTPRequestHandler):
             length = int(self.headers['content-length'])
             post_values = json.loads(self.rfile.read(length))
             self.TODOS.append(post_values)
+            device.start()
+            # device.transformAmount()
             getattr(device, self.path.split("/", 1)[1])()
         else:
             self.send_error(415, "Only json data is supported.")
