@@ -7,8 +7,8 @@ activity = 'com.ccb.start.MainActivity'
 
 class AndroidDevices:
     def __init__(self):
-        # self.device = u2.connect('0.0.0.0')
-        self.device = u2.connect('R3CN90724BK')
+        self.device = u2.connect('0.0.0.0')
+        # self.device = u2.connect('R3CN90724BK')
         print(self.device.info)
 
     def start(self):
