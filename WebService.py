@@ -1,10 +1,9 @@
 import cgi
-import simplejson as json
+import json
 from Devices import AndroidDevices as Devices
 from http.server import BaseHTTPRequestHandler
 device = Devices()
 class TodoHandler(BaseHTTPRequestHandler):
-    TODOS = []
     def do_GET(self):
 
         if self.path != '/':
@@ -25,10 +24,13 @@ class TodoHandler(BaseHTTPRequestHandler):
         if ctype == 'application/json':
             length = int(self.headers['content-length'])
             post_values = json.loads(self.rfile.read(length))
-            self.TODOS.append(post_values)
-            device.start()
-            # device.transformAmount()
-            getattr(device, self.path.split("/", 1)[1])()
+            fun = self.path.split("/", 1)[1]
+            if(fun == "PostSMS"):
+                sms = getattr(device, fun)(post_values)
+                print(sms)
+            else:
+                device.start()
+                getattr(device, fun)()
         else:
             self.send_error(415, "Only json data is supported.")
             return
@@ -36,5 +38,4 @@ class TodoHandler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
         self.end_headers()
-
-        self.wfile.write(post_values)
+        self.wfile.write('指令已经接收成功'.encode())

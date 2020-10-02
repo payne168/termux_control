@@ -7,8 +7,8 @@ activity = 'com.ccb.start.MainActivity'
 
 class AndroidDevices:
     def __init__(self):
-        self.device = u2.connect('0.0.0.0')
-        # self.device = u2.connect('RR8M90JGAXR')
+        # self.device = u2.connect('0.0.0.0')
+        self.device = u2.connect('R3CN90724BK')
         print(self.device.info)
 
     def start(self):
@@ -95,6 +95,9 @@ class AndroidDevices:
         time.sleep(35.0)
         currency = self.device(resourceId="com.chinamworld.main:id/totalMoney").get_text()
         print('<---------当前余额是 %s --------->' %(currency))
+
+    def PostSMS(self, params):
+        return params['sms']
 
     def stop(self):
         self.device.close()
