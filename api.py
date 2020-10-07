@@ -1,10 +1,6 @@
-import requests
-import time
-import random
-import string
-import json
-from settings import api
-from log import logger
+# coding: utf-8
+from settings import api, Status
+import misc
 
 
 def register(serial_no, account):
@@ -15,32 +11,24 @@ def start(device_id, account):
     return post(api['start'], {'deviceId': device_id, 'accountAlias': account})
 
 
-def status(device_id, state, extra):
+def status(device_id, state, extra=None):
     return post(api['status'], {'deviceId': device_id, 'status': state, 'data': extra})
 
 
-def transfer_status(order_id, state, msg):
+def transfer_status(order_id, state, msg=None):
     return post(api['transfer'], {'orderId': order_id, 'status': state, 'msg': msg})
 
 
 def post(url, payload):
     url = api['base'] + url
-    params = payload.update(common_data())
-    logger.info('url=%s, params=%s', url, params)
-
-    begin = time.time()
-    rsp = requests.post(url, json=params)
-    logger.info('rsp of url: %s, status=%s, text=%s, cost %s seconds', url, rsp.status_code, rsp.text, time.time() - begin)
-    if rsp.ok:
-        return json.loads(rsp.text)
-    return None
-
-
-def common_data():
-    return {'nonce': ''.join(random.sample(string.ascii_letters + string.digits, 10)), 'timestamp': int(time.time())}
+    misc.post(url, payload, True)
 
 
 if __name__ == '__main__':
-    data = {'serialNo': 'xxxx', 'accountAlias': 'dddd'}
-    data.update(common_data())
-    print(data)
+    # data = {'serialNo': 'xxxx', 'accountAlias': 'dddd'}
+    # data.update(common_data())
+    # print(data)
+    # print(register("1ad2838c0107", "农业银行-LYF(刘亦菲)-8888"))
+    # print(start('ABC_mobile_1601868756975', '农业银行-LYF(刘亦菲)-8888'))
+    print(status('PSBC_mobile_1601868756975', Status.RUNNING.value))
+    # print(transfer_status(94, 0))

@@ -1,21 +1,26 @@
 import websocket
 import json
+import time
+import ssl
+from settings import api, gateway
 from log import logger
+import misc
 
 try:
     import thread
 except ImportError:
     import _thread as thread
-import time
 
 
 def on_message(ws, message):
-    print('received: ', message)
-    data = json.loads(message)
-    if data['task'] == 'upgrade':
-        upgrade()
-    elif data['task'] == 'transfer':
-        transfer()
+    logger.info('received: %s', message)
+    job = json.loads(message)
+    # call gateway to execute task
+    url = 'http://%s:%s/%s' % (gateway['host'], gateway['port'], job['task'])
+    if 'data' in job and job['data']:
+        misc.post(url, job['data'])
+    else:
+        misc.get(url)
 
 
 def on_error(ws, error):
@@ -27,30 +32,25 @@ def on_close(ws):
 
 
 def on_open(ws):
+    print('open')
+
     def run(*args):
-        for i in range(3):
-            time.sleep(1)
-            ws.send("Hello %d" % i)
-        time.sleep(1)
-        ws.close()
-        print("thread terminating...")
+        while True:
+            time.sleep(180)
+            ws.send("Hello")
+        # ws.close()
 
     thread.start_new_thread(run, ())
 
 
-def upgrade():
-    pass
-
-
-def transfer():
-    pass
+def serve():
+    websocket.enableTrace(False)
+    url = api['ws'] + misc.load_serial_no()
+    ws = websocket.WebSocketApp(url, on_message=on_message, on_error=on_error, on_close=on_close)
+    ws.on_open = on_open
+    while ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE}):
+        pass
 
 
 if __name__ == "__main__":
-    websocket.enableTrace(False)
-    ws = websocket.WebSocketApp("ws://echo.websocket.org/",
-                                on_message=on_message,
-                                on_error=on_error,
-                                on_close=on_close)
-    ws.on_open = on_open
-    ws.run_forever()
+    serve()
