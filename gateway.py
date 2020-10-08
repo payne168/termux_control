@@ -43,12 +43,9 @@ def register():
         bot_util.cast_post_sms = bot_factory.cast_post_sms
         bot_util.cast_stop = bot_factory.cast_stop
         rsp = api.register(misc.load_serial_no(), params['accountAlias'])
-        if rsp and rsp.code == 0:
-            res = {'code': 0, 'msg': '已经绑定成功!'}
-        else:
-            res = {'code': 1, 'msg': '服务器未响应，请稍后再试!'}
+        res = rsp is not None and rsp or {'code': 1, 'msg': '服务器未响应，请稍后再试!'}
         app.logger.info(res)
-        return json.dumps(res)
+        return res
 
 
 # @app.route('/start', method=['GET'])
