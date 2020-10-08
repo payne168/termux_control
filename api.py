@@ -21,7 +21,7 @@ def transfer_status(order_id, state, msg=None):
 
 def post(url, payload):
     url = api['base'] + url
-    misc.post(url, payload, True)
+    return misc.post(url, payload, True)
 
 
 if __name__ == '__main__':

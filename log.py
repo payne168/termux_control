@@ -1,5 +1,10 @@
 import logging
 from logging import handlers
+import os
+
+log_dir = 'log'
+if not os.path.exists(log_dir):
+    os.makedirs(log_dir)
 
 logging.root.setLevel(logging.NOTSET)
 
@@ -13,7 +18,7 @@ console = logging.StreamHandler()
 console.setFormatter(formatter)
 console.setLevel(logging.INFO)
 
-file = handlers.TimedRotatingFileHandler('log/app.log', 'd', 1, 7)
+file = handlers.TimedRotatingFileHandler(os.path.join(log_dir, 'app.log'), 'd', 1, 7)
 file.setFormatter(formatter)
 file.setLevel(logging.INFO)
 

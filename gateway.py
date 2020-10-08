@@ -34,6 +34,7 @@ def check():
 @app.route('/register', methods=['POST'])
 def register():
     if request.is_json:
+        res = {'code': 2, 'msg': '服务器未响应，请稍后再试!'}
         params = request.get_json()
         app.logger.info(params)
         bot_factory = BotFactory(serial_no=misc.load_serial_no(), bank=params['bank'], account=params['accountAlias'])
@@ -125,7 +126,7 @@ def post_sms_message():
     # req={
     #     "sms": "123412314"
     # }
-    res = {}
+    res = {'code': 2, 'msg': '系统有问题，请稍后再发'}
     if request.is_json:
         params = request.get_json()
         app.logger.info(params)
