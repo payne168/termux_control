@@ -11,8 +11,8 @@ class BotFactory:
         settings.bot = Bot(serial_no=misc.load_serial_no(), bank=bank, account=account)
         # settings.bot.device = u2.connect('RR8M90JGAXR')
         settings.bot.device = u2.connect('0.0.0.0')
-        Bank = __import__("bots.%s" % (bank))
-        robot = getattr(Bank, bank)
+        Bank = __import__("bots.%s" % bank.lower())
+        robot = getattr(Bank, bank.lower())
         self.bank = robot
 
     def cast_transfer(self, amount, transform_account, bank_kind, password, withdraw_password):
