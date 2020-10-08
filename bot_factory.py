@@ -4,6 +4,7 @@ from models import Bot
 import misc
 import sys
 
+
 class BotFactory:
 
     def __init__(self, serial_no=None, bank=None, account=None):
@@ -30,7 +31,6 @@ class BotFactory:
 
     def cast_post_sms(self, params):
         return self.bank.post_sms(settings.bot.device, params)
-
 
     def cast_stop(self):
         return self.bank.stop(settings.bot.device)

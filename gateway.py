@@ -15,6 +15,8 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
 bot_util = BotUtil()
+
+
 @app.route('/', methods=['GET'])
 def hello():
     return 'Hello, World!'
@@ -78,10 +80,10 @@ def transfer():
     if request.is_json:
         params = request.get_json()
         app.logger.info(params)
-        bot_util.cast_transfer(params['amount'], params['transform_account'], params['bank_kind'], params['password'], params['withdraw_password'])
+        bot_util.cast_transfer(params['amount'], params['transform_account'], params['bank_kind'], params['password'],
+                               params['withdraw_password'])
 
         return json.dumps(res)
-
 
 
 @app.route('/upgrade', methods=['GET'])
@@ -93,27 +95,27 @@ def upgrade():
     lastLine = ""
 
     def git_status():
-        result = os.popen("git status") # 执行输入的命令
+        result = os.popen("git status")  # 执行输入的命令
         readLinesContent = result.readlines()
         app.logger.info(readLinesContent)
         lastLine = readLinesContent[len(readLinesContent) - 1]
         return lastLine == "无文件要提交，干净的工作区\n" or lastLine == "nothing to commit, working tree clean\n"
 
-    if(git_status()):
+    if git_status():
         evn_need_update = False
     else:
         os.popen("git fetch")
         pullRes = os.popen("git pull")
         app.logger.info(pullRes.readline())
-        if(git_status()):
+        if git_status():
             evn_need_update = True
         else:
             evn_need_update = False
 
-    if(evn_need_update == True):
-        res = {'status': 0, 'msg': '脚本已经更新成功!'}
+    if evn_need_update:
+        res = {'code': 0, 'msg': '脚本已经更新成功!'}
     else:
-        res = {'status': 1, 'msg': '脚本无需更新'}
+        res = {'code': 1, 'msg': '脚本无需更新'}
     app.logger.info(res)
     return json.dumps(res)
 
@@ -129,17 +131,16 @@ def post_sms_message():
         app.logger.info(params)
         res = bot_util.cast_post_sms('device:sms', params["sms"])
         post_sms = res == 0
-        if(post_sms == True):
-            res = {'status': 0, 'msg': '已经接收短信验证码!'}
+        if post_sms:
+            res = {'code': 0, 'msg': '已经接收短信验证码!'}
         else:
-            res = {'status': 1, 'msg': '验证码已经过期，请重新发送！'}
+            res = {'code': 1, 'msg': '验证码已经过期，请重新发送！'}
         app.logger.info(res)
         return json.dumps(res)
 
 
 @app.route('/inquire_balance', methods=['POST'])
 def post_inquiry_amount():
-
     # req={
     #     "password": "hb741963",
     # }
