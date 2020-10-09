@@ -20,9 +20,7 @@ class Bot:
 
 
 class Account:
-    def __init__(self, account=None, login_id=None, login_pwd=None, payment_pwd=None):
-        self.account = account
-        self.login_id = login_id
+    def __init__(self, login_pwd=None, payment_pwd=None):
         self.login_pwd = login_pwd
         self.payment_pwd = payment_pwd
 
@@ -33,19 +31,33 @@ class Account:
         return self.__str__()
 
 
-class AccountTrans:
-    def __init__(self, last_trans=None, trans=None):
-        if trans is None:
-            trans = []
-        self.last_trans = last_trans  # Transaction
-        self.trans = trans  # [Transaction]
-        self.next_page = True  # if it is need to turn to next page
+class Transferee:
+    def __init__(self, amount=None, account=None, bank_name=None, name=None):
+        self.amount = amount
+        self.account = account
+        self.bank_name = bank_name
+        self.name = name
 
     def __str__(self):
         return str(self.__class__) + ": " + str(self.__dict__)
 
     def __repr__(self):
         return self.__str__()
+
+
+# class AccountTrans:
+#     def __init__(self, last_trans=None, trans=None):
+#         if trans is None:
+#             trans = []
+#         self.last_trans = last_trans  # Transaction
+#         self.trans = trans  # [Transaction]
+#         self.next_page = True  # if it is need to turn to next page
+#
+#     def __str__(self):
+#         return str(self.__class__) + ": " + str(self.__dict__)
+#
+#     def __repr__(self):
+#         return self.__str__()
 
 
 class Transaction:
@@ -61,6 +73,7 @@ class Transaction:
 
     def __repr__(self):
         return self.__str__()
+
 
 class BotUtil:
     def __init__(self, cast_transfer=None, cast_inquire_balance=None, cast_post_sms=None, cast_stop=None):

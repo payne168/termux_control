@@ -1,7 +1,9 @@
 # coding: utf8
 import time
-import threading
-import uiautomator2 as u2
+import sys
+from bots.verification.verification_code import VerificationCode
+sys.path.append("..")
+from models import Account, Transferee
 
 package = 'com.chinamworld.main'
 activity = 'com.ccb.start.MainActivity'
@@ -13,20 +15,30 @@ activity = 'com.ccb.start.MainActivity'
 #     print(connection.info)
 #     return connection
 
+acc = Account()
+trans = Transferee()
+
 def start(self):
     runComponent = package + '/' + activity
     self.app_start(package)
     return self.app_wait(package)  # 等待应用运行, return pid(int)
 
 
-def transfer(self, amount, transform_account, bank_kind, password, withdraw_password):
+def transfer(self, amount, account, name, bank_name, password, withdraw_password):
     # 转账
     waitRes = self.wait_activity(activity, timeout=20)
+    acc.login_pwd = password
+    acc.payment_pwd = withdraw_password
+    trans.amount = amount
+    trans.account = account
+    trans.name = name
+    trans.bank_name = bank_name
     print('waitRes %s' % waitRes)
     if waitRes:
         self(resourceId="com.chinamworld.main:id/close").click_exists(timeout=3.0)
         self(resourceId="com.chinamworld.main:id/main_home_smart_transfer").click()
         waitTransferHomeAct = self.wait_activity("com.ccb.transfer.transfer_home.view.TransferHomeAct", timeout=20)
+
         if waitTransferHomeAct:
             self.xpath(
                 '//*[@resource-id="com.chinamworld.main:id/grid_function"]/android.widget.LinearLayout[1]').click()
@@ -34,52 +46,33 @@ def transfer(self, amount, transform_account, bank_kind, password, withdraw_pass
                                                timeout=20)
             if LoginActivity:
                 self(resourceId="com.chinamworld.main:id/et_password").click()
-                self(text="h").click()
-                self(text="b").click()
-                self(text="7").click()
-                self(text="4").click()
-                self(text="1").click()
-                self(text="9").click()
-                self(text="6").click()
-                self(text="3").click()
+                # self.send_keys("aa168168", clear=True)
+                for i in acc.login_pwd:
+                    self(text=i).click()
                 self(resourceId="com.chinamworld.main:id/btn_confirm").click_gone(maxretry=10, interval=1.0)
                 SmartTransferMainAct = self.wait_activity("com.ccb.transfer.smarttransfer.view.SmartTransferMainAct",
                                                           timeout=20)
                 if SmartTransferMainAct:
                     self(resourceId="com.chinamworld.main:id/et_cash_name").click()
-                    self(resourceId="com.chinamworld.main:id/et_cash_name").set_text("赵婷")
+                    self(resourceId="com.chinamworld.main:id/et_cash_name").set_text(trans.name)
                     self(resourceId="com.chinamworld.main:id/et_collection_account").click()
-                    self(resourceId="com.chinamworld.main:id/et_collection_account").set_text("6217996900059953209")
-                    time.sleep(10.0)
+                    self(resourceId="com.chinamworld.main:id/et_collection_account").set_text(trans.account)
                     self(resourceId="com.chinamworld.main:id/tv_bank").click()
                     self(resourceId="com.chinamworld.main:id/tv_bank").click()
-                    time.sleep(20.0)
-                    self.xpath(
-                        '//android.widget.GridView/android.widget.LinearLayout[15]/android.widget.ImageView[1]').click()
-                    time.sleep(10.0)
-                    self(resourceId="com.chinamworld.main:id/tv_transfer_way").click()
-                    time.sleep(10.0)
-                    self(resourceId="com.chinamworld.main:id/bottom_selector_tv", text="实时转账").click()
-                    time.sleep(10.0)
-                    self(resourceId="com.chinamworld.main:id/et_tran_amount").click()
-                    time.sleep(10.0)
-                    self(resourceId="com.chinamworld.main:id/digit_row_one_1").click()
-                    self(resourceId="com.chinamworld.main:id/ct_submit").click()
-                    time.sleep(10.0)
-                    self(resourceId="com.chinamworld.main:id/rl_tran_mark").click()
-                    self.send_keys("今天发的1元钱", clear=True)
-                    self.press("back")
-                    time.sleep(5.0)
-                    self(resourceId="com.chinamworld.main:id/btn_right1").click()
-                    # time.sleep(10.0)
-                    ## d(resourceId="com.chinamworld.main:id/native_graph_et").click() 支付验证码页
-                    # self(resourceId="com.chinamworld.main:id/native_graph_iv").click()
-                    # self.send_keys("741963", clear=True)
-                    # self(resourceId="com.chinamworld.main:id/et_code").click()
-                    # self.send_keys("7q8x", clear=True)
-                    # self(resourceId="com.chinamworld.main:id/btn_confirm").click()
-                    # 支付
-                    # self(resourceId="com.chinamworld.main:id/btn_right1").click()
+
+                    if self(text="热门银行").exists(timeout=20):
+                        bank_btn = self(resourceId="com.chinamworld.main:id/title", text=trans.bank_name)
+                        if bank_btn.click_gone(maxretry=20, interval=1.0):
+                            self(resourceId="com.chinamworld.main:id/tv_transfer_way").click()
+                            if self(text="实时转账").exists(timeout=20):
+                                self(resourceId="com.chinamworld.main:id/bottom_selector_tv", text="实时转账").click()
+                                self(resourceId="com.chinamworld.main:id/et_tran_amount").click()
+                                self.send_keys(trans.amount, clear=True)
+                                self.press("back")
+                                self(resourceId="com.chinamworld.main:id/rl_tran_mark").click()
+                                self.send_keys("今天发的1元钱", clear=True)
+                                self.press("back")
+                                self(resourceId="com.chinamworld.main:id/btn_right1").click()
 
 
 def inquire_balance(self, password):
@@ -105,11 +98,26 @@ def inquire_balance(self, password):
 
 
 def post_sms(self, sms):
-    time.sleep(10.0)
     self(resourceId="com.chinamworld.main:id/et_code").click()
     self.send_keys(sms, clear=True)
-    # self(resourceId="com.chinamworld.main:id/btn_confirm").click()
-    return 0
+    self(resourceId="com.chinamworld.main:id/btn_confirm").click()
+    if self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=20):
+        # self(resourceId="com.chinamworld.main:id/et_code").click()
+        # self.send_keys(acc.payment_pwd, clear=True)
+        def get_code():
+            time.sleep(1)
+            self.screenshot("verification.jpg")
+            vc = VerificationCode()
+            return vc.image_str()
+
+        code = get_code()
+        while get_code() == "":
+            get_code()
+        print(code)
+        # self(resourceId="com.chinamworld.main:id/native_graph_iv").click()
+        # self.send_keys(code, clear=True)
+        # self(resourceId="com.chinamworld.main:id/btn_confirm").click()
+    # return 0
 
 
 def stop(self):

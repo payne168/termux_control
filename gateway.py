@@ -35,7 +35,8 @@ def register():
     if request.is_json:
         params = request.get_json()
         app.logger.info(params)
-        bot_factory = BotFactory(serial_no=misc.load_serial_no(), bank=params['bank'].lower(), account=params['accountAlias'])
+        bot_factory = BotFactory(serial_no=misc.load_serial_no(), bank=params['bank'].lower(),
+                                 account=params['accountAlias'])
         bot_util.cast_transfer = bot_factory.cast_transfer
         bot_util.cast_inquire_balance = bot_factory.cast_inquire_balance
         bot_util.cast_post_sms = bot_factory.cast_post_sms
@@ -76,8 +77,8 @@ def transfer():
     if request.is_json:
         params = request.get_json()
         app.logger.info(params)
-        bot_util.cast_transfer(params['amount'], params['transform_account'], params['bank_kind'], params['password'],
-                               params['withdraw_password'])
+        bot_util.cast_transfer(params['amount'], params['account'], params['name'], params['bank_name'],
+                               params['password'], params['withdraw_password'])
 
         return json.dumps(res)
 
@@ -125,7 +126,7 @@ def post_sms_message():
     if request.is_json:
         params = request.get_json()
         app.logger.info(params)
-        res = bot_util.cast_post_sms('device:sms', params["sms"])
+        res = bot_util.cast_post_sms(params["sms"])
         post_sms = res == 0
         if post_sms:
             res = {'code': 0, 'msg': '已经接收短信验证码!'}
