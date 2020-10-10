@@ -23,10 +23,14 @@ def hello():
 
 @app.route('/check_evn', methods=['GET'])
 def check():
-    ret = os.popen("python3 -m uiautomator2 init")
-    ready = ret.readline() == ""
-    res = ready and {'code': 0, 'msg': '环境安装成功！'} or {'code': 1, 'msg': '环境安装失败，请重装！'}
-    app.logger.info(res)
+    try:
+        ret = os.popen("python3 -m uiautomator2 init")
+        ready = ret.readline() == ""
+        res = ready and {'code': 0, 'msg': '环境安装成功！'} or {'code': 1, 'msg': '环境安装失败，请重装！'}
+        app.logger.info(res)
+
+    except ConnectionRefusedError:
+        res = {'code': 2, 'msg': 'atx未启动，请先插上usb线，运行电脑脚本'}
     return json.dumps(res)
 
 
@@ -47,7 +51,7 @@ def register():
             app.logger.info(res)
 
         except ConnectionRefusedError:
-            res = {'code': 2, 'msg': 'atx未启动，请先插上usb运行电脑脚本'}
+            res = {'code': 2, 'msg': 'atx未启动，请先插上usb线，运行电脑脚本'}
         return res
 
 
