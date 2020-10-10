@@ -33,17 +33,21 @@ def check():
 @app.route('/register', methods=['POST'])
 def register():
     if request.is_json:
-        params = request.get_json()
-        app.logger.info(params)
-        bot_factory = BotFactory(serial_no=misc.load_serial_no(), bank=params['bank'].lower(),
-                                 account=params['accountAlias'])
-        bot_util.cast_transfer = bot_factory.cast_transfer
-        bot_util.cast_inquire_balance = bot_factory.cast_inquire_balance
-        bot_util.cast_post_sms = bot_factory.cast_post_sms
-        bot_util.cast_stop = bot_factory.cast_stop
-        rsp = api.register(misc.load_serial_no(), params['accountAlias'])
-        res = rsp is not None and rsp or {'code': 1, 'msg': '服务器未响应，请稍后再试!'}
-        app.logger.info(res)
+        try:
+            params = request.get_json()
+            app.logger.info(params)
+            bot_factory = BotFactory(serial_no=misc.load_serial_no(), bank=params['bank'].lower(),
+                                     account=params['accountAlias'])
+            bot_util.cast_transfer = bot_factory.cast_transfer
+            bot_util.cast_inquire_balance = bot_factory.cast_inquire_balance
+            bot_util.cast_post_sms = bot_factory.cast_post_sms
+            bot_util.cast_stop = bot_factory.cast_stop
+            rsp = api.register(misc.load_serial_no(), params['accountAlias'])
+            res = rsp is not None and rsp or {'code': 1, 'msg': '服务器未响应，请稍后再试!'}
+            app.logger.info(res)
+
+        except ConnectionRefusedError:
+            res = {'code': 2, 'msg': 'atx未启动，请先插上usb运行电脑脚本'}
         return res
 
 
