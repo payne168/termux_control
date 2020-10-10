@@ -3,16 +3,7 @@ import re  # 用于正则
 
 from PIL import Image  # 用于打开图片和对图片处理
 import pytesseract  # 用于图片转文字
-import time  # 代码运行停顿
-import cv2
-import numpy as np
-import sys
-import io
 import time
-# STEP 1
-# import muggle_ocr
-import os
-import requests
 
 class VerificationCode:
     def __init__(self, x=None, y=None, width=None, height=None):
