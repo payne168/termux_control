@@ -36,7 +36,7 @@ class VerificationCode:
         right = left + self.width
         bottom = top + self.height
         image_obj = page_snap_obj.crop((left, top, right, bottom))  # 按照验证码的长宽，切割验证码
-        image_obj.show()  # 打开切割后的完整验证码
+        # image_obj.show()  # 打开切割后的完整验证码
         # self.driver.close()  # 处理完验证码后关闭浏览器
         return image_obj
 
@@ -54,7 +54,7 @@ class VerificationCode:
                     Bigdata[x, y] = 0
                 else:
                     Bigdata[x, y] = 255
-        img.show()
+        # img.show()
         return img
 
     def delete_spot(self):
@@ -82,7 +82,7 @@ class VerificationCode:
                     if black_point < 1:
                         images.putpixel((x, y), 255)
                     black_point =0
-        images.show()
+        # images.show()
         return images
 
     def image_str(self):
