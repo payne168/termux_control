@@ -30,7 +30,7 @@ def check():
         app.logger.info(res)
 
     except ConnectionRefusedError:
-        res = {'code': 2, 'msg': 'atx未启动，请先插上usb线，运行电脑脚本'}
+        res = {'code': 2, 'msg': 'atx未启动，请先插上usb线，运行电脑脚本！'}
     return json.dumps(res)
 
 
@@ -51,7 +51,7 @@ def register():
             app.logger.info(res)
 
         except ConnectionRefusedError:
-            res = {'code': 2, 'msg': 'atx未启动，请先插上usb线，运行电脑脚本'}
+            res = {'code': 2, 'msg': 'atx未启动，请先插上usb线，运行电脑脚本！'}
         return res
 
 
