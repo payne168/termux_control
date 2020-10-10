@@ -9,8 +9,8 @@ class BotFactory:
 
     def __init__(self, serial_no=None, bank=None, account=None):
         settings.bot = Bot(serial_no=misc.load_serial_no(), bank=bank, account=account)
-        settings.bot.device = u2.connect('RR8M90JGAXR')
-        # settings.bot.device = u2.connect('0.0.0.0')
+        # settings.bot.device = u2.connect('RR8M90JGAXR')
+        settings.bot.device = u2.connect('0.0.0.0')
         Bank = __import__("bots.%s" % bank.lower())
         robot = getattr(Bank, bank.lower())
         self.bank = robot
