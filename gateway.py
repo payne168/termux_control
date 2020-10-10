@@ -8,6 +8,7 @@ from settings import gateway, bot
 import misc
 from models import BotUtil
 from bot_factory import BotFactory
+import uiautomator2 as u2
 
 app = Flask(__name__)
 
