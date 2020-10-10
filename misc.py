@@ -3,6 +3,7 @@ import random
 import string
 import time
 import requests
+from settings import id_file
 from log import logger
 
 
@@ -30,4 +31,8 @@ def common_data():
 
 
 def load_serial_no():
-    return '1ad2838c0107'
+    with open(id_file) as fd:
+        serial_no = fd.readline()
+        logger.info('serial no:%s', serial_no)
+        return serial_no
+

@@ -10,10 +10,6 @@ from models import BotUtil
 from bot_factory import BotFactory
 import uiautomator2 as u2
 
-import uiautomator2 as ui2
-d = ui2.connect('0.0.0.0')
-
-
 app = Flask(__name__)
 
 logging.basicConfig(level=logging.DEBUG)
@@ -29,14 +25,12 @@ def hello():
 @app.route('/check_evn', methods=['GET'])
 def check():
     try:
-        ret = os.popen("python3 -m uiautomator2 init")
-        ready = ret.readline() == ""
+        ready = len(dir(u2)) > 0
         res = ready and {'code': 0, 'msg': '环境安装成功！'} or {'code': 1, 'msg': '环境安装失败，请重装！'}
         app.logger.info(res)
-
     except ConnectionRefusedError:
         res = {'code': 2, 'msg': 'atx未启动，请先插上usb线，运行电脑脚本！'}
-    return json.dumps(res)
+    return res
 
 
 @app.route('/register', methods=['POST'])
@@ -93,7 +87,7 @@ def transfer():
         bot_util.cast_transfer(params['amount'], params['account'], params['name'], params['bank_name'],
                                params['password'], params['withdraw_password'])
 
-        return json.dumps(res)
+        return res
 
 
 @app.route('/upgrade', methods=['GET'])
@@ -127,7 +121,7 @@ def upgrade():
     else:
         res = {'code': 1, 'msg': '脚本无需更新'}
     app.logger.info(res)
-    return json.dumps(res)
+    return res
 
 
 @app.route('/sms_message', methods=['POST'])
@@ -146,7 +140,7 @@ def post_sms_message():
         else:
             res = {'code': 1, 'msg': '验证码已经过期，请重新发送！'}
         app.logger.info(res)
-        return json.dumps(res)
+        return res
 
 
 @app.route('/inquire_balance', methods=['POST'])
@@ -164,7 +158,7 @@ def post_inquiry_amount():
         app.logger.info(params)
         bot_util.cast_inquire_balance(params['password'])
 
-        return json.dumps(res)
+        return res
 
 
 if __name__ == '__main__':

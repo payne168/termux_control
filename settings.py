@@ -1,6 +1,7 @@
 # coding: utf-8
 from enum import Enum
 
+id_file = '../device_id.txt'
 bot = None
 
 gateway = {
