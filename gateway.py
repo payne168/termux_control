@@ -10,6 +10,10 @@ from models import BotUtil
 from bot_factory import BotFactory
 import uiautomator2 as u2
 
+import uiautomator2 as ui2
+d = ui2.connect('0.0.0.0')
+
+
 app = Flask(__name__)
 
 logging.basicConfig(level=logging.DEBUG)
