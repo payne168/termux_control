@@ -1,7 +1,6 @@
 flask
 requests
-websocket-client
 cryptography
 #PIL
 #pytesseract
-event-bus
+websockets

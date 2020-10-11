@@ -20,9 +20,10 @@ class Bot:
 
 
 class Account:
-    def __init__(self, login_pwd=None, payment_pwd=None):
+    def __init__(self, login_pwd=None, payment_pwd=None, currency=None):
         self.login_pwd = login_pwd
         self.payment_pwd = payment_pwd
+        self.currency = currency
 
     def __str__(self):
         return str(self.__class__) + ": " + str(self.__dict__)
@@ -61,12 +62,14 @@ class Transferee:
 
 
 class Transaction:
-    def __init__(self, trans_time, trans_type=None, name=None, amount=None, balance=None):
+    def __init__(self, trans_time=None, trans_type=None, amount=None, balance=None, remark=None, account=None, summary=None):
         self.trans_time = trans_time
         self.trans_type = trans_type
-        self.name = name
         self.amount = amount
         self.balance = balance
+        self.remark = remark
+        self.account = account
+        self.summary = summary
 
     def __str__(self):
         return str(self.__class__) + ": " + str(self.__dict__)

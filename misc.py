@@ -33,7 +33,7 @@ def common_data():
 
 def load_serial_no():
     with open(id_file) as fd:
-        serial_no = fd.readline()
+        serial_no = fd.readline().strip()
         logger.info('serial no:%s', serial_no)
         return serial_no
 
@@ -49,4 +49,4 @@ def parse_sms(sms):
 
 
 if __name__ == '__main__':
-    print(parse_sms('序号03的验证码468134，您向汪仙尾号3275账户转账1.0元。任何索要验证码的都是骗子，千万别给！[建设银行1]'))
+    print(parse_sms('序号03的验证码468134，您向汪仙尾号3275账户转账1.0元。任何索要验证码的都是骗子，千万别给！[建设银行]'))

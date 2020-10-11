@@ -84,7 +84,7 @@ def transfer():
     if request.is_json:
         params = request.get_json()
         app.logger.info(params)
-        bot_util.cast_transfer(params['amount'], params['account'], params['name'], params['bank_name'],
+        bot_util.cast_transfer(params['amount'], params['account'], params['holder'], params['bank_name'],
                                params['password'], params['withdraw_password'])
 
         return res

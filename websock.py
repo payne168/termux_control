@@ -1,18 +1,23 @@
-import websocket
+import asyncio
+import websockets
+import ssl
 import json
 import time
-import ssl
+import misc
 from settings import api, gateway
 from log import logger
-import misc
-
 try:
     import thread
 except ImportError:
     import _thread as thread
 
+ssl_context = ssl.SSLContext()
+ssl_context.check_hostname = False
+ssl_context.verify_mode = ssl.CERT_NONE
 
-def on_message(ws, message):
+
+async def consumer(ws):
+    message = await ws.recv()
     logger.info('received: %s', message)
     job = json.loads(message)
     # call gateway to execute task
@@ -23,34 +28,29 @@ def on_message(ws, message):
         misc.get(url)
 
 
-def on_error(ws, error):
-    print(error)
+def producer(ws):
+    new_loop = asyncio.new_event_loop()
+    while True:
+        time.sleep(10)
+
+        async def run(ws):
+            logger.info('pulse')
+            await ws.send("pulse")
+
+        # asyncio.run_coroutine_threadsafe(run(ws), new_loop)
+        new_loop.run_until_complete(run(ws))
 
 
-def on_close(ws):
-    print("### closed ###")
-
-
-def on_open(ws):
-    print('open')
-
-    def run(*args):
+async def main():
+    uri = api['ws'] + misc.load_serial_no()
+    logger.info('web socket:%s', uri)
+    async with websockets.connect(uri, ssl=ssl_context) as ws:
+        logger.info('web socket connection established')
+        thread.start_new_thread(producer, (ws,))
         while True:
-            time.sleep(180)
-            ws.send("Hello")
-        # ws.close()
-
-    thread.start_new_thread(run, ())
+            logger.info('ready to receive msg')
+            await consumer(ws)
 
 
-def serve():
-    websocket.enableTrace(False)
-    url = api['ws'] + misc.load_serial_no()
-    ws = websocket.WebSocketApp(url, on_message=on_message, on_error=on_error, on_close=on_close)
-    ws.on_open = on_open
-    while ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE}):
-        pass
-
-
-if __name__ == "__main__":
-    serve()
+if __name__ == '__main__':
+    asyncio.get_event_loop().run_until_complete(main())
