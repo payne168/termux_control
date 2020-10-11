@@ -81,6 +81,10 @@ def transfer(self, amount, account, name, bank_name, password, withdraw_password
         float_win = self(resourceId="com.chinamworld.main:id/btn_cancel").click_gone(maxretry=10, interval=1.0)
         if float_win:
             do_trans()
+    elif self(resourceId="com.chinamworld.main:id/close").exists(timeout=5):
+        float_win = self(resourceId="com.chinamworld.main:id/close").click_gone(maxretry=10, interval=1.0)
+        if float_win:
+            do_trans()
     else:
         do_trans()
 
@@ -108,12 +112,21 @@ def inquire_balance(self, password):
 
 
 def post_sms(self, sms):
+
+    def success():
+        self(resourceId="com.chinamworld.main:id/title_right_view_container").click()
+        self(resourceId="com.chinamworld.main:id/ccb_title_left_btn").click()
+
     self(resourceId="com.chinamworld.main:id/et_code").click()
     self.send_keys(sms, clear=True)
     self(resourceId="com.chinamworld.main:id/btn_confirm").click()
-    if self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=20):
+    if self(text="收款账户").exists(timeout=20):
+        success()
+        return 0
+    elif self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=20):
 
         def put_code():
+
             def get_code():
                 time.sleep(1)
                 self(resourceId="com.chinamworld.main:id/native_graph_iv").click()
@@ -139,6 +152,7 @@ def post_sms(self, sms):
             self.send_keys(acc.payment_pwd, clear=True)
 
             if self(resourceId="com.chinamworld.main:id/btn_confirm").click_gone(maxretry=10, interval=1.0):
+                success()
                 return 0
             else:
                 put_code()

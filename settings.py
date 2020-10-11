@@ -9,10 +9,6 @@ gateway = {
     'port': 5000,
 }
 
-bank = {
-    'ccb': {'pkg': 'com.chinamworld.main', 'launcher': 'com.ccb.start.MainActivity'},
-}
-
 api = {
     'key': '1234567887654321',
     'iv': '1234567887654321',
@@ -23,6 +19,14 @@ api = {
     'status': '/mobile/status',
     'transfer': '/mobile/transfer',
     'transaction': '/mobile/transaction',
+}
+
+sms_bank = {
+    'CCB': r'\[建设银行]$',
+}
+
+sms_vc = {
+    'CCB': r'验证码(\d{6})',
 }
 
 

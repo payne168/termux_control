@@ -1,9 +1,10 @@
 # coding: utf-8
+import re
 import random
 import string
 import time
 import requests
-from settings import id_file
+from settings import id_file, sms_bank, sms_vc
 from log import logger
 
 
@@ -36,3 +37,16 @@ def load_serial_no():
         logger.info('serial no:%s', serial_no)
         return serial_no
 
+
+def parse_sms(sms):
+    for k, v in sms_bank.items():
+        if re.findall(v, sms):
+            if '验证码' in sms:
+                return True, re.findall(sms_vc[k], sms)[0]
+            else:
+                # TODO 提取流水
+                return False, {}
+
+
+if __name__ == '__main__':
+    print(parse_sms('序号03的验证码468134，您向汪仙尾号3275账户转账1.0元。任何索要验证码的都是骗子，千万别给！[建设银行1]'))

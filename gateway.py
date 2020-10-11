@@ -1,5 +1,4 @@
 # coding: utf-8
-import json
 from flask import Flask, request
 import logging
 import os
@@ -9,6 +8,7 @@ import misc
 from models import BotUtil
 from bot_factory import BotFactory
 import uiautomator2 as u2
+from log import logger
 
 app = Flask(__name__)
 
@@ -25,7 +25,7 @@ def hello():
 @app.route('/check_evn', methods=['GET'])
 def check():
     try:
-        ready = len(dir(u2)) > 0
+        ready = len(dir(u2)) > 100
         res = ready and {'code': 0, 'msg': '环境安装成功！'} or {'code': 1, 'msg': '环境安装失败，请重装！'}
         app.logger.info(res)
     except ConnectionRefusedError:
@@ -125,22 +125,19 @@ def upgrade():
 
 
 @app.route('/sms_message', methods=['POST'])
-def post_sms_message():
-    # req={
-    #     "sms": "123412314"
-    # }
-    res = {'code': 2, 'msg': '系统有问题，请稍后再发'}
+def sms():
     if request.is_json:
         params = request.get_json()
-        app.logger.info(params)
-        res = bot_util.cast_post_sms(params["sms"])
-        post_sms = res == 0
-        if post_sms:
-            res = {'code': 0, 'msg': '已经接收短信验证码!'}
+        logger.info('sms req: %s', params)
+        is_vc, data = misc.parse_sms(params['sms'])
+        if is_vc:
+            ret = bot_util.cast_post_sms(data)
+            rsp = ret == 0 and {'code': 0, 'msg': '已经接收短信验证码!'} or {'code': 1, 'msg': '验证码已经过期，请重新发送！'}
+            logger.info('sms rsp: %s', rsp)
+            return rsp
         else:
-            res = {'code': 1, 'msg': '验证码已经过期，请重新发送！'}
-        app.logger.info(res)
-        return res
+            # 上报流水
+            pass
 
 
 @app.route('/inquire_balance', methods=['POST'])
