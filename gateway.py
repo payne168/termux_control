@@ -65,7 +65,7 @@ def start():
     if res is None or res['code'] != 0:
         return {'code': 1, 'msg': '获取银行卡信息失败'}
 
-    convert(data=res['data'], bank=config['account']['bank'])
+    convert(data=res['data'])
 
     bot_factory = BotFactory()
     bot_util.cast_transfer = bot_factory.cast_transfer
