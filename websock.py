@@ -4,7 +4,7 @@ import ssl
 import json
 import time
 import misc
-from settings import api, gateway
+from settings import api, gateway, serial_no
 from log import logger
 try:
     import thread
@@ -34,7 +34,7 @@ def producer(ws):
         time.sleep(10)
 
         async def run(ws):
-            logger.info('pulse')
+            # logger.info('pulse')
             await ws.send("pulse")
 
         # asyncio.run_coroutine_threadsafe(run(ws), new_loop)
@@ -42,7 +42,7 @@ def producer(ws):
 
 
 async def main():
-    uri = api['ws'] + misc.load_serial_no()
+    uri = '%s/%s' % (api['ws'], serial_no)
     logger.info('web socket:%s', uri)
     async with websockets.connect(uri, ssl=ssl_context) as ws:
         logger.info('web socket connection established')

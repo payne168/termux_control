@@ -1,17 +1,15 @@
-import settings
 import uiautomator2 as u2
-from models import Bot
-import misc
+
+import settings
 
 
 class BotFactory:
 
-    def __init__(self, serial_no=None, bank=None, account=None):
-        settings.bot = Bot(serial_no=misc.load_serial_no(), bank=bank, account=account)
+    def __init__(self):
         # settings.bot.device = u2.connect('RR8M90JGAXR')
         settings.bot.device = u2.connect('0.0.0.0')
-        Bank = __import__("bots.%s" % bank.lower())
-        robot = getattr(Bank, bank.lower())
+        module = __import__("bots.%s" % settings.bot.bank.lower())
+        robot = getattr(module, settings.bot.bank.lower())
         self.bank = robot
 
     def cast_transfer(self,  amount, account, name, bank_name, password, withdraw_password):

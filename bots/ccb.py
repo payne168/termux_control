@@ -184,13 +184,14 @@ def do_get_history(self, i=1):
         summary = self.xpath('//*[@resource-id="com.chinamworld.main:id/detail_list"]/android.widget.LinearLayout['
                              '%s]/android.widget.LinearLayout[1]/android.widget.LinearLayout['
                              '1]/android.widget.RelativeLayout[3]/android.widget.TextView[2]' % i).get_text()
-        remark = self.xpath('//*[@resource-id="com.chinamworld.main:id/detail_list"]/android.widget.LinearLayout['
+        postscript = self.xpath('//*[@resource-id="com.chinamworld.main:id/detail_list"]/android.widget.LinearLayout['
                             '%s]/android.widget.LinearLayout[1]/android.widget.LinearLayout['
                             '1]/android.widget.RelativeLayout[4]/android.widget.TextView[2]' % i).get_text()
         trans_time = get_time()
         account = get_account()
         trans_type = get_trans_type()
-        transaction_list.append(Transaction(trans_time, trans_type, amount, balance, remark, account, summary))
+        transaction_list.append(Transaction(trans_time=trans_time, trans_type=trans_type, amount=amount, balance=balance,
+                                            postscript=postscript, account=account, summary=summary))
         print("------------------------------")
         print(transaction_list)
         i = i + 1

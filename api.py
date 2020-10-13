@@ -7,12 +7,12 @@ def register(serial_no, account):
     return post(api['register'], {'serialNo': serial_no, 'accountAlias': account})
 
 
-def start(device_id, account):
-    return post(api['start'], {'deviceId': device_id, 'accountAlias': account})
+def start(serial_no, account):
+    return post(api['start'], {'serialNo': serial_no, 'accountAlias': account})
 
 
-def status(device_id, state, extra=None):
-    return post(api['status'], {'serialNo': device_id, 'status': state, 'data': extra})
+def status(serial_no, state, extra=None):
+    return post(api['status'], {'serialNo': serial_no, 'status': state, 'data': extra})
 
 
 def transfer_status(order_id, state, msg=None):
@@ -30,5 +30,6 @@ if __name__ == '__main__':
     # print(data)
     # print(register("1ad2838c0107", "农业银行-LYF(刘亦菲)-8888"))
     # print(start('ABC_mobile_1601868756975', '农业银行-LYF(刘亦菲)-8888'))
-    print(status('1ad2838c0107', Status.RUNNING.value))
+    # print(status('1ad2838c0107', Status.RUNNING.value))
     # print(transfer_status(94, 0))
+    pass

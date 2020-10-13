@@ -1,11 +1,13 @@
 # coding: utf-8
 from flask import Flask, request
+import json
 import logging
 import os
 import api
-from settings import gateway, bot
+from settings import gateway, serial_no, bot
+import settings
 import misc
-from models import BotUtil
+from models import BotUtil, Bot, Account, Transaction
 from bot_factory import BotFactory
 import uiautomator2 as u2
 from log import logger
@@ -19,7 +21,8 @@ bot_util = BotUtil()
 
 @app.route('/', methods=['GET'])
 def hello():
-    return 'Hello, World!'
+    app.logger.info(serial_no)
+    return serial_no
 
 
 @app.route('/check_evn', methods=['GET'])
@@ -27,9 +30,10 @@ def check():
     try:
         ready = len(dir(u2)) > 100
         res = ready and {'code': 0, 'msg': '环境安装成功！'} or {'code': 1, 'msg': '环境安装失败，请重装！'}
-        app.logger.info(res)
+        logger.info('/check_env rsp: %s', res)
     except ConnectionRefusedError:
         res = {'code': 2, 'msg': 'atx未启动，请先插上usb线，运行电脑脚本！'}
+        logger.info('/check_env rsp: %s', res)
     return res
 
 
@@ -38,28 +42,37 @@ def register():
     if request.is_json:
         try:
             params = request.get_json()
-            app.logger.info(params)
-            bot_factory = BotFactory(serial_no=misc.load_serial_no(), bank=params['bank'].lower(),
-                                     account=params['accountAlias'])
-            bot_util.cast_transfer = bot_factory.cast_transfer
-            bot_util.cast_inquire_balance = bot_factory.cast_inquire_balance
-            bot_util.cast_post_sms = bot_factory.cast_post_sms
-            bot_util.cast_stop = bot_factory.cast_stop
-            rsp = api.register(misc.load_serial_no(), params['accountAlias'])
+            logger.info('/register req: %s', params)
+            # update config first, it'll update api{url,ws} in settings, prepare for accessing server api
+            update_config(params['apiUrl'], params['accountAlias'], params['bank'])
+            rsp = api.register(serial_no, params['accountAlias'])
             res = rsp is not None and rsp or {'code': 1, 'msg': '服务器未响应，请稍后再试!'}
-            app.logger.info(res)
 
+            logger.info('/register rsp: %s', res)
         except ConnectionRefusedError:
             res = {'code': 2, 'msg': 'atx未启动，请先插上usb线，运行电脑脚本！'}
+            logger.info('/register rsp: %s', res)
         return res
 
 
-# @app.route('/start', method=['GET'])
-# def start():
-#     module = __import__('bots.' + settings.bot.bank)
-#     robot = getattr(module, settings.bot.bank)
-#     settings.bot.device = robot.connect()
-#     robot.start(settings.bot.device)
+@app.route('/start', methods=['GET'])
+def start():
+    config = load_config()
+    if config is None or 'account' not in config:
+        return {'code': 1, 'msg': '未绑定银行卡'}
+
+    res = api.start(serial_no, config['account']['alias'])
+    if res is None or res['code'] != 0:
+        return {'code': 1, 'msg': '获取银行卡信息失败'}
+
+    convert(data=res['data'], bank=config['account']['bank'])
+
+    bot_factory = BotFactory()
+    bot_util.cast_transfer = bot_factory.cast_transfer
+    bot_util.cast_inquire_balance = bot_factory.cast_inquire_balance
+    bot_util.cast_post_sms = bot_factory.cast_post_sms
+    bot_util.cast_stop = bot_factory.cast_stop
+    return {'code': 0}
 
 
 @app.route('/stop', methods=['GET'])
@@ -92,25 +105,18 @@ def transfer():
 
 @app.route('/upgrade', methods=['GET'])
 def upgrade():
-    res = {}
-    statusRes = False
-    result = ""
-    evn_need_update = False
-    lastLine = ""
-
     def git_status():
-        result = os.popen("git status")  # 执行输入的命令
-        readLinesContent = result.readlines()
-        app.logger.info(readLinesContent)
-        lastLine = readLinesContent[len(readLinesContent) - 1]
-        return lastLine == "无文件要提交，干净的工作区\n" or lastLine == "nothing to commit, working tree clean\n"
+        result = os.popen("git status").readlines()  # 执行输入的命令
+        logger.info('git status: %s', result)
+        last_line = result[-1]
+        return last_line == "无文件要提交，干净的工作区\n" or last_line == "nothing to commit, working tree clean\n"
 
     if git_status():
         evn_need_update = False
     else:
         os.popen("git fetch")
-        pullRes = os.popen("git pull")
-        app.logger.info(pullRes.readline())
+        pull_res = os.popen("git pull").readline()
+        logger.info('pull result: %s', pull_res)
         if git_status():
             evn_need_update = True
         else:
@@ -120,11 +126,11 @@ def upgrade():
         res = {'code': 0, 'msg': '脚本已经更新成功!'}
     else:
         res = {'code': 1, 'msg': '脚本无需更新'}
-    app.logger.info(res)
+    logger.info('/upgrade %s', res)
     return res
 
 
-@app.route('/sms_message', methods=['POST'])
+@app.route('/sms', methods=['POST'])
 def sms():
     if request.is_json:
         params = request.get_json()
@@ -156,6 +162,34 @@ def post_inquiry_amount():
         bot_util.cast_inquire_balance(params['password'])
 
         return res
+
+
+def load_config():
+    if os.path.exists(settings.conf_file):
+        with open(settings.conf_file, 'r') as conf:
+            config = json.loads(conf.read())
+            api_url = config['api']['base']
+            settings.api['base'] = api_url
+            settings.api['ws'] = os.path.join(api_url.replace('http', 'ws') + 'websocket')
+            return config
+    return None
+
+
+def update_config(api_url, account, bank):
+    settings.api['base'] = api_url
+    ws = os.path.join(api_url.replace('http', 'ws') + 'websocket')
+    settings.api['ws'] = ws
+
+    with open(settings.conf_file, 'w') as conf:
+        conf.write(json.dumps({'api': {'base': api_url, 'ws': ws}, 'account': {'alias': account, 'bank': bank}}))
+
+
+def convert(data):
+    account = Account(alias=data['accountAlias'], login_name=data['loginName'], login_pwd=data['loginPassword'],
+                      payment_pwd=data['paymentPassword'])
+    trans = Transaction(trans_time=data['time'], trans_type=data['direction'], name=data['name'], amount=data['amount'],
+                        balance=data['balance'], postscript=data['postscript'])
+    settings.bot = Bot(serial_no=serial_no, bank=data['bank'], account=account, last_trans=trans)
 
 
 if __name__ == '__main__':

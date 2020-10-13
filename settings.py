@@ -1,8 +1,12 @@
 # coding: utf-8
 from enum import Enum
+import os
 
-id_file = '../device_id.txt'
+conf_file = 'config.json'
 bot = None
+
+with open('../device_id.txt') as fd:
+    serial_no = fd.readline().strip()
 
 gateway = {
     'host': '127.0.0.1',
@@ -12,7 +16,7 @@ gateway = {
 api = {
     'key': '1234567887654321',
     'iv': '1234567887654321',
-    'ws': 'wss://bot-w.uatcashierapi.com/websocket/',
+    'ws': 'wss://bot-w.uatcashierapi.com/websocket',
     'base': 'https://bot-w.uatcashierapi.com',
     'register': '/mobile/register',
     'start': '/mobile/start',

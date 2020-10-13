@@ -2,12 +2,13 @@
 
 
 class Bot:
-    def __init__(self, serial_no=None, device=None, bank=None, account=None, trans=None):
+    def __init__(self, serial_no=None, device=None, bank=None, account=None, trans=None, last_trans=None):
         self.serial_no = serial_no
         self.device = device
         self.bank = bank
         self.account = account  # Account
         self.trans = trans  # AccountTrans
+        self.last_trans = last_trans
         self.payment = False  # mode[receiving, payment]
         self.running = True
         self.pid = 0
@@ -20,7 +21,9 @@ class Bot:
 
 
 class Account:
-    def __init__(self, login_pwd=None, payment_pwd=None, currency=None):
+    def __init__(self, alias=None, login_name=None, login_pwd=None, payment_pwd=None, currency=None):
+        self.alias = alias
+        self.login_name = login_name
         self.login_pwd = login_pwd
         self.payment_pwd = payment_pwd
         self.currency = currency
@@ -62,14 +65,17 @@ class Transferee:
 
 
 class Transaction:
-    def __init__(self, trans_time=None, trans_type=None, amount=None, balance=None, remark=None, account=None, summary=None):
+    def __init__(self, trans_time, trans_type=None, name=None, amount=None, balance=None, postscript=None, account=None,
+                 summary=None, remark=None):
         self.trans_time = trans_time
         self.trans_type = trans_type
+        self.name = name
         self.amount = amount
         self.balance = balance
-        self.remark = remark
+        self.postscript = postscript
         self.account = account
         self.summary = summary
+        self.remark = remark
 
     def __str__(self):
         return str(self.__class__) + ": " + str(self.__dict__)

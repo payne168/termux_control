@@ -4,7 +4,7 @@ import random
 import string
 import time
 import requests
-from settings import id_file, sms_bank, sms_vc
+from settings import sms_bank, sms_vc
 from log import logger
 
 
@@ -29,13 +29,6 @@ def post(url, payload, with_common=False):
 
 def common_data():
     return {'nonce': ''.join(random.sample(string.ascii_letters + string.digits, 10)), 'timestamp': int(time.time())}
-
-
-def load_serial_no():
-    with open(id_file) as fd:
-        serial_no = fd.readline().strip()
-        logger.info('serial no:%s', serial_no)
-        return serial_no
 
 
 def parse_sms(sms):
