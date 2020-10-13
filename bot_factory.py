@@ -18,7 +18,7 @@ class BotFactory:
         robot = getattr(module, settings.bot.bank.lower())
         self.bank = robot
         settings.bot.pid = self.bank.start()
-        status('RR8M90JGAXR', Status.RUNNING.value)
+        status(settings.bot.serial_no, Status.RUNNING.value)
         self.works_list = []
         self.alive = True
         self.waitTrans = False
@@ -26,7 +26,7 @@ class BotFactory:
     def do_works(self):
         while self.alive:
             time.sleep(10)
-            status('RR8M90JGAXR', Status.RUNNING.value)
+            status(settings.bot.serial_no, Status.RUNNING.value)
             if not self.waitTrans:
                 if len(self.works_list) > 0:
                     self.waitTrans = self.cast_do_transfer(self.works_list.pop(0))
