@@ -12,8 +12,8 @@ from settings import Status
 class BotFactory:
 
     def __init__(self):
-        settings.bot.device = u2.connect('RR8M90JGAXR')
-        # settings.bot.device = u2.connect('0.0.0.0')
+        # settings.bot.device = u2.connect('RR8M90JGAXR')
+        settings.bot.device = u2.connect('0.0.0.0')
         module = __import__("bots.%s" % settings.bot.bank.lower())
         robot = getattr(module, settings.bot.bank.lower())
         self.bank = robot
