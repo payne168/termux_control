@@ -256,9 +256,8 @@ def post_sms(sms):
 
             if self(resourceId="com.chinamworld.main:id/btn_confirm").click_gone(maxretry=10, interval=1.0):
                 success()
-                return True
+                return False
             else:
                 put_code()
 
         put_code()
-        return False
