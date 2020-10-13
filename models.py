@@ -36,11 +36,12 @@ class Account:
 
 
 class Transferee:
-    def __init__(self, amount=None, account=None, bank_name=None, name=None):
+    def __init__(self, amount=None, account=None, holder=None, bank_name=None):
         self.amount = amount
         self.account = account
+        self.holder = holder
         self.bank_name = bank_name
-        self.name = name
+
 
     def __str__(self):
         return str(self.__class__) + ": " + str(self.__dict__)
@@ -75,7 +76,6 @@ class Transaction:
         self.postscript = postscript
         self.account = account
         self.summary = summary
-        self.remark = remark
 
     def __str__(self):
         return str(self.__class__) + ": " + str(self.__dict__)
@@ -85,8 +85,9 @@ class Transaction:
 
 
 class BotUtil:
-    def __init__(self, cast_transfer=None, cast_inquire_balance=None, cast_post_sms=None, cast_stop=None):
+    def __init__(self, cast_transfer=None, cast_transaction_history=None, cast_post_sms=None, cast_stop=None, do_works=None):
         self.cast_transfer = cast_transfer
-        self.cast_inquire_balance = cast_inquire_balance
+        self.cast_transaction_history = cast_transaction_history
         self.cast_post_sms = cast_post_sms
         self.cast_stop = cast_stop
+        self.do_works = do_works

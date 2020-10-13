@@ -4,7 +4,7 @@ import json
 import logging
 import os
 import api
-from settings import gateway, serial_no, bot
+from settings import gateway, serial_no, Status
 import settings
 import misc
 from models import BotUtil, Bot, Account, Transaction
@@ -47,10 +47,9 @@ def register():
             update_config(params['apiUrl'], params['accountAlias'], params['bank'])
             rsp = api.register(serial_no, params['accountAlias'])
             res = rsp is not None and rsp or {'code': 1, 'msg': '服务器未响应，请稍后再试!'}
-
             logger.info('/register rsp: %s', res)
-        except ConnectionRefusedError:
-            res = {'code': 2, 'msg': 'atx未启动，请先插上usb线，运行电脑脚本！'}
+        except:
+            res = {'code': 1, 'msg': '向服务端注册设备失败！'}
             logger.info('/register rsp: %s', res)
         return res
 
@@ -69,14 +68,17 @@ def start():
 
     bot_factory = BotFactory()
     bot_util.cast_transfer = bot_factory.cast_transfer
-    bot_util.cast_inquire_balance = bot_factory.cast_inquire_balance
+    bot_util.cast_transaction_history = bot_factory.cast_transaction_history
     bot_util.cast_post_sms = bot_factory.cast_post_sms
     bot_util.cast_stop = bot_factory.cast_stop
-    return {'code': 0}
+    bot_util.do_works = bot_factory.do_works
+    bot_util.do_works()
+    return {'code': 0, 'msg': '启动成功'}
 
 
 @app.route('/stop', methods=['GET'])
 def stop():
+    print(dir(bot_util))
     bot_util.cast_stop()
 
 
@@ -97,8 +99,10 @@ def transfer():
     if request.is_json:
         params = request.get_json()
         app.logger.info(params)
-        bot_util.cast_transfer(params['amount'], params['account'], params['holder'], params['bank_name'],
-                               params['password'], params['withdraw_password'])
+        print(params)
+        print(bot_util.cast_transfer)
+        print(params['amount'], params['account'], params['holder'], params['bank_name'])
+        bot_util.cast_transfer(params['amount'], params['account'], params['holder'], params['bank_name'])
 
         return res
 
@@ -146,38 +150,20 @@ def sms():
             pass
 
 
-@app.route('/inquire_balance', methods=['POST'])
-def post_inquiry_amount():
-    # req={
-    #     "password": "hb741963",
-    # }
-
-    res = {
-        "msg": "查询余额已经执行"
-    }
-
-    if request.is_json:
-        params = request.get_json()
-        app.logger.info(params)
-        bot_util.cast_inquire_balance(params['password'])
-
-        return res
-
-
 def load_config():
     if os.path.exists(settings.conf_file):
         with open(settings.conf_file, 'r') as conf:
             config = json.loads(conf.read())
             api_url = config['api']['base']
             settings.api['base'] = api_url
-            settings.api['ws'] = os.path.join(api_url.replace('http', 'ws') + 'websocket')
+            settings.api['ws'] = os.path.join(api_url.replace('http', 'ws'), 'websocket')
             return config
     return None
 
 
 def update_config(api_url, account, bank):
     settings.api['base'] = api_url
-    ws = os.path.join(api_url.replace('http', 'ws') + 'websocket')
+    ws = os.path.join(api_url.replace('http', 'ws'), 'websocket')
     settings.api['ws'] = ws
 
     with open(settings.conf_file, 'w') as conf:
@@ -187,9 +173,12 @@ def update_config(api_url, account, bank):
 def convert(data):
     account = Account(alias=data['accountAlias'], login_name=data['loginName'], login_pwd=data['loginPassword'],
                       payment_pwd=data['paymentPassword'])
-    trans = Transaction(trans_time=data['time'], trans_type=data['direction'], name=data['name'], amount=data['amount'],
-                        balance=data['balance'], postscript=data['postscript'])
-    settings.bot = Bot(serial_no=serial_no, bank=data['bank'], account=account, last_trans=trans)
+    settings.bot = Bot(serial_no=serial_no, bank=data['bank'], account=account)
+    if 'lastTrans' in data and data['lastTrans']:
+        tran = data['lastTrans']
+        trans = Transaction(trans_time=tran['time'], trans_type=tran['direction'], name=tran['name'],
+                            amount=tran['amount'], balance=tran['balance'], postscript=tran['postscript'])
+        settings.bot.last_trans = trans
 
 
 if __name__ == '__main__':
