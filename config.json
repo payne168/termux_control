@@ -1,4 +1,0 @@
-{
-  "api": {"base": "https://bot-w.uatcashierapi.com", "ws": "wss://bot-w.uatcashierapi.com/websocket"},
-    "account": {"alias": "\u5efa\u8bbe\u94f6\u884c-LWC(\u674e\u6587\u806a)-8540", "bank": "CCB"}
-}
