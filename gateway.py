@@ -75,8 +75,8 @@ def start():
         bot_util.do_works = bot_factory.do_works
         bot_util.do_works()
     except ConnectionRefusedError:
-        res = {'code': 1, 'msg': '向服务端注册设备失败！'}
-        logger.info('/register rsp: %s', res)
+        res = {'code': 1, 'msg': '启动失败，ConnectionRefusedError！'}
+        logger.info('/start rsp: %s', res)
     return {'code': 0, 'msg': '启动成功'}
 
 
