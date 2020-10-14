@@ -149,7 +149,7 @@ def do_transaction():
 
 def do_get_history(i=1):
     transaction_list = []
-    while i < 3:
+    while i < 2:
         def get_trans_type():
             return self.xpath('//*[@resource-id="com.chinamworld.main:id/detail_list"]/android.widget.LinearLayout['
                               '%s]/android.widget.LinearLayout[1]/android.widget.LinearLayout['

@@ -48,7 +48,7 @@ def register():
             rsp = api.register(serial_no, params['accountAlias'])
             res = rsp is not None and rsp or {'code': 1, 'msg': '服务器未响应，请稍后再试!'}
             logger.info('/register rsp: %s', res)
-        except:
+        except ConnectionRefusedError:
             res = {'code': 1, 'msg': '向服务端注册设备失败！'}
             logger.info('/register rsp: %s', res)
         return res
@@ -56,23 +56,27 @@ def register():
 
 @app.route('/start', methods=['GET'])
 def start():
-    config = load_config()
-    if config is None or 'account' not in config:
-        return {'code': 1, 'msg': '未绑定银行卡'}
+    try:
+        config = load_config()
+        if config is None or 'account' not in config:
+            return {'code': 1, 'msg': '未绑定银行卡'}
 
-    res = api.start(serial_no, config['account']['alias'])
-    if res is None or res['code'] != 0:
-        return {'code': 1, 'msg': '获取银行卡信息失败'}
+        res = api.start(serial_no, config['account']['alias'])
+        if res is None or res['code'] != 0:
+            return {'code': 1, 'msg': '获取银行卡信息失败'}
 
-    convert(data=res['data'])
+        convert(data=res['data'])
 
-    bot_factory = BotFactory()
-    bot_util.cast_transfer = bot_factory.cast_transfer
-    bot_util.cast_transaction_history = bot_factory.cast_transaction_history
-    bot_util.cast_post_sms = bot_factory.cast_post_sms
-    bot_util.cast_stop = bot_factory.cast_stop
-    bot_util.do_works = bot_factory.do_works
-    bot_util.do_works()
+        bot_factory = BotFactory()
+        bot_util.cast_transfer = bot_factory.cast_transfer
+        bot_util.cast_transaction_history = bot_factory.cast_transaction_history
+        bot_util.cast_post_sms = bot_factory.cast_post_sms
+        bot_util.cast_stop = bot_factory.cast_stop
+        bot_util.do_works = bot_factory.do_works
+        bot_util.do_works()
+    except ConnectionRefusedError:
+        res = {'code': 1, 'msg': '向服务端注册设备失败！'}
+        logger.info('/register rsp: %s', res)
     return {'code': 0, 'msg': '启动成功'}
 
 
