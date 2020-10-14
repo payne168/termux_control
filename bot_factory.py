@@ -21,15 +21,17 @@ class BotFactory:
         status(settings.bot.serial_no, Status.RUNNING.value)
         self.works_list = []
         self.alive = True
-        self.waitTrans = False
+        self.wait_trans = False
+        self.trans_process = False
 
     def do_works(self):
         while self.alive:
             time.sleep(10)
             status(settings.bot.serial_no, Status.RUNNING.value)
-            if not self.waitTrans:
+            print(self.wait_trans)
+            if not self.wait_trans:
                 if len(self.works_list) > 0:
-                    self.waitTrans = self.cast_do_transfer(self.works_list.pop(0))
+                    self.wait_trans = self.cast_do_transfer(self.works_list.pop(0))
                 else:
                     self.cast_transaction_history()
 
@@ -55,13 +57,12 @@ class BotFactory:
             self.bank.do_transaction()
 
     def cast_post_sms(self, params):
-        self.waitTrans = self.bank.post_sms(params)
+        self.waitTrans = self.bank.post_sms(params, self.waitTrans)
         return self.waitTrans
 
     def cast_stop(self):
         self.alive = False
         self.bank.stop()
-        os.kill(settings.bot.pid, signal.SIGSTOP)
 
-    def cast_transfer(self, amount, account, holder, bank_name):
-        self.works_list.append(Transferee(amount, account, holder, bank_name))
+    def cast_transfer(self, order_id, amount, account, holder, bank_name):
+        self.works_list.append(Transferee(order_id, amount, account, holder, bank_name))

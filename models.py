@@ -36,7 +36,8 @@ class Account:
 
 
 class Transferee:
-    def __init__(self, amount=None, account=None, holder=None, bank_name=None):
+    def __init__(self, order_id=None, amount=None, account=None, holder=None, bank_name=None):
+        self.order_id = order_id
         self.amount = amount
         self.account = account
         self.holder = holder

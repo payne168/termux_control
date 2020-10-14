@@ -1,6 +1,8 @@
 # coding: utf-8
 from flask import Flask, request
 import json
+from datetime import datetime
+import time
 import logging
 import os
 import api
@@ -102,7 +104,8 @@ def transfer():
 
     if request.is_json:
         params = request.get_json()
-        bot_util.cast_transfer(params['amount'], params['account'], params['holder'], bank_map[params['bank']])
+        print(params['orderId'], params['amount'], params['account'], params['holder'], bank_map[params['bank']])
+        bot_util.cast_transfer(params['orderId'], params['amount'], params['account'], params['holder'], bank_map[params['bank']])
 
         return res
 
@@ -141,13 +144,17 @@ def sms():
         logger.info('sms req: %s', params)
         is_vc, data = misc.parse_sms(params['sms'])
         if is_vc:
-            ret = bot_util.cast_post_sms(data)
-            rsp = ret == 0 and {'code': 0, 'msg': '已经接收短信验证码!'} or {'code': 1, 'msg': '验证码已经过期，请重新发送！'}
+            received_at = datetime.strptime(params['time'], '%Y-%m-%d %H:%M:%S').timestamp()
+            if time.time() - received_at > 180:
+                rsp = {'code': 0, 'msg': '验证码已过期'}
+            else:
+                ret = bot_util.cast_post_sms(data)
+                rsp = ret == 0 and {'code': 0, 'msg': '已经接收短信验证码!'} or {'code': 0, 'msg': '验证码已过期'}
             logger.info('sms rsp: %s', rsp)
             return rsp
         else:
             # 上报流水
-            pass
+            return {'code': 0, 'msg': '流水上报成功'}
 
 
 def load_config():
