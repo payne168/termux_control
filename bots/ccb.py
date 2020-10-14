@@ -21,6 +21,7 @@ self = settings.bot.device
 
 
 def start():
+    self.screen_on()
     self.app_start(package)
     return self.app_wait(package)  # 等待应用运行, return pid(int)
 
@@ -66,7 +67,7 @@ def input_form():
         if self(text="实时转账").exists(timeout=60):
             self(resourceId="com.chinamworld.main:id/bottom_selector_tv", text="实时转账").click()
             self(resourceId="com.chinamworld.main:id/et_tran_amount").click()
-            self.send_keys(trans.amount, clear=True)
+            self.send_keys(trans.amount.toString(), clear=True)
             self.press("back")
             self(resourceId="com.chinamworld.main:id/rl_tran_mark").click()
             self.send_keys("今天发的1元钱", clear=True)
