@@ -25,6 +25,10 @@ api = {
     'transaction': '/mobile/transaction',
 }
 
+bank_map = {
+    'CCB': '中国建设银行'
+}
+
 sms_bank = {
     'CCB': r'\[建设银行]$',
 }

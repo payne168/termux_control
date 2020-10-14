@@ -19,6 +19,14 @@ def transfer_status(order_id, state, msg=None):
     return post(api['transfer'], {'orderId': order_id, 'status': state, 'msg': msg})
 
 
+def transaction(account, balance, transactions):
+    if transactions:
+        trans = [{'direction': i.trans_type, 'time': i.trans_type, 'amount': i.amount, 'name': i.name, 'balance': i.balance, 'postscript': i.postscript} for i in transactions]
+    else:
+        trans = None
+    return post(api['transaction'], {'accountAlias': account, 'balance': balance, 'trans': trans})
+
+
 def post(url, payload):
     url = api['base'] + url
     return misc.post(url, payload, True)

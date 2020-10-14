@@ -4,7 +4,7 @@ import json
 import logging
 import os
 import api
-from settings import gateway, serial_no, Status
+from settings import gateway, serial_no, bank_map
 import settings
 import misc
 from models import BotUtil, Bot, Account, Transaction
@@ -98,11 +98,7 @@ def transfer():
 
     if request.is_json:
         params = request.get_json()
-        app.logger.info(params)
-        print(params)
-        print(bot_util.cast_transfer)
-        print(params['amount'], params['account'], params['holder'], params['bank_name'])
-        bot_util.cast_transfer(params['amount'], params['account'], params['holder'], params['bank_name'])
+        bot_util.cast_transfer(params['amount'], params['account'], params['holder'], bank_map[params['bank']])
 
         return res
 

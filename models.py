@@ -67,7 +67,7 @@ class Transferee:
 
 class Transaction:
     def __init__(self, trans_time, trans_type=None, name=None, amount=None, balance=None, postscript=None, account=None,
-                 summary=None, remark=None):
+                 summary=None):
         self.trans_time = trans_time
         self.trans_type = trans_type
         self.name = name
