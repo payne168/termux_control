@@ -69,7 +69,7 @@ def start():
 
         convert(data=res['data'])
 
-        bot_factory = BotFactory()
+        bot_factory = BotFactory(config)
         bot_util.cast_transfer = bot_factory.cast_transfer
         bot_util.cast_transaction_history = bot_factory.cast_transaction_history
         bot_util.cast_post_sms = bot_factory.cast_post_sms

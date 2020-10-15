@@ -8,7 +8,7 @@ from settings import Status
 
 class BotFactory:
 
-    def __init__(self):
+    def __init__(self, config):
         # settings.bot.device = u2.connect('RR8M90JGAXR')
         settings.bot.device = u2.connect('0.0.0.0')
         module = __import__("bots.%s" % settings.bot.bank.lower())
@@ -21,6 +21,7 @@ class BotFactory:
         self.wait_trans = False
         self.trans_process = False
         self.wait_msg = True
+        self.config = config
 
     def do_works(self):
         times = 0
@@ -70,9 +71,9 @@ class BotFactory:
             if not settings.bot.pid:
                 print('app没有打开')
             else:
-                self.bank.transaction_history()
+                self.bank.transaction_history(self.config)
         else:
-            self.bank.do_transaction()
+            self.bank.do_transaction(self.config)
 
     def cast_post_sms(self, params):
         self.wait_trans = self.bank.post_sms(params, self.wait_trans)
