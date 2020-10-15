@@ -87,7 +87,12 @@ def input_form():
                     self(resourceId="com.chinamworld.main:id/btn_right1").click()
                     if self(resourceId="com.chinamworld.main:id/dlg_right_tv").exists(timeout=10):
                         self(resourceId="com.chinamworld.main:id/dlg_right_tv").click()
-                        self(resourceId="com.chinamworld.main:id/btn_right1").click()
+                        if self(resourceId="com.chinamworld.main:id/et_code").exists(timeout=5):
+                            return True
+                        else:
+                            self(resourceId="com.chinamworld.main:id/btn_right1").click()
+                            return True
+
                     elif self(resourceId="com.chinamworld.main:id/tv_dlg_content").exists(timeout=10):
                         self.xpath('//android.widget.FrameLayout[1]/android.widget.LinearLayout['
                                    '1]/android.widget.FrameLayout[1]/android.widget.LinearLayout['
@@ -98,9 +103,6 @@ def input_form():
                         print("go back ----->")
                         status_api(trans.order_id, 1, "查询账户开户机构不成功。")
                         return False
-
-                    else:
-                        return True
 
 
 def remove_float_win():
