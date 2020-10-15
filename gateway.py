@@ -148,8 +148,12 @@ def sms():
             if time.time() - received_at > 180:
                 rsp = {'code': 0, 'msg': '验证码已过期'}
             else:
-                ret = bot_util.cast_post_sms(data)
-                rsp = ret == 0 and {'code': 0, 'msg': '已经接收短信验证码!'} or {'code': 0, 'msg': '验证码已过期'}
+                try:
+                    ret = bot_util.cast_post_sms(data)
+                    rsp = ret == 0 and {'code': 0, 'msg': '已经接收短信验证码!'} or {'code': 0, 'msg': '验证码已过期'}
+                except TypeError:
+                    logger.exception('卡机未启动网银应用')
+                    rsp = {'code': 0, 'msg': '卡机未启动网银应用'}
             logger.info('sms rsp: %s', rsp)
             return rsp
         else:

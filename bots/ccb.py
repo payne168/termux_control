@@ -281,7 +281,9 @@ def internet_timeout():
 def restart_app():
     def restart():
         requests.get(url="http://127.0.0.1:5000/start")
-
+    print("---------------------------->")
+    print("网络异常，系统自动关闭app！")
+    print("---------------------------->")
     stop()
     restart()
 
