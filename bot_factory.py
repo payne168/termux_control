@@ -1,6 +1,3 @@
-import os
-import signal
-from asyncio import Queue
 import uiautomator2 as u2
 import settings
 import time

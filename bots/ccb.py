@@ -1,7 +1,7 @@
 # coding: utf8
 import time
 import sys
-from bots.verification.verification_code import VerificationCode
+# from bots.verification.verification_code import VerificationCode
 import settings
 
 sys.path.append("..")
@@ -45,7 +45,7 @@ def change_activity(page_activity):
     print(LoginActivity)
     if LoginActivity:
         login()
-    page = self.wait_activity(page_activity, timeout=60)
+    page = self.wait_activity(page_activity, timeout=120)
     return page
 
 
@@ -66,7 +66,7 @@ def input_form():
         self(resourceId="com.chinamworld.main:id/et_collection_account").set_text(trans.account)
         self.press("back")
         self(resourceId="com.chinamworld.main:id/tv_transfer_way").click()
-        if self(text="实时转账").exists(timeout=60):
+        if self(text="实时转账").exists(timeout=120):
             self(resourceId="com.chinamworld.main:id/bottom_selector_tv", text="实时转账").click()
             self(resourceId="com.chinamworld.main:id/et_tran_amount").click()
             self.send_keys(str(trans.amount), clear=True)
@@ -75,9 +75,9 @@ def input_form():
             self.send_keys("今天发的1元钱", clear=True)
             self.press("back")
             self(resourceId="com.chinamworld.main:id/tv_bank").click()
-            if self(text="热门银行").exists(timeout=60):
+            if self(text="热门银行").exists(timeout=120):
                 bank_btn = self(resourceId="com.chinamworld.main:id/title", text=trans.bank_name)
-                if bank_btn.click_gone(maxretry=60, interval=1.0):
+                if bank_btn.click_gone(maxretry=120, interval=1.0):
                     self(resourceId="com.chinamworld.main:id/btn_right1").click()
                     if self(resourceId="com.chinamworld.main:id/tv_dlg_content").exists(timeout=10):
                         self.xpath('//android.widget.FrameLayout[1]/android.widget.LinearLayout['
@@ -95,30 +95,36 @@ def input_form():
 
 
 def remove_float_win():
-    if self(text="是否需要向银行卡").exists(timeout=5):
-        self(resourceId="com.chinamworld.main:id/btn_cancel").click_gone(maxretry=10, interval=1.0)
+    print("start")
     if self(resourceId="com.chinamworld.main:id/close").exists(timeout=5):
+        print("11111111111111111")
         self(resourceId="com.chinamworld.main:id/close").click_gone(maxretry=10, interval=1.0)
-    return True
+    elif self(text="是否需要向银行卡").exists(timeout=5):
+        print("2222222222222222")
+        self(resourceId="com.chinamworld.main:id/btn_cancel").click_gone(maxretry=10, interval=1.0)
+    else:
+        return True
 
 
 def do_transfer(transferee):
-    self(resourceId="com.chinamworld.main:id/main_home_smart_transfer").click()
-    waitTransferHomeAct = change_activity("com.ccb.transfer.transfer_home.view.TransferHomeAct")
-    if waitTransferHomeAct:
-        trans.order_id = transferee.order_id
-        trans.amount = transferee.amount
-        trans.account = transferee.account
-        trans.holder = transferee.holder
-        trans.bank_name = transferee.bank_name
-        self.xpath('//*[@resource-id="com.chinamworld.main:id/grid_function"]/android.widget.LinearLayout[1]').click()
+    if remove_float_win():
+        self(resourceId="com.chinamworld.main:id/main_home_smart_transfer").click()
+        waitTransferHomeAct = change_activity("com.ccb.transfer.transfer_home.view.TransferHomeAct")
+        if waitTransferHomeAct:
+            trans.order_id = transferee.order_id
+            trans.amount = transferee.amount
+            trans.account = transferee.account
+            trans.holder = transferee.holder
+            trans.bank_name = transferee.bank_name
+            self.xpath(
+                '//*[@resource-id="com.chinamworld.main:id/grid_function"]/android.widget.LinearLayout[1]').click()
     return input_form()
 
 
 def transfer(transferee):
     # 转账
     def do_trans():
-        waitRes = self.wait_activity(activity, timeout=60)
+        waitRes = self.wait_activity(activity, timeout=120)
         print('waitRes %s' % waitRes)
         if waitRes:
             do_transfer(transferee)
@@ -131,44 +137,56 @@ def transfer(transferee):
 def transaction_history():
     # 抓取流水
     def do_inquire():
-        waitRes = self.wait_activity(activity, timeout=60)
+        waitRes = self.wait_activity(activity, timeout=120)
         print('waitRes %s' % waitRes)
         if waitRes:
             transaction_history()
 
+    print("ready")
     if remove_float_win():
+        print("remove win done")
         do_inquire()
 
 
 def do_transaction():
-    self(resourceId="com.chinamworld.main:id/text_item", text="账户").click()
-    MyAccountMainAct = change_activity("com.ccb.myaccount.view.MyAccountMainAct")
+    if remove_float_win():
+        self(resourceId="com.chinamworld.main:id/text_item", text="账户").click()
+        MyAccountMainAct = change_activity("com.ccb.myaccount.view.MyAccountMainAct")
 
-    if MyAccountMainAct:
-        self(text="详情").click()
-        TitledActivity = change_activity("com.ccb.framework.app.TitledActivity")
+        if MyAccountMainAct:
+            if self(text="详情").exists(timeout=120):
+                self(text="详情").click()
+                TitledActivity = change_activity("com.ccb.framework.app.TitledActivity")
 
-        if TitledActivity:
-            self(resourceId="com.chinamworld.main:id/type", text="活期储蓄").click()
+                if TitledActivity:
+                    if self(resourceId="com.chinamworld.main:id/type", text="活期储蓄").exists(timeout=120):
+                        self(resourceId="com.chinamworld.main:id/type", text="活期储蓄").click()
 
-            if self(text="总收入").exists(timeout=60):
-                transaction_record = do_get_history()
-                print(transaction_record)
+                        if self(text="总收入").exists(timeout=120):
+                            transaction_record = do_get_history()
+                            print(transaction_record)
+            else:
+                back_activity()
+                do_transaction()
 
 
 def do_get_history(i=1):
     transaction_list = []
     while i < 2:
         def get_trans_type():
-            return self.xpath('//*[@resource-id="com.chinamworld.main:id/detail_list"]/android.widget.LinearLayout['
-                              '%s]/android.widget.LinearLayout[1]/android.widget.LinearLayout['
-                              '1]/android.widget.RelativeLayout[1]/android.widget.TextView[1]' % i).get_text()
+            trans_type_txt = self.xpath(
+                '//*[@resource-id="com.chinamworld.main:id/detail_list"]/android.widget.LinearLayout['
+                '%s]/android.widget.LinearLayout[1]/android.widget.LinearLayout['
+                '1]/android.widget.RelativeLayout[1]/android.widget.TextView[1]' % i).get_text()
+            return trans_type_txt == "支出" and 0 or 1
 
         def get_time():
             if i == 1:
-                return self.xpath(
+                time_txt = self.xpath(
                     '//*[@resource-id="com.chinamworld.main:id/more"]/android.widget.RelativeLayout['
                     '1]/android.widget.TextView[2]').get_text()
+                array = time.strptime(time_txt, u"%Y%m%d %H:%M:%S")
+                return time.strftime("%Y-%m-%d %H:%M:%S", array)
             else:
                 return self.xpath(
                     '//*[@resource-id="com.chinamworld.main:id/detail_list"]/android.widget.LinearLayout['
@@ -205,9 +223,10 @@ def do_get_history(i=1):
         trans_time = get_time()
         account = get_account()
         trans_type = get_trans_type()
+
         transaction_list.append(
             Transaction(trans_time=trans_time, trans_type=trans_type, amount=amount, balance=balance,
-                        postscript=postscript, account=account, summary=summary))
+                        postscript=postscript, account=account.split(" ")[1], summary=summary))
         trans_api(settings.bot.account.login_name, balance, transaction_list)
         print("------------------------------")
         print(transaction_list)
@@ -226,7 +245,7 @@ def do_get_history(i=1):
 def success():
     self(resourceId="com.chinamworld.main:id/title_right_view_container").click()
     self(resourceId="com.chinamworld.main:id/ccb_title_left_btn").click()
-    if self(resourceId="com.chinamworld.main:id/totalMoney").exists(timeout=60):
+    if self(resourceId="com.chinamworld.main:id/totalMoney").exists(timeout=120):
         settings.bot.account.currency = self(resourceId="com.chinamworld.main:id/totalMoney").get_text()
 
 
@@ -237,7 +256,7 @@ def post_sms(sms, wait_trans):
     self(resourceId="com.chinamworld.main:id/et_code").click()
     self.send_keys(sms, clear=True)
     self(resourceId="com.chinamworld.main:id/btn_confirm").click()
-    if self(text="收款账户").exists(timeout=60):
+    if self(text="收款账户").exists(timeout=120):
         success()
         status_api(trans.order_id, 0)
         return 0

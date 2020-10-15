@@ -21,7 +21,7 @@ def transfer_status(order_id, state, msg=None):
 
 def transaction(account, balance, transactions):
     if transactions:
-        trans = [{'direction': i.trans_type, 'time': i.trans_type, 'amount': i.amount, 'name': i.name, 'balance': i.balance, 'postscript': i.postscript} for i in transactions]
+        trans = [{'direction': i.trans_type, 'time': i.trans_time, 'amount': i.amount, 'name': i.account, 'balance': i.balance, 'postscript': i.postscript} for i in transactions]
     else:
         trans = None
     return post(api['transaction'], {'accountAlias': account, 'balance': balance, 'trans': trans})
