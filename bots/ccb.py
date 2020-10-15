@@ -268,8 +268,9 @@ def post_sms(sms, wait_trans):
     self.send_keys(sms, clear=True)
     self(resourceId="com.chinamworld.main:id/btn_confirm").click()
     if self(text="收款账户").exists(timeout=120):
-        success()
         status_api(trans.order_id, 0)
+        time.sleep(5)
+        success()
         return 0
     else:
         false_msg()
