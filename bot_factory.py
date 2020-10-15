@@ -75,7 +75,7 @@ class BotFactory:
 
     def cast_post_sms(self, params):
         self.wait_trans = self.bank.post_sms(params, self.wait_trans)
-        return self.waitTrans
+        return self.wait_trans
 
     def cast_stop(self):
         self.alive = False

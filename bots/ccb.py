@@ -95,9 +95,10 @@ def input_form():
                         print("go back ----->")
                         status_api(trans.order_id, 1, "查询账户开户机构不成功。")
                         return False
-                    if self(resourceId="com.chinamworld.main:id/dlg_right_tv").exists(timeout=10):
+                    elif self(resourceId="com.chinamworld.main:id/dlg_right_tv").exists(timeout=10):
                         self(resourceId="com.chinamworld.main:id/dlg_right_tv").click()
-                return True
+                    else:
+                        return True
 
 
 def remove_float_win():
