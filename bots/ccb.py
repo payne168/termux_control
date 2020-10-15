@@ -235,7 +235,7 @@ def do_get_history(config, i=1):
             Transaction(trans_time=trans_time, trans_type=trans_type, amount=amount, balance=balance,
                         postscript=postscript, account=account.split(" ")[1], summary=summary))
         print("------------------------------")
-        trans_api(config.account.alias.login_name, balance, transaction_list)
+        trans_api(config['api']['account']['alias'], balance, transaction_list)
         print("------------------------------")
         print(transaction_list, time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
         if i == 1:
