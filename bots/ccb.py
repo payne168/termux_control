@@ -71,9 +71,10 @@ def input_form():
             self(resourceId="com.chinamworld.main:id/et_tran_amount").click()
             self.send_keys(str(trans.amount), clear=True)
             self.press("back")
-            self(resourceId="com.chinamworld.main:id/rl_tran_mark").click()
-            self.send_keys("今天发的1元钱", clear=True)
-            self.press("back")
+            # 附言
+            # self(resourceId="com.chinamworld.main:id/rl_tran_mark").click()
+            # self.send_keys("今天发的1元钱", clear=True)
+            # self.press("back")
             self(resourceId="com.chinamworld.main:id/tv_bank").click()
             if self(text="热门银行").exists(timeout=120):
                 bank_btn = self(resourceId="com.chinamworld.main:id/title", text=trans.bank_name)
@@ -95,12 +96,9 @@ def input_form():
 
 
 def remove_float_win():
-    print("start")
     if self(resourceId="com.chinamworld.main:id/close").exists(timeout=5):
-        print("11111111111111111")
         self(resourceId="com.chinamworld.main:id/close").click_gone(maxretry=10, interval=1.0)
     elif self(text="是否需要向银行卡").exists(timeout=5):
-        print("2222222222222222")
         self(resourceId="com.chinamworld.main:id/btn_cancel").click_gone(maxretry=10, interval=1.0)
     else:
         return True
@@ -227,9 +225,10 @@ def do_get_history(i=1):
         transaction_list.append(
             Transaction(trans_time=trans_time, trans_type=trans_type, amount=amount, balance=balance,
                         postscript=postscript, account=account.split(" ")[1], summary=summary))
+        print("------------------------------")
         trans_api(settings.bot.account.login_name, balance, transaction_list)
         print("------------------------------")
-        print(transaction_list)
+        print(transaction_list, time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
         if i == 1:
             settings.bot.last_trans = Transaction(trans_time=trans_time, trans_type=trans_type, amount=amount,
                                                   balance=balance,
@@ -249,6 +248,18 @@ def success():
         settings.bot.account.currency = self(resourceId="com.chinamworld.main:id/totalMoney").get_text()
 
 
+def press_resend():
+    self(resourceId="com.chinamworld.main:id/re_send").click()
+
+
+def close_win():
+    self(resourceId="com.chinamworld.main:id/iv_close").click()
+
+
+def false_msg():
+    status_api(trans.order_id, 1, "短信验证码超时！")
+
+
 def post_sms(sms, wait_trans):
     if not wait_trans:
         return
@@ -261,7 +272,7 @@ def post_sms(sms, wait_trans):
         status_api(trans.order_id, 0)
         return 0
     else:
-        status_api(trans.order_id, 1, "短信验证码超时！")
+        false_msg()
     # elif self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=60):
     #
     #     def put_code():

@@ -22,6 +22,8 @@ class BotFactory:
         self.trans_process = False
 
     def do_works(self):
+        times = 0
+        count = 0
         while self.alive:
             time.sleep(10)
             status(settings.bot.serial_no, Status.RUNNING.value)
@@ -31,6 +33,23 @@ class BotFactory:
                     self.wait_trans = self.cast_do_transfer(self.works_list.pop(0))
                 else:
                     self.cast_transaction_history()
+            else:
+                times += 1
+                if times > 3:
+                    self.bank.close_win()
+                    self.bank.back_activity()
+                    self.bank.back_activity()
+                    self.do_works()
+                    self.bank.false_msg()
+
+                a = 60
+                while count < a:
+                    count_now = a - count
+                    print(count_now)
+                    time.sleep(1)  # sleep 1 second
+                    count += 1
+                    self.bank.press_resend()
+                print('done')
 
     def cast_do_transfer(self, trans):
         if settings.bot.pid == 0:
@@ -54,11 +73,12 @@ class BotFactory:
             self.bank.do_transaction()
 
     def cast_post_sms(self, params):
-        self.waitTrans = self.bank.post_sms(params, self.waitTrans)
+        self.wait_trans = self.bank.post_sms(params, self.wait_trans)
         return self.waitTrans
 
     def cast_stop(self):
         self.alive = False
+        status(settings.bot.serial_no, Status.STOP.value)
         self.bank.stop()
 
     def cast_transfer(self, order_id, amount, account, holder, bank_name):
