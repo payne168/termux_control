@@ -262,7 +262,7 @@ def close_win():
     self(resourceId="com.chinamworld.main:id/iv_close").click()
 
 
-def false_msg(msg):
+def false_msg(msg="网络异常"):
     status_api(trans.order_id, 1, msg)
 
 
@@ -295,7 +295,7 @@ def post_sms(sms, wait_trans):
         success()
         return 0
     else:
-        false_msg()
+        false_msg("短信超时")
     # elif self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=60):
     #
     #     def put_code():
