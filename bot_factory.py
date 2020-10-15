@@ -39,8 +39,9 @@ class BotFactory:
                     self.bank.close_win()
                     self.bank.back_activity()
                     self.bank.back_activity()
-                    self.do_works()
                     self.bank.false_msg()
+                    self.wait_trans = False
+                    self.do_works()
 
                 a = 60
                 while count < a:
