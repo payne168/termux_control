@@ -211,7 +211,7 @@ def do_get_history(i=1):
                     '//*[@resource-id="com.chinamworld.main:id/detail_list"]/android.widget.LinearLayout['
                     '%s]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout['
                     '1]/android.widget.RelativeLayout[3]/android.widget.TextView[2]' % i).get_text()
-
+        time.sleep(6)
         self.xpath('//*[@resource-id="com.chinamworld.main:id/detail_list"]/android.widget.LinearLayout['
                    '%s]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.RelativeLayout['
                    '1]/android.widget.ToggleButton[1]' % i).click()
@@ -290,7 +290,7 @@ def restart_app():
 
 def post_sms(sms, wait_trans):
     if not wait_trans:
-        return
+        return False
 
     self(resourceId="com.chinamworld.main:id/et_code").click()
     self.send_keys(sms, clear=True)
@@ -299,7 +299,7 @@ def post_sms(sms, wait_trans):
         status_api(trans.order_id, 0)
         time.sleep(5)
         success()
-        return 0
+        return False
     else:
         false_msg("短信超时")
     # elif self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=60):

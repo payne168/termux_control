@@ -20,6 +20,7 @@ class BotFactory:
         self.alive = True
         self.wait_trans = False
         self.trans_process = False
+        self.wait_msg = True
 
     def do_works(self):
         times = 0
@@ -44,7 +45,7 @@ class BotFactory:
                     self.do_works()
 
                 a = 60
-                while count < a:
+                while count < a and self.wait_msg:
                     count_now = a - count
                     print(count_now)
                     time.sleep(1)  # sleep 1 second
