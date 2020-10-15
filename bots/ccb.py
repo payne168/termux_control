@@ -262,14 +262,15 @@ def close_win():
     self(resourceId="com.chinamworld.main:id/iv_close").click()
 
 
-def false_msg():
-    status_api(trans.order_id, 1, "短信验证码超时！")
+def false_msg(msg):
+    status_api(trans.order_id, 1, msg)
 
 
 def internet_timeout():
     if self(resourceId="com.chinamworld.main:id/tv_dlg_consult").exists(timeout=12):
         if self(text="QU7010.UnknownHostException").get_text():
             self(resourceId="com.chinamworld.main:id/dlg_right_tv").click()
+            self.false_msg("没有网络！")
             restart_app()
 
 
