@@ -2,12 +2,14 @@
 import time
 import sys
 # from bots.verification.verification_code import VerificationCode
+import requests
 import settings
 
 sys.path.append("..")
 from models import Account, Transferee, Transaction
 from api import transaction as trans_api
 from api import transfer_status as status_api
+import _thread
 
 package = 'com.chinamworld.main'
 activity = 'com.ccb.start.MainActivity'
@@ -41,15 +43,18 @@ def login():
 
 
 def change_activity(page_activity):
+    internet_timeout()
     LoginActivity = self.wait_activity("com.ccb.framework.security.login.internal.view.LoginActivity", timeout=5)
     print(LoginActivity)
     if LoginActivity:
         login()
+
     page = self.wait_activity(page_activity, timeout=120)
     return page
 
 
 def back_activity():
+    internet_timeout()
     LoginActivity = self.wait_activity("com.ccb.framework.security.login.internal.view.LoginActivity", timeout=5)
     if LoginActivity:
         login()
@@ -258,6 +263,21 @@ def close_win():
 
 def false_msg():
     status_api(trans.order_id, 1, "短信验证码超时！")
+
+
+def internet_timeout():
+    if self(resourceId="com.chinamworld.main:id/tv_dlg_consult").exists(timeout=12):
+        if self(text="QU7010.UnknownHostException").get_text():
+            self(resourceId="com.chinamworld.main:id/dlg_right_tv").click()
+            restart_app()
+
+
+def restart_app():
+    def restart():
+        requests.get(url="http://127.0.0.1:5000/start")
+
+    stop()
+    restart()
 
 
 def post_sms(sms, wait_trans):
