@@ -141,7 +141,7 @@ def transfer(transferee):
     return True
 
 
-def transaction_history(config):
+def transaction_history():
     # 抓取流水
     def do_inquire():
         waitRes = self.wait_activity(activity, timeout=120)
@@ -155,7 +155,7 @@ def transaction_history(config):
         do_inquire()
 
 
-def do_transaction(config):
+def do_transaction():
     if remove_float_win():
         self(resourceId="com.chinamworld.main:id/text_item", text="账户").click()
         MyAccountMainAct = change_activity("com.ccb.myaccount.view.MyAccountMainAct")
@@ -170,14 +170,14 @@ def do_transaction(config):
                         self(resourceId="com.chinamworld.main:id/type", text="活期储蓄").click()
 
                         if self(text="总收入").exists(timeout=120):
-                            transaction_record = do_get_history(config)
+                            transaction_record = do_get_history()
                             print(transaction_record)
             else:
                 back_activity()
                 do_transaction()
 
 
-def do_get_history(config, i=1):
+def do_get_history(i=1):
     transaction_list = []
     while i < 2:
         def get_trans_type():
@@ -235,7 +235,7 @@ def do_get_history(config, i=1):
             Transaction(trans_time=trans_time, trans_type=trans_type, amount=amount, balance=balance,
                         postscript=postscript, account=account.split(" ")[1], summary=summary))
         print("------------------------------")
-        trans_api(config['api']['account']['alias'], balance, transaction_list)
+        trans_api(settings.bot.account.alias, balance, transaction_list)
         print("------------------------------")
         print(transaction_list, time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
         if i == 1:
