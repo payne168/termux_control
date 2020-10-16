@@ -146,7 +146,7 @@ def sms():
         if is_vc:
             received_at = datetime.strptime(params['time'], '%Y-%m-%d %H:%M:%S').timestamp()
             if time.time() - received_at > 180:
-                rsp = {'code': 0, 'msg': '验证码已过期'}
+                rsp = {'code': 0, 'msg': '发送短信超时'}
             else:
                 try:
                     ret = bot_util.cast_post_sms(data)

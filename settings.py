@@ -26,7 +26,23 @@ api = {
 }
 
 bank_map = {
-    'CCB': '中国建设银行'
+    'CCB': '中国建设银行',
+    'ICBC': '中国工商银行',
+    'ABC': '中国农业银行',
+    'BOCSH': '中国银行',
+    'BCM': '交通银行',
+    'CMB': '招商银行',
+    'MSB': '中国民生银行',
+    'CITTIC': '中信银行',
+    'SHPDB': '上海浦东发展银行',
+    'PAB': '平安银行（原深圳发展银行）',
+    'INB': '兴业银行',
+    'EBB': '中国光大银行',
+    'GDB': '广发银行股份有限公司',
+    'HXB': '华夏银行',
+    'PSBC': '中国邮政储蓄银行',
+    'BOS': '上海银行',
+    'JSBK': '江苏银行股份有限公司',
 }
 
 sms_bank = {
@@ -47,9 +63,3 @@ class Status(Enum):
     STOP = 5
     PAYING = 6
 
-
-class Cmd(Enum):
-    START = 0
-    STOP = 1
-    UPGRADE = 2
-    TRANSFER = 3
