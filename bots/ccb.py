@@ -287,9 +287,7 @@ def restart_app():
     restart()
 
 
-def post_sms(sms, wait_trans):
-    if not wait_trans:
-        return False
+def post_sms(sms):
 
     self(resourceId="com.chinamworld.main:id/et_code").click()
     self.send_keys(sms, clear=True)
@@ -301,6 +299,7 @@ def post_sms(sms, wait_trans):
         return False
     else:
         false_msg("短信超时")
+        return True
     # elif self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=60):
     #
     #     def put_code():
