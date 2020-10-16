@@ -9,12 +9,13 @@ from settings import Status
 class BotFactory:
 
     def __init__(self):
-        # settings.bot.device = u2.connect('RR8M90JGAXR')
-        settings.bot.device = u2.connect('0.0.0.0')
+        settings.bot.device = u2.connect('RR8M90JGAXR')
+        # settings.bot.device = u2.connect('0.0.0.0')
         module = __import__("bots.%s" % settings.bot.bank.lower())
         robot = getattr(module, settings.bot.bank.lower())
         self.bank = robot
         settings.bot.pid = self.bank.start()
+        self.bank.toast_msg("您的银行应用已经由脚本接管")
         status(settings.bot.serial_no, Status.RUNNING.value)
         self.works_list = []
         self.alive = True
@@ -29,8 +30,10 @@ class BotFactory:
             print(self.wait_trans)
             if not self.wait_trans:
                 if len(self.works_list) > 0:
+                    self.bank.toast_msg("正在为您执行转账任务，请耐心等待...")
                     self.wait_trans = self.cast_do_transfer(self.works_list.pop(0))
                 else:
+                    self.bank.toast_msg("正在为您执行流水查询任务，请耐心等待...")
                     self.cast_transaction_history()
             # times = 0
             # count = 0
@@ -75,6 +78,7 @@ class BotFactory:
             self.bank.do_transaction()
 
     def cast_post_sms(self, params):
+        self.bank.toast_msg("已经收到短信，准备为您填充手机验证码")
         self.wait_trans = self.bank.post_sms(params)
         return self.wait_trans
 
