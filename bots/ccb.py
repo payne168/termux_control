@@ -261,7 +261,8 @@ def success():
 
 
 def press_resend():
-    self(resourceId="com.chinamworld.main:id/re_send").click()
+    if self(resourceId="com.chinamworld.main:id/re_send").exists(timeout=30):
+        self(resourceId="com.chinamworld.main:id/re_send").click()
 
 
 def close_win():
@@ -291,7 +292,6 @@ def restart_app():
 
 
 def post_sms(sms):
-
     self(resourceId="com.chinamworld.main:id/et_code").click()
     self.send_keys(sms, clear=True)
     self(resourceId="com.chinamworld.main:id/btn_confirm").click()

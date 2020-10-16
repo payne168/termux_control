@@ -50,7 +50,7 @@ class BotFactory:
                     print(count_now)
                     time.sleep(1)  # sleep 1 second
                     count += 1
-                    self.bank.press_resend()
+                self.bank.press_resend()
                 print('done')
 
     def cast_do_transfer(self, trans):
