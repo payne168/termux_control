@@ -37,11 +37,11 @@ class BotFactory:
             else:
                 times += 1
                 if times > 3:
+                    self.wait_trans = False
                     self.bank.close_win()
                     self.bank.back_activity()
                     self.bank.back_activity()
                     self.bank.false_msg("短信验证码超时！")
-                    self.wait_trans = False
                     self.do_works()
 
                 a = 60
