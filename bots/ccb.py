@@ -266,7 +266,8 @@ def press_resend():
 
 
 def close_win():
-    self(resourceId="com.chinamworld.main:id/iv_close").click()
+    if self(resourceId="com.chinamworld.main:id/iv_close").exists(timeout=12):
+        self(resourceId="com.chinamworld.main:id/iv_close").click()
 
 
 def false_msg(msg="网络异常"):
@@ -302,7 +303,10 @@ def post_sms(sms):
         return False
     else:
         false_msg("短信超时")
-        return True
+        close_win()
+        back_activity()
+        back_activity()
+        return False
     # elif self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=60):
     #
     #     def put_code():
