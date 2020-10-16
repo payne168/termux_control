@@ -185,7 +185,10 @@ def do_get_history(i=1):
                 '//*[@resource-id="com.chinamworld.main:id/detail_list"]/android.widget.LinearLayout['
                 '%s]/android.widget.LinearLayout[1]/android.widget.LinearLayout['
                 '1]/android.widget.RelativeLayout[1]/android.widget.TextView[1]' % i).get_text()
-            return trans_type_txt == "支出" and 0 or 1
+            if trans_type_txt.strip() == "支出":
+                return 0
+            elif trans_type_txt.strip() == "收入":
+                return 1
 
         def get_time():
             if i == 1:
