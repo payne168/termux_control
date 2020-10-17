@@ -38,10 +38,9 @@ def login():
     for i in settings.bot.account.login_pwd:
         time.sleep(1)
         self(text=i).click()
-    self(resourceId="com.chinamworld.main:id/btn_confirm")
-    time.sleep(2)
-    if self(text="尊敬的客户，您在我行存留的身份证件即将到期，为避免影响您办理业务，请尽快到建行手机银行、网上银行或网点等渠道更新信息。").exists(timeout=12):
-        self(resourceId="com.chinamworld.main:id/btn_cancel").click_gone(maxretry=10, interval=1.0)
+    self(resourceId="com.chinamworld.main:id/btn_confirm").click()
+    if self(text="尊敬的客户，您在我行存留的身份证件即将到期，为避免影响您办理业务，请尽快到建行手机银行、网上银行或网点等渠道更新信息。").exists(timeout=5):
+        self(resourceId="com.chinamworld.main:id/btn_cancel").click()
 
 
 def change_activity(page_activity):
