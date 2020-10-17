@@ -44,7 +44,7 @@ def login():
 
 
 def change_activity(page_activity):
-    internet_timeout()
+    # internet_timeout()
     print("正在等待切换页面！")
     LoginActivity = self.wait_activity("com.ccb.framework.security.login.internal.view.LoginActivity", timeout=5)
     print(LoginActivity)
@@ -57,7 +57,7 @@ def change_activity(page_activity):
 
 def back_activity():
     print("正在执行回退页面！")
-    internet_timeout()
+    # internet_timeout()
     print("正在执行登录页检测！")
     LoginActivity = self.wait_activity("com.ccb.framework.security.login.internal.view.LoginActivity", timeout=5)
     if LoginActivity:
@@ -304,7 +304,7 @@ def restart_app():
     restart()
 
 
-def print(msg):
+def toast_msg(msg):
     self.toast.show(msg)
 
 
