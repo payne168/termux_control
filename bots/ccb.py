@@ -315,9 +315,10 @@ def post_sms(sms):
     self(resourceId="com.chinamworld.main:id/btn_confirm").click()
     if self(text="收款账户").exists(timeout=120):
         status_api(trans.order_id, 0)
-        time.sleep(5)
+        time.sleep(10)
         success()
         print("您已经转账成功了！")
+        do_transaction()
         return False
     else:
         false_msg("短信超时")
