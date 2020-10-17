@@ -32,7 +32,7 @@ class BotFactory:
                 if len(self.works_list) > 0:
                     print("正在为您执行转账任务，请耐心等待...")
                     self.wait_trans = self.cast_do_transfer(self.works_list.pop(0))
-                    # self.cast_transaction_history()
+                    self.cast_transaction_history()
                 else:
                     print("正在为您执行流水查询任务，请耐心等待...")
                     self.cast_transaction_history()
