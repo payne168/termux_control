@@ -1,4 +1,5 @@
 # coding: utf-8
+import requests
 from flask import Flask, request
 import json
 from datetime import datetime
@@ -6,7 +7,7 @@ import time
 import logging
 import os
 import api
-from settings import gateway, serial_no, bank_map
+from settings import gateway, serial_no, bank_map, root_service
 import settings
 import misc
 from models import BotUtil, Bot, Account, Transaction
@@ -131,6 +132,7 @@ def upgrade():
 
     if evn_need_update:
         res = {'code': 0, 'msg': '脚本已经更新成功!'}
+        requests.get(url="http://%s%s/restart" % (settings.root_service['host'], settings.root_service['port']))
     else:
         res = {'code': 1, 'msg': '脚本无需更新'}
     logger.info('/upgrade %s', res)

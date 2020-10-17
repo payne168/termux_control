@@ -10,8 +10,5 @@ do
   kill -9 $pid
 done
 
-ROOT_SERVICE=`ps -ef|grep root_service.py|grep -v grep|awk '{print $2}'`
-for pid in $ROOT_SERVICE
-do
-  kill -9 $pid
-done
+(python3 websock.py)&
+python3 gateway.py

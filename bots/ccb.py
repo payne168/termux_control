@@ -4,6 +4,7 @@ import sys
 # from bots.verification.verification_code import VerificationCode
 import requests
 import settings
+import settings
 
 sys.path.append("..")
 from models import Account, Transferee, Transaction
@@ -293,8 +294,7 @@ def internet_timeout():
 
 def restart_app():
     def restart():
-        requests.get(url="http://127.0.0.1:5000/start")
-
+        requests.get(url="http://%s%s/start" % (settings.gateway['host'], settings.gateway['port']))
     print("---------------------------->")
     print("网络异常，系统自动关闭app！")
     print("---------------------------->")
