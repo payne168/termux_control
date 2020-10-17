@@ -105,7 +105,9 @@ def transfer():
 
     if request.is_json:
         params = request.get_json()
+        print("转账任务-------------------->")
         print(params['orderId'], params['amount'], params['account'], params['holder'], bank_map[params['bank']])
+        print("转账任务-------------------->")
         bot_util.cast_transfer(params['orderId'], params['amount'], params['account'], params['holder'], bank_map[params['bank']])
 
         return res

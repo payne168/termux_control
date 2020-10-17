@@ -34,6 +34,8 @@ def stop():
 
 
 def login():
+    if self(text="尊敬的客户，您在我行存留的身份证件即将到期，为避免影响您办理业务，请尽快到建行手机银行、网上银行或网点等渠道更新信息。").exists(timeout=12):
+        self(resourceId="com.chinamworld.main:id/btn_cancel").click_gone(maxretry=10, interval=1.0)
     self(resourceId="com.chinamworld.main:id/et_password").click()
     for i in settings.bot.account.login_pwd:
         time.sleep(1)
@@ -163,8 +165,8 @@ def transaction_history():
 
 def do_transaction():
     if remove_float_win():
-        if self(resourceId="com.chinamworld.main:id/text_item", text="账户").exists(timeout=120):
-            self(resourceId="com.chinamworld.main:id/text_item", text="账户").click()
+        if self(text="账户").exists(timeout=5):
+            self(text="账户").click()
             MyAccountMainAct = change_activity("com.ccb.myaccount.view.MyAccountMainAct")
             if MyAccountMainAct:
                 if self(text="详情").exists(timeout=120):
@@ -248,7 +250,6 @@ def do_get_history(i=1):
         print("------------------------------")
         trans_api(settings.bot.account.alias, balance, transaction_list)
         print("------------------------------")
-        print(transaction_list, time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
         if i == 1:
             settings.bot.last_trans = Transaction(trans_time=trans_time, trans_type=trans_type, amount=amount,
                                                   balance=balance,
