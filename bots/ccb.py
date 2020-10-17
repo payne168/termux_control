@@ -4,7 +4,6 @@ import sys
 # from bots.verification.verification_code import VerificationCode
 import requests
 import settings
-import settings
 
 sys.path.append("..")
 from models import Account, Transferee, Transaction
@@ -44,7 +43,7 @@ def login():
 
 def change_activity(page_activity):
     internet_timeout()
-    toast_msg("正在等待切换页面！")
+    print("正在等待切换页面！")
     LoginActivity = self.wait_activity("com.ccb.framework.security.login.internal.view.LoginActivity", timeout=5)
     print(LoginActivity)
     if LoginActivity:
@@ -55,20 +54,20 @@ def change_activity(page_activity):
 
 
 def back_activity():
-    toast_msg("正在执行回退页面！")
+    print("正在执行回退页面！")
     internet_timeout()
-    toast_msg("正在执行登录页检测！")
+    print("正在执行登录页检测！")
     LoginActivity = self.wait_activity("com.ccb.framework.security.login.internal.view.LoginActivity", timeout=5)
     if LoginActivity:
-        toast_msg("检测到登录页，正在为您登录！")
+        print("检测到登录页，正在为您登录！")
         login()
     else:
-        toast_msg("无登录页，执行回退！")
+        print("无登录页，执行回退！")
         self(resourceId="com.chinamworld.main:id/ccb_title_left_btn").click()
 
 
 def input_form():
-    toast_msg("准备为您填充表单！")
+    print("准备为您填充表单！")
     SmartTransferMainAct = change_activity("com.ccb.transfer.smarttransfer.view.SmartTransferMainAct")
     if SmartTransferMainAct:
         self(resourceId="com.chinamworld.main:id/et_cash_name").click()
@@ -185,7 +184,7 @@ def do_transaction():
 
 
 def do_get_history(i=1):
-    toast_msg("正在为您抓取流水记录！")
+    print("正在为您抓取流水记录！")
     transaction_list = []
     while i < 2:
         def get_trans_type():
@@ -285,7 +284,7 @@ def false_msg(msg="网络异常"):
 
 def internet_timeout():
     if self(resourceId="com.chinamworld.main:id/tv_dlg_consult").exists(timeout=12):
-        toast_msg("正在做网络检查！")
+        print("正在做网络检查！")
         if self(text="QU7010.UnknownHostException").get_text():
             self(resourceId="com.chinamworld.main:id/dlg_right_tv").click()
             self.false_msg("没有网络！")
@@ -298,12 +297,12 @@ def restart_app():
     print("---------------------------->")
     print("网络异常，系统自动关闭app！")
     print("---------------------------->")
-    toast_msg("因为没有网络，正在帮您重启APP！")
+    print("因为没有网络，正在帮您重启APP！")
     stop()
     restart()
 
 
-def toast_msg(msg):
+def print(msg):
     self.toast.show(msg)
 
 
@@ -315,11 +314,11 @@ def post_sms(sms):
         status_api(trans.order_id, 0)
         time.sleep(5)
         success()
-        toast_msg("您已经转账成功了！")
+        print("您已经转账成功了！")
         return False
     else:
         false_msg("短信超时")
-        toast_msg("您已经转账超时了！正在为您返回首页！")
+        print("您已经转账超时了！正在为您返回首页！")
         close_win()
         back_activity()
         back_activity()
