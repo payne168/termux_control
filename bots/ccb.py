@@ -80,7 +80,8 @@ def input_form():
         self(resourceId="com.chinamworld.main:id/tv_transfer_way").click()
         if self(text="实时转账").exists(timeout=120):
             self(resourceId="com.chinamworld.main:id/bottom_selector_tv", text="实时转账").click()
-            self(resourceId="com.chinamworld.main:id/et_tran_amount").click()
+            if self(resourceId="com.chinamworld.main:id/et_tran_amount").exists(timeout=10):
+                self(resourceId="com.chinamworld.main:id/et_tran_amount").click()
             self.send_keys(str(trans.amount), clear=True)
             self.press("back")
             # 附言
