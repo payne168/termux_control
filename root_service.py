@@ -13,8 +13,8 @@ def hello():
 
 @app.route('/restart', methods=['GET'])
 def restart_gateway():
-    os.popen("bash restart.sh").readlines()
-    print("------------------------>")
+    os.popen("bash restart.sh")
+    print("------------------------> gateway restart")
     return {"code": 0}
 
 
