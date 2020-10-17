@@ -164,24 +164,24 @@ def transaction_history():
 
 def do_transaction():
     if remove_float_win():
-        self(resourceId="com.chinamworld.main:id/text_item", text="账户").click()
-        MyAccountMainAct = change_activity("com.ccb.myaccount.view.MyAccountMainAct")
+        if self(resourceId="com.chinamworld.main:id/text_item", text="账户").exists(timeout=120):
+            self(resourceId="com.chinamworld.main:id/text_item", text="账户").click()
+            MyAccountMainAct = change_activity("com.ccb.myaccount.view.MyAccountMainAct")
+            if MyAccountMainAct:
+                if self(text="详情").exists(timeout=120):
+                    self(text="详情").click()
+                    TitledActivity = change_activity("com.ccb.framework.app.TitledActivity")
 
-        if MyAccountMainAct:
-            if self(text="详情").exists(timeout=120):
-                self(text="详情").click()
-                TitledActivity = change_activity("com.ccb.framework.app.TitledActivity")
+                    if TitledActivity:
+                        if self(resourceId="com.chinamworld.main:id/type", text="活期储蓄").exists(timeout=120):
+                            self(resourceId="com.chinamworld.main:id/type", text="活期储蓄").click()
 
-                if TitledActivity:
-                    if self(resourceId="com.chinamworld.main:id/type", text="活期储蓄").exists(timeout=120):
-                        self(resourceId="com.chinamworld.main:id/type", text="活期储蓄").click()
-
-                        if self(text="总收入").exists(timeout=120):
-                            transaction_record = do_get_history()
-                            print(transaction_record)
-            else:
-                back_activity()
-                do_transaction()
+                            if self(text="总收入").exists(timeout=120):
+                                transaction_record = do_get_history()
+                                print(transaction_record)
+                else:
+                    back_activity()
+                    do_transaction()
 
 
 def do_get_history(i=1):
