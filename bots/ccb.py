@@ -172,6 +172,7 @@ def do_transaction():
             if MyAccountMainAct:
                 if self(text="详情").exists(timeout=10):
                     self(text="详情").click()
+
                     TitledActivity = change_activity("com.ccb.framework.app.TitledActivity")
 
                     if TitledActivity:
@@ -310,7 +311,10 @@ def toast_msg(msg):
 
 
 def post_sms(sms):
-    self(resourceId="com.chinamworld.main:id/et_code").click()
+    if self(resourceId="com.chinamworld.main:id/et_code").exists(timeout=5):
+        self(resourceId="com.chinamworld.main:id/et_code").click()
+    else:
+        return False
     self.send_keys(sms, clear=True)
     self(resourceId="com.chinamworld.main:id/btn_confirm").click()
     if self(text="收款账户").exists(timeout=120):
