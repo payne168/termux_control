@@ -170,7 +170,7 @@ def do_transaction():
             self(text="账户").click()
             MyAccountMainAct = change_activity("com.ccb.myaccount.view.MyAccountMainAct")
             if MyAccountMainAct:
-                if self(text="详情").exists(timeout=120):
+                if self(text="详情").exists(timeout=10):
                     self(text="详情").click()
                     TitledActivity = change_activity("com.ccb.framework.app.TitledActivity")
 
