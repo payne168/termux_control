@@ -58,6 +58,13 @@ sms_vc = {
     'CCB': r'验证码(\d{6})',
 }
 
+sms_trans = {
+    'CCB': {'direction': (r'支出', r'存入'), 'pattern': (
+        {'time': r'储蓄卡(.+)向', 'name': r'向(.+)转账', 'amount': r'人民币(\d+\.?\d{0,2})元', 'balance': r'余额(\d+\.?\d{0,2})元'},
+        {'time': r'(\d{1,2}.+分)', 'name': r'^(\D+)', 'amount': r'人民币(\d+\.?\d{0,2})元', 'balance': r'余额(\d+\.?\d{0,2})元'},
+    )},
+}
+
 
 class Status(Enum):
     IDLE = 0

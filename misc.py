@@ -3,8 +3,9 @@ import re
 import random
 import string
 import time
+from datetime import datetime
 import requests
-from settings import sms_bank, sms_vc
+from settings import sms_bank, sms_vc, sms_trans
 from log import logger
 
 
@@ -35,11 +36,31 @@ def parse_sms(sms):
     for k, v in sms_bank.items():
         if re.findall(v, sms):
             if '验证码' in sms:
-                return True, re.findall(sms_vc[k], sms)[0]
+                return 0, re.findall(sms_vc[k], sms)[0]
             else:
-                # TODO 提取流水
-                return False, {}
+                directions = sms_trans[k]['direction']
+                for i, direction in enumerate(directions):
+                    if direction in sms:
+                        pattern = sms_trans[k]['pattern'][i]
+                        trans_time = re.findall(pattern['time'], sms)[0]
+                        name = re.findall(pattern['name'], sms)[0]
+                        amount = re.findall(pattern['amount'], sms)[0]
+                        balance = re.findall(pattern['balance'], sms)[0]
+                        trans_time = convert_trans_time(k, trans_time)
+                        return 1, {'direction': i, 'time': trans_time, 'name': name, 'amount': amount, 'balance': balance}
+                return 1, None
+    return -1, None
+
+
+def convert_trans_time(bank, trans_time):
+    if bank == 'CCB':
+        return datetime.strptime(f'{datetime.today().year}年{trans_time}', '%Y年%m月%d日%H时%M分').strftime('%Y-%m-%d %X')
+    return ''
 
 
 if __name__ == '__main__':
     print(parse_sms('序号03的验证码468134，您向汪仙尾号3275账户转账1.0元。任何索要验证码的都是骗子，千万别给！[建设银行]'))
+    ccb_expenditure = '您尾号0333的储蓄卡10月21日15时50分向李文聪转账支取支出人民币5.00元,活期余额20.50元。[建设银行]'
+    ccb_income = '李文聪10月21日16时58分向您尾号0333的储蓄卡转账存入人民币1.00元,活期余额21.50元。[建设银行]'
+    # print(parse_sms('您尾号8540的储蓄卡10月21日17时21分向林美娣转账支取支出人民币1.00元,活期余额11.50元。[建设银行]'))
+    print(parse_sms(ccb_income))

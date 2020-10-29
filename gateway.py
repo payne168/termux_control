@@ -145,8 +145,9 @@ def sms():
     if request.is_json:
         params = request.get_json()
         logger.info('sms req: %s', params)
-        is_vc, data = misc.parse_sms(params['sms'])
-        if is_vc:
+        code, data = misc.parse_sms(params['sms'])
+        if code == 0:
+            # validation code
             received_at = datetime.strptime(params['time'], '%Y-%m-%d %H:%M:%S').timestamp()
             if time.time() - received_at > 180:
                 rsp = {'code': 0, 'msg': '发送短信超时'}
@@ -159,9 +160,16 @@ def sms():
                     rsp = {'code': 0, 'msg': '卡机未启动网银应用'}
             logger.info('sms rsp: %s', rsp)
             return rsp
-        else:
-            # 上报流水
-            return {'code': 0, 'msg': '流水上报成功'}
+        elif code == 1:
+            # transaction
+            trans = Transaction(trans_time=data['time'], trans_type=data['direction'], name=data['name'],
+                                amount=data['amount'], balance=data['balance'])
+            try:
+                rsp = api.transaction(settings.bot.account.alias, data['balance'], (trans,))
+                return rsp
+            except:
+                logger.exception('上报流水网络异常')
+                return {'code': 1, 'msg': '上报流水网络异常'}
 
 
 def load_config():

@@ -5,3 +5,4 @@ cryptography
 #pytesseract
 websockets
 uiautomator2
+mitmproxy==5.2.0
