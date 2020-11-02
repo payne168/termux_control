@@ -1,7 +1,7 @@
 # coding: utf8
 import time
 import sys
-# from bots.verification.verification_code import VerificationCode
+from bots.verification.verification_code_ccb import VerificationCodeCcb
 import requests
 import settings
 
@@ -317,6 +317,41 @@ def post_sms(sms):
         return False
     self.send_keys(sms, clear=True)
     self(resourceId="com.chinamworld.main:id/btn_confirm").click()
+    if self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=5):
+
+        def put_code():
+
+            def get_code():
+                time.sleep(1)
+                self(resourceId="com.chinamworld.main:id/native_graph_iv").click()
+                time.sleep(1)
+                info = self(resourceId="com.chinamworld.main:id/native_graph_iv").info
+                x = info['bounds']['left']
+                y = info['bounds']['top']
+                self.screenshot("verification.jpg")
+                vc = VerificationCodeCcb(x, y, 313, 165)
+                return vc.image_str()
+
+            code = get_code()
+            while code == "":
+                time.sleep(3)
+                code = get_code()
+            print(code)
+            time.sleep(2)
+            self(resourceId="com.chinamworld.main:id/native_graph_et").click()
+            self(resourceId="com.chinamworld.main:id/default_row_two_1").click()
+            self.send_keys(code, clear=True)
+            time.sleep(2)
+            self(resourceId="com.chinamworld.main:id/et_code").click()
+            self.send_keys(settings.bot.account.payment_pwd, clear=True)
+
+            if self(resourceId="com.chinamworld.main:id/btn_confirm").click_gone(maxretry=10, interval=1.0):
+                success()
+                return False
+            else:
+                put_code()
+
+        put_code()
     if self(text="收款账户").exists(timeout=120):
         status_api(trans.order_id, 0)
         time.sleep(10)
@@ -324,6 +359,7 @@ def post_sms(sms):
         print("您已经转账成功了！")
         do_transaction()
         return False
+
     else:
         false_msg("短信超时")
         print("您已经转账超时了！正在为您返回首页！")
@@ -331,38 +367,4 @@ def post_sms(sms):
         back_activity()
         back_activity()
         return False
-    # elif self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=60):
-    #
-    #     def put_code():
-    #
-    #         def get_code():
-    #             time.sleep(1)
-    #             self(resourceId="com.chinamworld.main:id/native_graph_iv").click()
-    #             time.sleep(1)
-    #             info = self(resourceId="com.chinamworld.main:id/native_graph_iv").info
-    #             x = info['bounds']['left']
-    #             y = info['bounds']['top']
-    #             self.screenshot("verification.jpg")
-    #             vc = VerificationCode(x, y, 313, 165)
-    #             return vc.image_str()
-    #
-    #         code = get_code()
-    #         while code == "":
-    #             time.sleep(3)
-    #             code = get_code()
-    #         print(code)
-    #         time.sleep(2)
-    #         self(resourceId="com.chinamworld.main:id/native_graph_et").click()
-    #         self(resourceId="com.chinamworld.main:id/default_row_two_1").click()
-    #         self.send_keys(code, clear=True)
-    #         time.sleep(2)
-    #         self(resourceId="com.chinamworld.main:id/et_code").click()
-    #         self.send_keys(settings.bot.account.payment_pwd, clear=True)
-    #
-    #         if self(resourceId="com.chinamworld.main:id/btn_confirm").click_gone(maxretry=10, interval=1.0):
-    #             success()
-    #             return False
-    #         else:
-    #             put_code()
 
-    # put_code()

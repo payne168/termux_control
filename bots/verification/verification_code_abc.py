@@ -19,14 +19,14 @@ class VerificationCodeAbc:
         time.sleep(1)
         # location = img.location
         # size = img.size  # 获取验证码的大小参数
-        left = 0
-        top = 933
-        right = left + 604
-        bottom = top + 319
-        # left = self.x
-        # top = self.y
-        # right = left + self.width
-        # bottom = top + self.height
+        # left = 0
+        # top = 2216
+        # right = left + 1435
+        # bottom = top + 757
+        left = self.x
+        top = self.y
+        right = left + self.width
+        bottom = top + self.height
         image_obj = page_snap_obj.crop((left, top, right, bottom))  # 按照验证码的长宽，切割验证码
         # image_obj.show()  # 打开切割后的完整验证码
         # self.driver.close()  # 处理完验证码后关闭浏览器
@@ -74,16 +74,16 @@ class VerificationCodeAbc:
                     if black_point < 1:
                         images.putpixel((x, y), 255)
                     black_point = 0
-        # images.show()
+        images.show()
         return images
 
     def image_str(self):
         image = self.delete_spot()
         # pytesseract.pytesseract.tesseract_cmd = r"/usr/local/bin/tesseract"  # 设置pyteseract路径
-        result = pytesseract.image_to_string(image, lang="eng", config="--psm 6")  # 图片转文字
+        result = pytesseract.image_to_string(image, lang='eng', config="--psm 6 --tessdata-dir tessdata")  # 图片转文字
         print(result)
         results = re.sub(u"([^\u4e00-\u9fa5\u0030-\u0039\u0041-\u005a\u0061-\u007a])", "", result)  # 去除识别出来的特殊字符
-        result_four = results[0:9]  # 只获取前4个字符
+        result_four = results[0:10]  # 只获取前4个字符
         print(result_four)  # 打印识别的验证码
         return result_four
 

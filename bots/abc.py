@@ -2,9 +2,10 @@
 import time
 import sys
 import requests
-import settings
+from bots.verification.verification_code_abc import VerificationCodeAbc
 
 sys.path.append("..")
+import settings
 from models import Account, Transferee, Transaction
 from api import transaction as trans_api
 from api import transfer_status as status_api
@@ -27,14 +28,16 @@ def stop():
 
 
 def login():
-    self(text="请输入登录密码").click()
-    self.send_keys("hb741963", clear=True)
-    # for i in settings.bot.account.login_pwd:
-    #     time.sleep(1)
-    #     self(text=i).click()
-    self.xpath('//android.widget.ScrollView/android.view.ViewGroup[1]/android.view.ViewGroup['
-               '2]/android.view.ViewGroup[1]/android.view.ViewGroup[3]/android.view.ViewGroup['
-               '1]/android.widget.Button[1]').click()
+    if self(text="请输入登录密码").exists(timeout=20):
+        self(text="请输入登录密码").click()
+        self(text="请输入登录密码", focused=True).set_text("hb741963")
+        # for i in settings.bot.account.login_pwd:
+        #     time.sleep(1)
+        #     self(text=i).click()
+        self.xpath('//android.widget.ScrollView/android.view.ViewGroup[1]/android.view.ViewGroup['
+                   '2]/android.view.ViewGroup[1]/android.view.ViewGroup[3]/android.view.ViewGroup['
+                   '1]/android.widget.Button[1]').click()
+        time.sleep(15)
 
 
 def change_activity(page_activity):
@@ -62,26 +65,133 @@ def back_activity():
         self.press("back")
 
 
-def input_form():
-    print("准备为您填充表单！")
-    self(text="请输入名称").click()
-    self.send_keys(trans.holder, clear=True)
-    self(text="请输入账号").click()
-    self.send_keys(trans.account, clear=True)
-    self.xpath('//android.webkit.WebView/android.view.View[7]/android.widget.Image[1]').click()
-    self(description=trans.bank_name).click()
-    self(description="请输入转账金额").click()
-    amount = trans.amount.split()
-    for i in amount:
-        self(description=i).click()
-    self(description="2BsHuD1UCBrbmAAAAAElFTkSuQmCC").click()
+def put_code():
+    # y = None
+    # width = 0
+    button_height = 179
     self(description="下一步").click()
     self(description="确认").click()
-    status_api(trans.order_id, 1, "查询账户开户机构不成功。")
-    back_activity()
-    back_activity()
-    back_activity()
-    back_activity()
+    time.sleep(5)
+    info = self(resourceId="CFCA_KEYBOARD_0").info
+    print("-------------------------------->")
+    print(info)
+    x = info['bounds']['left']
+    y = info['bounds']['top']
+    width = int(info['bounds']['right'])
+    height = button_height * 4
+
+    def get_code():
+        self.screenshot("verification.jpg")
+        vc = VerificationCodeAbc(x, y, width, height)
+        code = list(str(vc.image_str()))
+        passwd = list(settings.bot.account.payment_pwd)
+        print("<----------------------keyboard_arr passwd_arr-------------------------->")
+        print(code)
+        print(passwd)
+        # three = None
+        # five = None
+        # for replace in code:
+        #     if replace == "3":
+        #         three = code.index(replace)
+        #     if replace == "5":
+        #         five = code.index(replace)
+        # code[three] = "5"
+        # code[five] = "3"
+        # print(code)
+        for i in passwd:
+            print("i", i)
+            for j in code:
+                print("j", j)
+                if i == j:
+                    print("match", j)
+                    key_inx = code.index(j)
+                    # button_width = width / 3
+                    # j = int(j)
+
+                    # def get_x(inx):
+                    #     print("inx", inx)
+                    #     if inx == 0 or inx == 3 or inx == 6:
+                    #         print("return 0")
+                    #         return button_width / 2
+                    #     if inx == 1 or inx == 4 or inx == 7:
+                    #         print("return 1")
+                    #         return button_width + (button_width / 2)
+                    #     if inx == 2 or inx == 5 or inx == 8:
+                    #         print("return 2")
+                    #         return (button_width * 2) + (button_width / 2)
+                    #
+                    # print("key_inx", key_inx)
+                    # if key_inx <= 2:
+                    #     jy = y + (button_height / 2)
+                    #     jx = get_x(key_inx)
+                    # if key_inx <= 5:
+                    #     jy = (y + button_height) + (button_height / 2)
+                    #     jx = get_x(key_inx)
+                    # if key_inx <= 8:
+                    #     jy = (y + (button_height * 2)) + (button_height / 2)
+                    #     jx = get_x(key_inx)
+                    # if key_inx == 9:
+                    #     jy = (y + (button_height * 3)) + (button_height / 2)
+                    #     jx = button_width + (button_width / 2)
+
+                    switcher = {
+                        0: [0.162, 0.76],
+                        1: [0.494, 0.758],
+                        2: [0.842, 0.766],
+                        3: [0.168, 0.827],
+                        4: [0.494, 0.825],
+                        5: [0.834, 0.825],
+                        6: [0.168, 0.884],
+                        7: [0.498, 0.893],
+                        8: [0.824, 0.89],
+                        9: [0.49, 0.949],
+                    }
+                    jxy = switcher.get(key_inx, "Invalid key")
+                    time.sleep(1)
+                    print("<----------------------jx jy-------------------------->")
+                    print(jxy[0])
+                    print(jxy[1])
+                    self.click(jxy[0], jxy[1])
+
+    get_code()
+    if self(resourceId="btn_cancel").exists(timeout=5):
+        self(resourceId="btn_cancel").click()
+        put_code()
+    elif self(resourceId="com.alipay.mobile.antui:id/message").exists(timeout=5):
+        self(resourceId="com.alipay.mobile.antui:id/ensure").click()
+        get_code()
+    else:
+        print("您已经转账成功了！")
+        status_api(trans.order_id, 0)
+        do_transaction()
+
+
+def input_form():
+    print("准备为您填充表单！")
+    time.sleep(5)
+    if self(text="请输入名称").exists(timeout=20):
+        self(text="请输入名称").click()
+        self.send_keys(trans.holder, clear=True)
+        self(text="请输入账号").click()
+        self.send_keys(trans.account, clear=True)
+        self.xpath('//android.webkit.WebView/android.view.View[8]/android.widget.Image[1]').click()
+        time.sleep(5)
+        self(description="收款银行").click()
+        print(trans.bank_name)
+        time.sleep(5)
+        # self.xpath('//*[@content-desc=%s]' % trans.bank_name).click()
+        self(description=trans.bank_name).click()
+        self(description="请输入转账金额").click()
+        for i in trans.amount:
+            self(description=i).click()
+        self(description="2BsHuD1UCBrbmAAAAAElFTkSuQmCC").click()
+        put_code()
+
+    # status_api(trans.order_id, 1, "查询账户开户机构不成功。")
+    # back_activity()
+    # back_activity()
+    # back_activity()
+    # back_activity()
 
 
 # def remove_float_win():
@@ -95,19 +205,26 @@ def input_form():
 
 def do_transfer(transferee):
     # if remove_float_win():
-    self(resourceId="inputBox").click()
-    self.send_keys("转账", clear=True)
-    time.sleep(2)
-    self(description="转账").click()
-    waitTransferHomeAct = change_activity("com.alipay.mobile.nebulacore.ui.H5Activity")
-    if waitTransferHomeAct:
-        trans.order_id = transferee.order_id
-        trans.amount = transferee.amount
-        trans.account = transferee.account
-        trans.holder = transferee.holder
-        trans.bank_name = transferee.bank_name
-        self.xpath('//android.webkit.WebView/android.view.View[1]/android.view.View[1]').click()
-    return input_form()
+    print(self(resourceId="com.android.bankabc:id/scrolltv").exists(timeout=10))
+    if self(resourceId="com.android.bankabc:id/scrolltv").exists(timeout=10):
+        self(resourceId="com.android.bankabc:id/scrolltv").click()
+        time.sleep(5)
+        self(resourceId="inputBox").click()
+        self(resourceId="inputBox", focused=True).set_text("转账")
+        # self.send_keys("转账", clear=True)
+        time.sleep(10)
+        print("come in")
+        self(description="转账").click()
+        waitTransferHomeAct = change_activity("com.alipay.mobile.nebulacore.ui.H5Activity")
+        if waitTransferHomeAct:
+            trans.order_id = transferee.order_id
+            trans.amount = transferee.amount
+            trans.account = transferee.account
+            trans.holder = transferee.holder
+            trans.bank_name = transferee.bank_name
+            self.xpath('//android.webkit.WebView/android.view.View[1]/android.view.View[1]').click()
+            login()
+        return input_form()
 
 
 def transfer(transferee):
@@ -139,24 +256,63 @@ def transaction_history():
 
 def do_transaction():
     self(resourceId="com.android.bankabc:id/rl_top_menu").click()
+    login()
     self.xpath('//android.widget.ListView/android.view.View[1]').click()
+    do_get_history()
 
 
-def do_get_history(i=1):
+def do_get_history():
     print("正在为您抓取流水记录！")
     transaction_list = []
-    for el in self.xpath('//android.webkit.WebView/android.view.View[3]/android.view.View').all():
-        print(el.elem)  # 输出lxml解析出来的Node
-        print(el.description)
-    # transaction_list.append(
-    #     Transaction(trans_time=trans_time, trans_type=trans_type, amount=amount, balance=balance,
-    #                 postscript=postscript, account=account.split(" ")[1], summary=summary))
+    time.sleep(10)
+    last = self.xpath('//android.webkit.WebView/android.view.View[4]/android.view.View').all()
+    trans_time = ""
+    trans_type = ""
+    amount = ""
+    balance = ""
+    postscript = ""
+    summary = ""
+    account = ""
+    for el in last:
+        if el.attrib['index'] == "1":
+            print("amount:", el.attrib['content-desc'])
+            amount = el.attrib['content-desc'].split("交易金额")[1]
+
+        if el.attrib['index'] == "3":
+            print("time:", el.attrib['content-desc'])
+            trans_time = el.attrib['content-desc']
+
+        if el.attrib['index'] == "10":
+            print("summary:", el.attrib['content-desc'])
+            if el.attrib['content-desc'].strip() == "转账":
+                trans_type = 0
+            else:
+                trans_type = 1
+
+        if el.attrib['index'] == "12":
+            print("account:", el.attrib['content-desc'])
+            account = el.attrib['content-desc']
+
+        if el.attrib['index'] == "6":
+            print("summary:", el.attrib['content-desc'])
+            summary = el.attrib['content-desc']
+
+        if el.attrib['index'] == "27":
+            print("postscript:", el.attrib['content-desc'])
+            postscript = el.attrib['content-desc']
+
+        if el.attrib['index'] == "24":
+            print("balance:", el.attrib['content-desc'])
+            balance = el.attrib['content-desc']
+
+    transaction_list.append(
+        Transaction(trans_time=trans_time, trans_type=trans_type, amount=amount, balance=balance,
+                    postscript=postscript, account=account, summary=summary))
     print("------------------------------")
-    # trans_api(settings.bot.account.alias, "0", transaction_list)
+    trans_api(settings.bot.account.alias, "0", transaction_list)
     print("------------------------------")
-    # back_activity()
-    # back_activity()
-    # back_activity()
+    back_activity()
+    back_activity()
     return transaction_list
 
 
@@ -207,58 +363,17 @@ def toast_msg(msg):
 
 
 def post_sms(sms):
-    # if self(resourceId="com.chinamworld.main:id/et_code").exists(timeout=5):
-    #     self(resourceId="com.chinamworld.main:id/et_code").click()
-    # else:
-    #     return False
-    # self.send_keys(sms, clear=True)
-    # self(resourceId="com.chinamworld.main:id/btn_confirm").click()
-    # if self(text="收款账户").exists(timeout=120):
-    #     status_api(trans.order_id, 0)
-    #     time.sleep(10)
-    #     success()
-    #     print("您已经转账成功了！")
-    #     do_transaction()
-    #     return False
-    # else:
-    #     false_msg("短信超时")
-    #     print("您已经转账超时了！正在为您返回首页！")
-    #     close_win()
-    #     back_activity()
-    #     back_activity()
     return False
-    # elif self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=60):
-    #
-    #     def put_code():
-    #
-    #         def get_code():
-    #             time.sleep(1)
-    #             self(resourceId="com.chinamworld.main:id/native_graph_iv").click()
-    #             time.sleep(1)
-    #             info = self(resourceId="com.chinamworld.main:id/native_graph_iv").info
-    #             x = info['bounds']['left']
-    #             y = info['bounds']['top']
-    #             self.screenshot("verification.jpg")
-    #             vc = VerificationCode(x, y, 313, 165)
-    #             return vc.image_str()
-    #
-    #         code = get_code()
-    #         while code == "":
-    #             time.sleep(3)
-    #             code = get_code()
-    #         print(code)
-    #         time.sleep(2)
-    #         self(resourceId="com.chinamworld.main:id/native_graph_et").click()
-    #         self(resourceId="com.chinamworld.main:id/default_row_two_1").click()
-    #         self.send_keys(code, clear=True)
-    #         time.sleep(2)
-    #         self(resourceId="com.chinamworld.main:id/et_code").click()
-    #         self.send_keys(settings.bot.account.payment_pwd, clear=True)
-    #
-    #         if self(resourceId="com.chinamworld.main:id/btn_confirm").click_gone(maxretry=10, interval=1.0):
-    #             success()
-    #             return False
-    #         else:
-    #             put_code()
 
-    # put_code()
+# if __name__ == '__main__':
+# t = Transferee("2232e", "1", "6217003360014105927", "张家将", "abc")
+# account = Account(alias="2232e", login_name="1141235413", login_pwd="aa168168",
+#                   payment_pwd="168168")
+# settings.bot = Bot(serial_no="RR8M90JGAXR", bank="ABC", account="6228413164520093275")
+# self = settings.bot.device = u2.connect('RR8M90JGAXR')
+# start()
+# transfer(t)
+# os.popen("rm ui.xml")
+# xml = self.dump_hierarchy()
+# file = open("ui.xml", "a")
+# file.write(xml)
