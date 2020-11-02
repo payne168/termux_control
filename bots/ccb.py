@@ -96,10 +96,9 @@ def input_form():
                     if self(resourceId="com.chinamworld.main:id/dlg_right_tv").exists(timeout=10):
                         self(resourceId="com.chinamworld.main:id/dlg_right_tv").click()
                         if self(resourceId="com.chinamworld.main:id/et_code").exists(timeout=5):
-                            return True
+                            print("等待验证码")
                         else:
                             self(resourceId="com.chinamworld.main:id/btn_right1").click()
-                            return True
 
                     elif self(resourceId="com.chinamworld.main:id/tv_dlg_content").exists(timeout=10):
                         self.xpath('//android.widget.FrameLayout[1]/android.widget.LinearLayout['
@@ -110,7 +109,6 @@ def input_form():
                         back_activity()
                         print("go back ----->")
                         status_api(trans.order_id, 1, "查询账户开户机构不成功。")
-                        return False
 
 
 def remove_float_win():
@@ -124,17 +122,18 @@ def remove_float_win():
 
 def do_transfer(transferee):
     if remove_float_win():
-        self(resourceId="com.chinamworld.main:id/main_home_smart_transfer").click()
-        waitTransferHomeAct = change_activity("com.ccb.transfer.transfer_home.view.TransferHomeAct")
-        if waitTransferHomeAct:
-            trans.order_id = transferee.order_id
-            trans.amount = transferee.amount
-            trans.account = transferee.account
-            trans.holder = transferee.holder
-            trans.bank_name = transferee.bank_name
-            self.xpath(
-                '//*[@resource-id="com.chinamworld.main:id/grid_function"]/android.widget.LinearLayout[1]').click()
-    return input_form()
+        if self(resourceId="com.chinamworld.main:id/main_home_smart_transfer").exists(timeout=20):
+            self(resourceId="com.chinamworld.main:id/main_home_smart_transfer").click()
+            waitTransferHomeAct = change_activity("com.ccb.transfer.transfer_home.view.TransferHomeAct")
+            if waitTransferHomeAct:
+                trans.order_id = transferee.order_id
+                trans.amount = transferee.amount
+                trans.account = transferee.account
+                trans.holder = transferee.holder
+                trans.bank_name = transferee.bank_name
+                self.xpath(
+                    '//*[@resource-id="com.chinamworld.main:id/grid_function"]/android.widget.LinearLayout[1]').click()
+    input_form()
 
 
 def transfer(transferee):
@@ -147,7 +146,6 @@ def transfer(transferee):
 
     if remove_float_win():
         do_trans()
-    return True
 
 
 def transaction_history():
@@ -313,12 +311,12 @@ def toast_msg(msg):
 def post_sms(sms):
     if self(resourceId="com.chinamworld.main:id/et_code").exists(timeout=5):
         self(resourceId="com.chinamworld.main:id/et_code").click()
-    else:
-        return False
     self.send_keys(sms, clear=True)
     self(resourceId="com.chinamworld.main:id/btn_confirm").click()
+    print("支付最后一步")
+    print(self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=5))
     if self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=5):
-
+        print("开始识别验证码了")
         def put_code():
 
             def get_code():
@@ -347,18 +345,16 @@ def post_sms(sms):
 
             if self(resourceId="com.chinamworld.main:id/btn_confirm").click_gone(maxretry=10, interval=1.0):
                 success()
-                return False
             else:
                 put_code()
 
         put_code()
-    if self(text="收款账户").exists(timeout=120):
+    elif self(text="收款账户").exists(timeout=10):
         status_api(trans.order_id, 0)
         time.sleep(10)
         success()
         print("您已经转账成功了！")
         do_transaction()
-        return False
 
     else:
         false_msg("短信超时")
@@ -366,5 +362,4 @@ def post_sms(sms):
         close_win()
         back_activity()
         back_activity()
-        return False
 

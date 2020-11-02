@@ -19,7 +19,7 @@ class BotFactory:
         status(settings.bot.serial_no, Status.RUNNING.value)
         self.works_list = []
         self.alive = True
-        self.wait_trans = False
+        # self.wait_trans = False
         self.trans_process = False
         self.wait_msg = True
 
@@ -27,14 +27,15 @@ class BotFactory:
         while self.alive:
             time.sleep(10)
             status(settings.bot.serial_no, Status.RUNNING.value)
-            print(self.wait_trans)
-            if not self.wait_trans:
-                if len(self.works_list) > 0:
-                    print("正在为您执行转账任务，请耐心等待...")
-                    self.wait_trans = self.cast_do_transfer(self.works_list.pop(0))
-                else:
-                    print("正在为您执行流水查询任务，请耐心等待...")
-                    self.cast_transaction_history()
+            for work in self.works_list:
+                print(work)
+            # if not self.wait_trans:
+            if len(self.works_list) > 0:
+                print("正在为您执行转账任务，请耐心等待...")
+                self.cast_do_transfer(self.works_list.pop(0))
+            else:
+                print("正在为您执行流水查询任务，请耐心等待...")
+                self.cast_transaction_history()
             # times = 0
             # count = 0
             # else:
@@ -63,9 +64,9 @@ class BotFactory:
                 print('app出错了')
                 return False
             else:
-                return self.bank.transfer(trans)
+                self.bank.transfer(trans)
         else:
-            return self.bank.do_transfer(trans)
+            self.bank.do_transfer(trans)
 
     def cast_transaction_history(self):
         if settings.bot.pid == 0:
@@ -79,8 +80,7 @@ class BotFactory:
 
     def cast_post_sms(self, params):
         print("已经收到短信，准备为您填充手机验证码")
-        self.wait_trans = self.bank.post_sms(params)
-        return self.wait_trans
+        self.bank.post_sms(params)
 
     def cast_stop(self):
         self.alive = False
