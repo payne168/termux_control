@@ -311,6 +311,8 @@ def toast_msg(msg):
 def post_sms(sms):
     if self(resourceId="com.chinamworld.main:id/et_code").exists(timeout=5):
         self(resourceId="com.chinamworld.main:id/et_code").click()
+    else:
+        return
     self.send_keys(sms, clear=True)
     self(resourceId="com.chinamworld.main:id/btn_confirm").click()
     print("支付最后一步")
