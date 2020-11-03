@@ -65,7 +65,7 @@ def back_activity():
         login()
     else:
         print("无登录页，执行回退！")
-        self(resourceId="com.chinamworld.main:id/ccb_title_left_btn").click()
+        self.press("back")
 
 
 def input_form():
@@ -263,7 +263,7 @@ def do_get_history(i=1):
 
 
 def success():
-    self(resourceId="com.chinamworld.main:id/title_right_view_container").click()
+    back_activity()
     self(resourceId="com.chinamworld.main:id/ccb_title_left_btn").click()
     if self(resourceId="com.chinamworld.main:id/totalMoney").exists(timeout=120):
         settings.bot.account.currency = self(resourceId="com.chinamworld.main:id/totalMoney").get_text()
