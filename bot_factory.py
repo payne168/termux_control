@@ -33,9 +33,9 @@ class BotFactory:
             if len(self.works_list) > 0:
                 print("正在为您执行转账任务，请耐心等待...")
                 self.cast_do_transfer(self.works_list.pop(0))
-            else:
-                print("正在为您执行流水查询任务，请耐心等待...")
-                self.cast_transaction_history()
+            # else:
+            #     print("正在为您执行流水查询任务，请耐心等待...")
+            #     self.cast_transaction_history()
             # times = 0
             # count = 0
             # else:
@@ -68,15 +68,15 @@ class BotFactory:
         else:
             self.bank.do_transfer(trans)
 
-    def cast_transaction_history(self):
-        if settings.bot.pid == 0:
-            settings.bot.pid = self.bank.start()
-            if not settings.bot.pid:
-                print('app没有打开')
-            else:
-                self.bank.transaction_history()
-        else:
-            self.bank.do_transaction()
+    # def cast_transaction_history(self):
+    #     if settings.bot.pid == 0:
+    #         settings.bot.pid = self.bank.start()
+    #         if not settings.bot.pid:
+    #             print('app没有打开')
+    #         else:
+    #             self.bank.transaction_history()
+    #     else:
+    #         self.bank.do_transaction()
 
     def cast_post_sms(self, params):
         print("已经收到短信，准备为您填充手机验证码")

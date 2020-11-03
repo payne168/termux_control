@@ -328,6 +328,7 @@ def post_sms(sms):
                 info = self(resourceId="com.chinamworld.main:id/native_graph_iv").info
                 x = info['bounds']['left']
                 y = info['bounds']['top']
+                time.sleep(2)
                 self.screenshot("verification.jpg")
                 vc = VerificationCodeCcb(x, y, 313, 165)
                 return vc.image_str()
@@ -339,6 +340,7 @@ def post_sms(sms):
             print(code)
             time.sleep(2)
             self(resourceId="com.chinamworld.main:id/native_graph_et").click()
+            time.sleep(2)
             self(resourceId="com.chinamworld.main:id/default_row_two_1").click()
             self.send_keys(code, clear=True)
             time.sleep(2)
