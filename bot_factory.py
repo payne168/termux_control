@@ -68,15 +68,15 @@ class BotFactory:
         else:
             self.bank.do_transfer(trans)
 
-    # def cast_transaction_history(self):
-    #     if settings.bot.pid == 0:
-    #         settings.bot.pid = self.bank.start()
-    #         if not settings.bot.pid:
-    #             print('app没有打开')
-    #         else:
-    #             self.bank.transaction_history()
-    #     else:
-    #         self.bank.do_transaction()
+    def cast_transaction_history(self):
+        if settings.bot.pid == 0:
+            settings.bot.pid = self.bank.start()
+            if not settings.bot.pid:
+                print('app没有打开')
+            else:
+                self.bank.transaction_history()
+        else:
+            self.bank.do_transaction()
 
     def cast_post_sms(self, params):
         print("已经收到短信，准备为您填充手机验证码")
