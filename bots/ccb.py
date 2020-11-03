@@ -359,7 +359,7 @@ def post_sms(sms):
         time.sleep(20)
         success()
         print("您已经转账成功了！")
-        do_transaction()
+        # do_transaction()
 
     else:
         false_msg("短信超时")
