@@ -69,6 +69,7 @@ def start():
             return {'code': 1, 'msg': '获取银行卡信息失败'}
 
         convert(data=res['data'])
+        print(res['data'])
         bot_factory = BotFactory()
         bot_util.cast_transfer = bot_factory.cast_transfer
         bot_util.cast_transaction_history = bot_factory.cast_transaction_history
