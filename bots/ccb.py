@@ -223,7 +223,7 @@ def do_get_history(i=1):
                     '%s]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout['
                     '1]/android.widget.RelativeLayout[3]/android.widget.TextView[2]' % i).get_text()
 
-        time.sleep(10)
+        time.sleep(20)
         self.xpath('//*[@resource-id="com.chinamworld.main:id/detail_list"]/android.widget.LinearLayout['
                    '%s]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.RelativeLayout['
                    '1]/android.widget.ToggleButton[1]' % i).click()
