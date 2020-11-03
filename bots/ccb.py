@@ -346,6 +346,7 @@ def post_sms(sms):
             self.send_keys(settings.bot.account.payment_pwd, clear=True)
 
             if self(resourceId="com.chinamworld.main:id/btn_confirm").click_gone(maxretry=10, interval=1.0):
+                time.sleep(10)
                 success()
             else:
                 put_code()
@@ -353,7 +354,7 @@ def post_sms(sms):
         put_code()
     elif self(text="收款账户").exists(timeout=10):
         status_api(trans.order_id, 0)
-        time.sleep(10)
+        time.sleep(20)
         success()
         print("您已经转账成功了！")
         do_transaction()
