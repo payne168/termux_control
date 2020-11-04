@@ -62,5 +62,8 @@ if __name__ == '__main__':
     print(parse_sms('序号03的验证码468134，您向汪仙尾号3275账户转账1.0元。任何索要验证码的都是骗子，千万别给！[建设银行]'))
     ccb_expenditure = '您尾号0333的储蓄卡10月21日15时50分向李文聪转账支取支出人民币5.00元,活期余额20.50元。[建设银行]'
     ccb_income = '李文聪10月21日16时58分向您尾号0333的储蓄卡转账存入人民币1.00元,活期余额21.50元。[建设银行]'
+    ccb_span_expenditure = '您尾号0333的储蓄卡11月4日15时59分向李瑶恒跨行转出支出人民币1.00元,活期余额19.50元。[建设银行]'
     # print(parse_sms('您尾号8540的储蓄卡10月21日17时21分向林美娣转账支取支出人民币1.00元,活期余额11.50元。[建设银行]'))
-    print(parse_sms(ccb_income))
+    # print(parse_sms(ccb_income))
+    print(parse_sms(ccb_span_expenditure))
+    print(parse_sms(ccb_expenditure))

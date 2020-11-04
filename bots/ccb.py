@@ -316,8 +316,8 @@ def post_sms(sms):
     self.send_keys(sms, clear=True)
     self(resourceId="com.chinamworld.main:id/btn_confirm").click()
     print("支付最后一步")
-    print(self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=5))
-    if self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=5):
+    # print(self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=5))
+    if self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=20):
         print("开始识别验证码了")
         def put_code():
 
