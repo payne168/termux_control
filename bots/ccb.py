@@ -343,12 +343,12 @@ def post_sms(sms):
             time.sleep(2)
             self(resourceId="com.chinamworld.main:id/default_row_two_1").click()
             self.send_keys(code, clear=True)
-            time.sleep(10)
+            time.sleep(2)
             self(resourceId="com.chinamworld.main:id/et_code").click()
             self.send_keys(settings.bot.account.payment_pwd, clear=True)
-            time.sleep(10)
+            time.sleep(2)
             if self(resourceId="com.chinamworld.main:id/btn_confirm").click_gone(maxretry=10, interval=1.0):
-                time.sleep(10)
+                time.sleep(2)
                 success()
             else:
                 put_code()
