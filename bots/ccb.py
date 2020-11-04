@@ -349,7 +349,7 @@ def post_sms(sms):
             self(resourceId="com.chinamworld.main:id/default_row_two_1").click()
             self.send_keys(code, clear=True)
             time.sleep(5)
-            if self(resourceId="com.chinamworld.main:id/btn_confirm").click_gone(maxretry=10, interval=1.0):
+            if self(resourceId="com.chinamworld.main:id/btn_confirm").click_gone(maxretry=5, interval=1.0):
                 # time.sleep(2)
                 success()
             else:
