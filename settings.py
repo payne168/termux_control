@@ -4,7 +4,7 @@ import os
 
 conf_file = 'config.json'
 bot = None
-post_msg_already = False
+post_sms_already = False
 
 with open('../device_id.txt') as fd:
     serial_no = fd.readline().strip()
