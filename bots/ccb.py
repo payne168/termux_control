@@ -308,7 +308,12 @@ def toast_msg(msg):
     self.toast.show(msg)
 
 
+already_sms = False
+
+
 def post_sms(sms):
+    if not settings.bot.post_sms_already:
+        return
     if self(resourceId="com.chinamworld.main:id/et_code").exists(timeout=5):
         self(resourceId="com.chinamworld.main:id/et_code").click()
     else:
@@ -316,9 +321,11 @@ def post_sms(sms):
     self.send_keys(sms, clear=True)
     self(resourceId="com.chinamworld.main:id/btn_confirm").click()
     print("支付最后一步")
+    settings.bot.post_sms_already = True
     # print(self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=5))
     if self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=20):
         print("开始识别验证码了")
+
         def put_code():
             if self(resourceId="com.chinamworld.main:id/et_code").exists(timeout=5):
                 print("com.chinamworld.main:id/et_code")
@@ -327,7 +334,6 @@ def post_sms(sms):
                     self(resourceId="com.chinamworld.main:id/et_code").click()
                     print("settings.bot.account.payment_pwd")
                     print(settings.bot.account.payment_pwd)
-                    self.send_keys(settings.bot.account.payment_pwd, clear=True)
                     self.send_keys(settings.bot.account.payment_pwd, clear=True)
                     time.sleep(5)
 
@@ -367,6 +373,7 @@ def post_sms(sms):
         success()
         print("您已经转账成功了！")
         # do_transaction()
+        settings.bot.post_sms_already = False
 
     else:
         false_msg("短信超时")
@@ -374,4 +381,4 @@ def post_sms(sms):
         close_win()
         back_activity()
         back_activity()
-
+        settings.bot.post_sms_already = False
