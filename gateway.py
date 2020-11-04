@@ -171,6 +171,8 @@ def sms():
             except:
                 logger.exception('上报流水网络异常')
                 return {'code': 1, 'msg': '上报流水网络异常'}
+        else:
+            return {'code': 0, 'msg': '非银行短信，已忽略'}
 
 
 def load_config():
