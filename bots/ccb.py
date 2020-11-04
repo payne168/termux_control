@@ -328,14 +328,11 @@ def post_sms(sms):
 
         def put_code():
             if self(resourceId="com.chinamworld.main:id/et_code").exists(timeout=5):
-                print("com.chinamworld.main:id/et_code")
-                print(self(resourceId="com.chinamworld.main:id/et_code").get_text())
-                if self(resourceId="com.chinamworld.main:id/et_code").get_text().strip() == "":
-                    self(resourceId="com.chinamworld.main:id/et_code").click()
-                    print("settings.bot.account.payment_pwd")
-                    print(settings.bot.account.payment_pwd)
-                    self.send_keys(settings.bot.account.payment_pwd, clear=True)
-                    time.sleep(5)
+                self(resourceId="com.chinamworld.main:id/et_code").click()
+                print("settings.bot.account.payment_pwd")
+                print(settings.bot.account.payment_pwd)
+                self.send_keys(settings.bot.account.payment_pwd, clear=True)
+                time.sleep(5)
 
             def get_code():
                 # time.sleep(1)
