@@ -322,7 +322,9 @@ def post_sms(sms):
         def put_code():
             if self(resourceId="com.chinamworld.main:id/et_code").get_text().strip() == "":
                 self(resourceId="com.chinamworld.main:id/et_code").click()
-                self.send_keys("", clear=True)
+                print("settings.bot.account.payment_pwd")
+                print(settings.bot.account.payment_pwd)
+                self.send_keys(settings.bot.account.payment_pwd, clear=True)
                 self.send_keys(settings.bot.account.payment_pwd, clear=True)
                 time.sleep(5)
 
