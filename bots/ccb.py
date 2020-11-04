@@ -341,20 +341,20 @@ def post_sms(sms):
             # time.sleep(2)
             self(resourceId="com.chinamworld.main:id/native_graph_et").click()
             # time.sleep(2)
-            self(resourceId="com.chinamworld.main:id/default_row_two_1").click()
-            # self.send_keys(code, clear=True)
-            self.send_keys("", clear=True)
-            for i in code:
-                time.sleep(1)
-                self(text=i).click()
-            # time.sleep(2)
+            # self(resourceId="com.chinamworld.main:id/default_row_two_1").click()
+            self.send_keys(code, clear=True)
+
+            # for i in code:
+            #     time.sleep(1)
+            #     self(text=i).click()
+            time.sleep(2)
             self(resourceId="com.chinamworld.main:id/et_code").click()
-            # self.send_keys(settings.bot.account.payment_pwd, clear=True)
-            self.send_keys("", clear=True)
-            for i in settings.bot.account.payment_pw:
-                time.sleep(1)
-                self(text=i).click()
-            # time.sleep(2)
+            self.send_keys(settings.bot.account.payment_pwd, clear=True)
+
+            # for i in settings.bot.account.payment_pw:
+            #     time.sleep(1)
+            #     self(text=i).click()
+            time.sleep(2)
             if self(resourceId="com.chinamworld.main:id/btn_confirm").click_gone(maxretry=10, interval=1.0):
                 # time.sleep(2)
                 success()
