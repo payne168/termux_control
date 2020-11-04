@@ -320,6 +320,10 @@ def post_sms(sms):
     if self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=20):
         print("开始识别验证码了")
         def put_code():
+            if self(resourceId="com.chinamworld.main:id/et_code").get_text().strip() == "":
+                self(resourceId="com.chinamworld.main:id/et_code").click()
+                self.send_keys(settings.bot.account.payment_pwd, clear=True)
+                time.sleep(5)
 
             def get_code():
                 # time.sleep(1)
@@ -339,10 +343,6 @@ def post_sms(sms):
                 code = get_code()
             print(code)
             # time.sleep(2)
-            if self(resourceId="com.chinamworld.main:id/et_code").get_text().strip() == "":
-                self(resourceId="com.chinamworld.main:id/et_code").click()
-                self.send_keys(settings.bot.account.payment_pwd, clear=True)
-                time.sleep(5)
             self(resourceId="com.chinamworld.main:id/native_graph_et").click()
             # time.sleep(2)
             self(resourceId="com.chinamworld.main:id/default_row_two_1").click()
