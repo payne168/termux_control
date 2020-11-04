@@ -312,7 +312,7 @@ already_sms = False
 
 
 def post_sms(sms):
-    if not settings.bot.post_sms_already:
+    if not settings.post_sms_already:
         return
     if self(resourceId="com.chinamworld.main:id/et_code").exists(timeout=5):
         self(resourceId="com.chinamworld.main:id/et_code").click()
@@ -321,7 +321,7 @@ def post_sms(sms):
     self.send_keys(sms, clear=True)
     self(resourceId="com.chinamworld.main:id/btn_confirm").click()
     print("支付最后一步")
-    settings.bot.post_sms_already = True
+    settings.post_sms_already = True
     # print(self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=5))
     if self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=20):
         print("开始识别验证码了")
