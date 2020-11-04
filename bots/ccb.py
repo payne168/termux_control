@@ -339,7 +339,7 @@ def post_sms(sms):
                 code = get_code()
             print(code)
             # time.sleep(2)
-            if self(resourceId="com.chinamworld.main:id/et_code").get_text() == "":
+            if self(resourceId="com.chinamworld.main:id/et_code").get_text().strip() == "":
                 self(resourceId="com.chinamworld.main:id/et_code").click()
                 self.send_keys(settings.bot.account.payment_pwd, clear=True)
                 time.sleep(5)
