@@ -312,7 +312,7 @@ already_sms = False
 
 
 def post_sms(sms):
-    if not settings.post_sms_already:
+    if settings.post_sms_already:
         return
     if self(resourceId="com.chinamworld.main:id/et_code").exists(timeout=5):
         self(resourceId="com.chinamworld.main:id/et_code").click()
