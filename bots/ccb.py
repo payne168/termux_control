@@ -335,17 +335,17 @@ def post_sms(sms):
                 self.send_keys(settings.bot.account.payment_pwd, clear=True)
                 time.sleep(5)
 
+                i = 0
+
             def get_code():
-                # time.sleep(1)
                 if self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=20):
                     self(resourceId="com.chinamworld.main:id/native_graph_iv").click()
-                    # time.sleep(1)
                     info = self(resourceId="com.chinamworld.main:id/native_graph_iv").info
                     x = info['bounds']['left']
                     y = info['bounds']['top']
-                    # time.sleep(2)
-                    self.screenshot("verification.jpg")
-                    vc = VerificationCodeCcb(x, y, 313, 165)
+                    img = "verification%s.jpg" % i
+                    self.screenshot(img)
+                    vc = VerificationCodeCcb(x, y, 313, 165, img)
                     return vc.image_str()
 
             code = get_code()
@@ -353,11 +353,11 @@ def post_sms(sms):
                 time.sleep(3)
                 code = get_code()
             print(code)
-            # time.sleep(2)
             self(resourceId="com.chinamworld.main:id/native_graph_et").click()
-            # time.sleep(2)
             self(resourceId="com.chinamworld.main:id/default_row_two_1").click()
-            self.send_keys(code, clear=True)
+
+            # self.send_keys(code, clear=True)
+
             time.sleep(5)
             if self(resourceId="com.chinamworld.main:id/btn_confirm").click_gone(maxretry=5, interval=1.0):
                 # time.sleep(2)
