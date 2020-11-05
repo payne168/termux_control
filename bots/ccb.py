@@ -26,6 +26,7 @@ self = settings.bot.device
 def start():
     self.screen_on()
     self.app_start(package)
+    remove_float_win()
     return self.app_wait(package)  # 等待应用运行, return pid(int)
 
 
