@@ -336,15 +336,16 @@ def post_sms(sms):
 
             def get_code():
                 # time.sleep(1)
-                self(resourceId="com.chinamworld.main:id/native_graph_iv").click()
-                # time.sleep(1)
-                info = self(resourceId="com.chinamworld.main:id/native_graph_iv").info
-                x = info['bounds']['left']
-                y = info['bounds']['top']
-                # time.sleep(2)
-                self.screenshot("verification.jpg")
-                vc = VerificationCodeCcb(x, y, 313, 165)
-                return vc.image_str()
+                if self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=20):
+                    self(resourceId="com.chinamworld.main:id/native_graph_iv").click()
+                    # time.sleep(1)
+                    info = self(resourceId="com.chinamworld.main:id/native_graph_iv").info
+                    x = info['bounds']['left']
+                    y = info['bounds']['top']
+                    # time.sleep(2)
+                    self.screenshot("verification.jpg")
+                    vc = VerificationCodeCcb(x, y, 313, 165)
+                    return vc.image_str()
 
             code = get_code()
             while code == "":
