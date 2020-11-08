@@ -202,6 +202,9 @@ def input_form():
 #     else:
 #         return True
 
+def remove_float_win():
+    return True
+
 
 def do_transfer(transferee):
     # if remove_float_win():

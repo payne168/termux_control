@@ -80,7 +80,7 @@ class VerificationCodeCcb:
     def image_str(self):
         image = self.delete_spot()
         # pytesseract.pytesseract.tesseract_cmd = r"/usr/local/bin/tesseract"  # 设置pyteseract路径
-        result = pytesseract.image_to_string(image, lang='eng', config="--psm 6 --tessdata-dir bots/verification/tessdata")  # 图片转文字
+        result = pytesseract.image_to_string(image, lang='engnum', config="--psm 10 --tessdata-dir bots/verification/tessdata")  # 图片转文字
         # result = pytesseract.image_to_string(image, lang='eng', config="--psm 6 --tessdata-dir /tessdata")
         print(result)
         results = re.sub(u"([^\u4e00-\u9fa5\u0030-\u0039\u0041-\u005a\u0061-\u007a])", "", result)  # 去除识别出来的特殊字符

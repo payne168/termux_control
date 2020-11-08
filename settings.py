@@ -6,6 +6,8 @@ conf_file = 'config.json'
 bot = None
 post_sms_already = False
 
+count = 0
+
 with open('../device_id.txt') as fd:
     serial_no = fd.readline().strip()
 

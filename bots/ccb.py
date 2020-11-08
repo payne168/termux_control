@@ -26,7 +26,6 @@ self = settings.bot.device
 def start():
     self.screen_on()
     self.app_start(package)
-    remove_float_win()
     return self.app_wait(package)  # 等待应用运行, return pid(int)
 
 
@@ -335,30 +334,30 @@ def post_sms(sms):
                 self.send_keys(settings.bot.account.payment_pwd, clear=True)
                 time.sleep(5)
 
-                i = 0
-
             def get_code():
                 if self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=20):
                     self(resourceId="com.chinamworld.main:id/native_graph_iv").click()
                     info = self(resourceId="com.chinamworld.main:id/native_graph_iv").info
                     x = info['bounds']['left']
                     y = info['bounds']['top']
-                    img = "verification%s.jpg" % i
+                    img = "verification%s.jpg"
                     self.screenshot(img)
                     vc = VerificationCodeCcb(x, y, 313, 165, img)
+
                     return vc.image_str()
 
             code = get_code()
             while code == "":
                 time.sleep(3)
+                # settings.count += 1
                 code = get_code()
             print(code)
+
             self(resourceId="com.chinamworld.main:id/native_graph_et").click()
             self(resourceId="com.chinamworld.main:id/default_row_two_1").click()
+            self.send_keys(code, clear=True)
+            # time.sleep(5)
 
-            # self.send_keys(code, clear=True)
-
-            time.sleep(5)
             if self(resourceId="com.chinamworld.main:id/btn_confirm").click_gone(maxretry=5, interval=1.0):
                 # time.sleep(2)
                 success()

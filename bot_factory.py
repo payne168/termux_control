@@ -24,6 +24,7 @@ class BotFactory:
         self.wait_msg = True
 
     def do_works(self):
+        self.bank.remove_float_win()
         while self.alive:
             time.sleep(10)
             status(settings.bot.serial_no, Status.RUNNING.value)
