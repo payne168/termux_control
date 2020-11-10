@@ -81,85 +81,51 @@ def put_code():
     height = button_height * 4
 
     def get_code():
-        self.screenshot("verification.jpg")
-        vc = VerificationCodeAbc(x, y, width, height)
+        img = "verification%s.jpg" % settings.count
+        self.screenshot(img)
+        vc = VerificationCodeAbc(x, y, width, height, img)
         code = list(str(vc.image_str()))
         passwd = list(settings.bot.account.payment_pwd)
         print("<----------------------keyboard_arr passwd_arr-------------------------->")
         print(code)
         print(passwd)
-        # three = None
-        # five = None
-        # for replace in code:
-        #     if replace == "3":
-        #         three = code.index(replace)
-        #     if replace == "5":
-        #         five = code.index(replace)
-        # code[three] = "5"
-        # code[five] = "3"
-        # print(code)
-        for i in passwd:
-            print("i", i)
-            for j in code:
-                print("j", j)
-                if i == j:
-                    print("match", j)
-                    key_inx = code.index(j)
-                    # button_width = width / 3
-                    # j = int(j)
+        settings.count += 1
+        print(settings.count)
+        # for i in passwd:
+        #     print("i", i)
+        #     for j in code:
+        #         print("j", j)
+        #         if i == j:
+        #             print("match", j)
+        #             key_inx = code.index(j)
 
-                    # def get_x(inx):
-                    #     print("inx", inx)
-                    #     if inx == 0 or inx == 3 or inx == 6:
-                    #         print("return 0")
-                    #         return button_width / 2
-                    #     if inx == 1 or inx == 4 or inx == 7:
-                    #         print("return 1")
-                    #         return button_width + (button_width / 2)
-                    #     if inx == 2 or inx == 5 or inx == 8:
-                    #         print("return 2")
-                    #         return (button_width * 2) + (button_width / 2)
-                    #
-                    # print("key_inx", key_inx)
-                    # if key_inx <= 2:
-                    #     jy = y + (button_height / 2)
-                    #     jx = get_x(key_inx)
-                    # if key_inx <= 5:
-                    #     jy = (y + button_height) + (button_height / 2)
-                    #     jx = get_x(key_inx)
-                    # if key_inx <= 8:
-                    #     jy = (y + (button_height * 2)) + (button_height / 2)
-                    #     jx = get_x(key_inx)
-                    # if key_inx == 9:
-                    #     jy = (y + (button_height * 3)) + (button_height / 2)
-                    #     jx = button_width + (button_width / 2)
-
-                    switcher = {
-                        0: [0.162, 0.76],
-                        1: [0.494, 0.758],
-                        2: [0.842, 0.766],
-                        3: [0.168, 0.827],
-                        4: [0.494, 0.825],
-                        5: [0.834, 0.825],
-                        6: [0.168, 0.884],
-                        7: [0.498, 0.893],
-                        8: [0.824, 0.89],
-                        9: [0.49, 0.949],
-                    }
-                    jxy = switcher.get(key_inx, "Invalid key")
-                    time.sleep(1)
-                    print("<----------------------jx jy-------------------------->")
-                    print(jxy[0])
-                    print(jxy[1])
-                    self.click(jxy[0], jxy[1])
+        # switcher = {
+        #     0: [0.162, 0.76],
+        #     1: [0.494, 0.758],
+        #     2: [0.842, 0.766],
+        #     3: [0.168, 0.827],
+        #     4: [0.494, 0.825],
+        #     5: [0.834, 0.825],
+        #     6: [0.168, 0.884],
+        #     7: [0.498, 0.893],
+        #     8: [0.824, 0.89],
+        #     9: [0.49, 0.949],
+        # }
+        # jxy = switcher.get(key_inx, "Invalid key")
+        # time.sleep(1)
+        # print("<----------------------jx jy-------------------------->")
+        # print(jxy[0])
+        # print(jxy[1])
+        # self.click(jxy[0], jxy[1])
 
     get_code()
     if self(resourceId="btn_cancel").exists(timeout=5):
         self(resourceId="btn_cancel").click()
-        put_code()
-    elif self(resourceId="com.alipay.mobile.antui:id/message").exists(timeout=5):
-        self(resourceId="com.alipay.mobile.antui:id/ensure").click()
+        # put_code()
         get_code()
+    # elif self(resourceId="com.alipay.mobile.antui:id/message").exists(timeout=5):
+    #     self(resourceId="com.alipay.mobile.antui:id/ensure").click()
+    #     get_code()
     else:
         print("您已经转账成功了！")
         status_api(trans.order_id, 0)
@@ -193,14 +159,6 @@ def input_form():
     # back_activity()
     # back_activity()
 
-
-# def remove_float_win():
-#     if self(resourceId="com.chinamworld.main:id/close").exists(timeout=5):
-#         self(resourceId="com.chinamworld.main:id/close").click_gone(maxretry=10, interval=1.0)
-#     elif self(text="是否需要向银行卡").exists(timeout=5):
-#         self(resourceId="com.chinamworld.main:id/btn_cancel").click_gone(maxretry=10, interval=1.0)
-#     else:
-#         return True
 
 def remove_float_win():
     return True

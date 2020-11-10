@@ -7,14 +7,15 @@ import time
 
 
 class VerificationCodeAbc:
-    def __init__(self, x=None, y=None, width=None, height=None):
+    def __init__(self, x=None, y=None, width=None, height=None, img=None):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
+        self.img = img
 
     def get_pictures(self):
-        page_snap_obj = Image.open('verification.jpg')
+        page_snap_obj = Image.open(self.img)
         # page_snap_obj = Image.open('pictures.jpg')
         time.sleep(1)
         # location = img.location
@@ -74,7 +75,7 @@ class VerificationCodeAbc:
                     if black_point < 1:
                         images.putpixel((x, y), 255)
                     black_point = 0
-        images.show()
+        images.save(self.img)
         return images
 
     def image_str(self):
