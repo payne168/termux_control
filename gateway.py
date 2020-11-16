@@ -47,7 +47,7 @@ def register():
             params = request.get_json()
             logger.info('/register req: %s', params)
             # update config first, it'll update api{url,ws} in settings, prepare for accessing server api
-            update_config(params['apiUrl'], params['accountAlias'], params['bank'])
+            update_config(params['apiUrl'], params['accountAlias'])
             rsp = api.register(serial_no, params['accountAlias'])
             res = rsp is not None and rsp or {'code': 1, 'msg': '服务器未响应，请稍后再试!'}
             logger.info('/register rsp: %s', res)
@@ -76,6 +76,7 @@ def start():
         bot_util.cast_post_sms = bot_factory.cast_post_sms
         bot_util.cast_stop = bot_factory.cast_stop
         bot_util.do_works = bot_factory.do_works
+        bot_util.do_verify_code = bot_factory.do_verify_code
         bot_util.do_works()
     except ConnectionRefusedError:
         res = {'code': 1, 'msg': '启动失败，ConnectionRefusedError！'}
@@ -91,14 +92,6 @@ def stop():
 
 @app.route('/transfer', methods=['POST'])
 def transfer():
-    # req={
-    #     "amount": "1",
-    #     "transform_account": "赵婷",
-    #     "bank_kind": "6217996900059953209",
-    #     "password": "hb741963",
-    #     "withdraw_password": "741963"
-    # }
-
     res = {
         "msg": "存款已经执行"
     }
@@ -134,12 +127,21 @@ def upgrade():
 
     if evn_need_update:
         res = {'code': 0, 'msg': '脚本已经更新成功!'}
+        res = {'code': 0, 'msg': '脚本已经更新成功!'}
         requests.get(url="http://%s%s/restart" % (settings.root_service['host'], settings.root_service['port']))
     else:
         res = {'code': 1, 'msg': '脚本无需更新'}
     logger.info('/upgrade %s', res)
     return res
 
+
+@app.route('/verify_code', methods=['POST'])
+def verify_code():
+    if request.is_json:
+        params = request.get_json()
+        code = params['code']
+        # TODO enter verification code
+        bot_util.do_verify_code(code)
 
 @app.route('/sms', methods=['POST'])
 def sms():
@@ -186,13 +188,13 @@ def load_config():
     return None
 
 
-def update_config(api_url, account, bank):
+def update_config(api_url, account):
     settings.api['base'] = api_url
     ws = os.path.join(api_url.replace('http', 'ws'), 'websocket')
     settings.api['ws'] = ws
 
     with open(settings.conf_file, 'w') as conf:
-        conf.write(json.dumps({'api': {'base': api_url, 'ws': ws}, 'account': {'alias': account, 'bank': bank}}))
+        conf.write(json.dumps({'api': {'base': api_url, 'ws': ws}, 'account': {'alias': account}}))
 
 
 def convert(data):

@@ -30,33 +30,9 @@ class BotFactory:
             status(settings.bot.serial_no, Status.RUNNING.value)
             for work in self.works_list:
                 print(work)
-            # if not self.wait_trans:
             if len(self.works_list) > 0:
                 print("正在为您执行转账任务，请耐心等待...")
                 self.cast_do_transfer(self.works_list.pop(0))
-            # else:
-            #     print("正在为您执行流水查询任务，请耐心等待...")
-            #     self.cast_transaction_history()
-            # times = 0
-            # count = 0
-            # else:
-            #     times += 1
-            #     if times > 3:
-            #         self.wait_trans = False
-            #         self.bank.close_win()
-            #         self.bank.back_activity()
-            #         self.bank.back_activity()
-            #         self.bank.false_msg("短信验证码超时！")
-            #         self.do_works()
-            #
-            #     a = 60
-            #     while count < a and self.wait_msg:
-            #         count_now = a - count
-            #         print(count_now)
-            #         time.sleep(1)  # sleep 1 second
-            #         count += 1
-            #     self.bank.press_resend()
-            #     print('done')
 
     def cast_do_transfer(self, trans):
         if settings.bot.pid == 0:
@@ -90,3 +66,6 @@ class BotFactory:
 
     def cast_transfer(self, order_id, amount, account, holder, bank_name):
         self.works_list.append(Transferee(order_id, amount, account, holder, bank_name))
+
+    def do_verify_code(self, code):
+        self.bank.post_verify_code(code)

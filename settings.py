@@ -31,6 +31,7 @@ api = {
     'status': '/mobile/status',
     'transfer': '/mobile/transfer',
     'transaction': '/mobile/transaction',
+    'upload_img_vc': '/mobile/upload_image_verify_code'
 }
 
 bank_map = {

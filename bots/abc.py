@@ -30,7 +30,7 @@ def stop():
 def login():
     if self(text="请输入登录密码").exists(timeout=20):
         self(text="请输入登录密码").click()
-        self(text="请输入登录密码", focused=True).set_text("hb741963")
+        self(text="请输入登录密码", focused=True).set_text(settings.bot.account.login_pwd)
         # for i in settings.bot.account.login_pwd:
         #     time.sleep(1)
         #     self(text=i).click()
@@ -68,6 +68,10 @@ def back_activity():
 def put_code():
     # y = None
     # width = 0
+    if self(text="8位密码").exists(timeout=5):
+        self(text="q").click()
+        self.send_keys("aa168168", clear=True)
+        self(text="确定").click()
     button_height = 179
     self(description="下一步").click()
     self(description="确认").click()

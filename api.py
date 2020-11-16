@@ -27,6 +27,10 @@ def transaction(account, balance, transactions):
     return post(api['transaction'], {'accountAlias': account, 'balance': balance, 'trans': trans})
 
 
+def verification_code(serial_no, img_base64):
+    return post(api['upload_img_vc'], {'serialNo': serial_no, 'image': img_base64})
+
+
 def post(url, payload):
     url = api['base'] + url
     return misc.post(url, payload, True)

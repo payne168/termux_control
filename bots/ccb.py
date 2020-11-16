@@ -9,15 +9,10 @@ sys.path.append("..")
 from models import Account, Transferee, Transaction
 from api import transaction as trans_api
 from api import transfer_status as status_api
+from api import verification_code as verification_code_api
 
 package = 'com.chinamworld.main'
 activity = 'com.ccb.start.MainActivity'
-
-# def connect():
-#     connection = u2.connect('0.0.0.0')
-#     connection = u2.connect('R3CN90724BK')
-#     print(connection.info)
-#     return connection
 
 trans = Transferee()
 self = settings.bot.device
@@ -250,10 +245,6 @@ def do_get_history(i=1):
         print("------------------------------")
         trans_api(settings.bot.account.alias, balance, transaction_list)
         print("------------------------------")
-        # if i == 1:
-        #     settings.bot.last_trans = Transaction(trans_time=trans_time, trans_type=trans_type, amount=amount,
-        #                                           balance=balance,
-        #                                           postscript=postscript, account=account, summary=summary)
         i = i + 1
 
     back_activity()
@@ -325,46 +316,54 @@ def post_sms(sms):
     # print(self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=5))
     if self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=20):
         print("开始识别验证码了")
+        info = self(resourceId="com.chinamworld.main:id/native_graph_iv").info
+        x = info['bounds']['left']
+        y = info['bounds']['top']
+        img = "verification%s.jpg"
+        self.screenshot(img)
+        VerificationCodeCcb(x, y, 313, 165, img)
+        img_file = {'images': open(img, 'rb')}
+        verification_code_api(settings.bot.account.alias, img_file)
+        # def put_code():
+        #     if self(resourceId="com.chinamworld.main:id/et_code").exists(timeout=5):
+        #         self(resourceId="com.chinamworld.main:id/et_code").click()
+        #         print("settings.bot.account.payment_pwd")
+        #         print(settings.bot.account.payment_pwd)
+        #         self.send_keys(settings.bot.account.payment_pwd, clear=True)
+        #         time.sleep(5)
+        #
+        #     def get_code():
+        #         if self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=20):
+        #             self(resourceId="com.chinamworld.main:id/native_graph_iv").click()
+        #             info = self(resourceId="com.chinamworld.main:id/native_graph_iv").info
+        #             x = info['bounds']['left']
+        #             y = info['bounds']['top']
+        #             img = "verification%s.jpg"
+        #             self.screenshot(img)
+        #             vc = VerificationCodeCcb(x, y, 313, 165, img)
+        #
+        #             return vc.image_str()
+        #
+        #     code = get_code()
+        #     while code == "":
+        #         time.sleep(3)
+        #         # settings.count += 1
+        #         code = get_code()
+        #     print(code)
+        #
+        #     self(resourceId="com.chinamworld.main:id/native_graph_et").click()
+        #     self(resourceId="com.chinamworld.main:id/default_row_two_1").click()
+        #     self.send_keys(code, clear=True)
+        #     # time.sleep(5)
+        #
+        #     if self(resourceId="com.chinamworld.main:id/btn_confirm").click_gone(maxretry=5, interval=1.0):
+        #         # time.sleep(2)
+        #         success()
+        #     else:
+        #         put_code()
+        #
+        # put_code()
 
-        def put_code():
-            if self(resourceId="com.chinamworld.main:id/et_code").exists(timeout=5):
-                self(resourceId="com.chinamworld.main:id/et_code").click()
-                print("settings.bot.account.payment_pwd")
-                print(settings.bot.account.payment_pwd)
-                self.send_keys(settings.bot.account.payment_pwd, clear=True)
-                time.sleep(5)
-
-            def get_code():
-                if self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=20):
-                    self(resourceId="com.chinamworld.main:id/native_graph_iv").click()
-                    info = self(resourceId="com.chinamworld.main:id/native_graph_iv").info
-                    x = info['bounds']['left']
-                    y = info['bounds']['top']
-                    img = "verification%s.jpg"
-                    self.screenshot(img)
-                    vc = VerificationCodeCcb(x, y, 313, 165, img)
-
-                    return vc.image_str()
-
-            code = get_code()
-            while code == "":
-                time.sleep(3)
-                # settings.count += 1
-                code = get_code()
-            print(code)
-
-            self(resourceId="com.chinamworld.main:id/native_graph_et").click()
-            self(resourceId="com.chinamworld.main:id/default_row_two_1").click()
-            self.send_keys(code, clear=True)
-            # time.sleep(5)
-
-            if self(resourceId="com.chinamworld.main:id/btn_confirm").click_gone(maxretry=5, interval=1.0):
-                # time.sleep(2)
-                success()
-            else:
-                put_code()
-
-        put_code()
     elif self(text="收款账户").exists(timeout=10):
         status_api(trans.order_id, 0)
         time.sleep(20)
@@ -380,3 +379,14 @@ def post_sms(sms):
         back_activity()
         back_activity()
         settings.bot.post_sms_already = False
+
+
+def post_verify_code(code):
+    if self(resourceId="com.chinamworld.main:id/et_code").exists(timeout=5):
+        self(resourceId="com.chinamworld.main:id/native_graph_et").click()
+        self(resourceId="com.chinamworld.main:id/default_row_two_1").click()
+        self.send_keys(code, clear=True)
+        time.sleep(5)
+
+        if self(resourceId="com.chinamworld.main:id/btn_confirm").click_gone(maxretry=5, interval=1.0):
+            success()
