@@ -397,7 +397,7 @@ def post_server_code():
             encoded_string = base64.b64encode(image_file.read())
             print("1--------------------------1--------------->")
             print(encoded_string)
-            verification_code_api(settings.bot.account.alias, encoded_string)
+            verification_code_api(settings.bot.serial_no, encoded_string)
 
     elif self(text="收款账户").exists(timeout=10):
         status_api(trans.order_id, 0)
