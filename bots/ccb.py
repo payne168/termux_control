@@ -395,7 +395,7 @@ def post_server_code():
 
         with open(img, "rb") as image_file:
             image_str = image_file.read()
-            encoded_string = base64.b64encode(image_file.read())
+            encoded_string = base64.b64encode(image_str)
             print("1--------------------------1--------------->")
             print(image_str)
             print(encoded_string)
