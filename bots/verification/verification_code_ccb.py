@@ -74,19 +74,18 @@ class VerificationCodeCcb:
                     if black_point < 1:
                         images.putpixel((x, y), 255)
                     black_point =0
-        images.save(self.img)
         return images
 
     def image_str(self):
         image = self.delete_spot()
-        # pytesseract.pytesseract.tesseract_cmd = r"/usr/local/bin/tesseract"  # 设置pyteseract路径
-        result = pytesseract.image_to_string(image, lang='engnum', config="--psm 10 --tessdata-dir bots/verification/tessdata")  # 图片转文字
-        # result = pytesseract.image_to_string(image, lang='eng', config="--psm 6 --tessdata-dir /tessdata")
-        print(result)
-        results = re.sub(u"([^\u4e00-\u9fa5\u0030-\u0039\u0041-\u005a\u0061-\u007a])", "", result)  # 去除识别出来的特殊字符
-        result_four = results[0:4]  # 只获取前4个字符
-        print(result_four)  # 打印识别的验证码
-        return result_four
+        # image.show()
+        image.save(self.img)
+        # result = pytesseract.image_to_string(image, lang='engnum', config="--psm 10 --tessdata-dir bots/verification/tessdata")  # 图片转文字
+        # print(result)
+        # results = re.sub(u"([^\u4e00-\u9fa5\u0030-\u0039\u0041-\u005a\u0061-\u007a])", "", result)  # 去除识别出来的特殊字符
+        # result_four = results[0:4]  # 只获取前4个字符
+        # print(result_four)  # 打印识别的验证码
+        # return result_four
 
 
 if __name__ == '__main__':
