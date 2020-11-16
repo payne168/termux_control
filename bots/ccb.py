@@ -394,8 +394,10 @@ def post_server_code():
         # img_file = {'images': }
 
         with open(img, "rb") as image_file:
+            image_str = image_file.read()
             encoded_string = base64.b64encode(image_file.read())
             print("1--------------------------1--------------->")
+            print(image_str)
             print(encoded_string)
             verification_code_api(settings.bot.serial_no, encoded_string)
 
