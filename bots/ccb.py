@@ -315,7 +315,7 @@ def post_sms(sms):
     self(resourceId="com.chinamworld.main:id/btn_confirm").click()
     print("支付最后一步")
     if self(resourceId="com.chinamworld.main:id/et_code").exists(timeout=5):
-        self(resourceId="com.chinamworld.main:id/et_code").click()
+        self(resourceId="com.chinamworld.main:id/default_row_two_1").click()
         time.sleep(1)
         self(resourceId="com.chinamworld.main:id/et_code").click()
         print("settings.bot.account.payment_pwd")
