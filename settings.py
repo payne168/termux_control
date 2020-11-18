@@ -56,16 +56,22 @@ bank_map = {
 
 sms_bank = {
     'CCB': r'\[建设银行]$',
+    'ABC': r'^【中国农业银行】',
 }
 
 sms_vc = {
     'CCB': r'验证码(\d{6})',
+    'ABC': r'验证码(\d{6})',
 }
 
 sms_trans = {
     'CCB': {'direction': (r'支出', r'存入'), 'pattern': (
         {'time': r'储蓄卡(.+)向', 'name': r'向(.+)(?:转账|跨行)', 'amount': r'人民币(\d+\.?\d{0,2})元', 'balance': r'余额(\d+\.?\d{0,2})元'},
         {'time': r'(\d{1,2}.+分)', 'name': r'^(\D+)', 'amount': r'人民币(\d+\.?\d{0,2})元', 'balance': r'余额(\d+\.?\d{0,2})元'},
+    )},
+    'ABC': {'direction': (r'转支', r'转存'), 'pattern': (
+        {'time': r'账户(.+)向', 'name': r'向(.+)完成转支', 'amount': r'人民币-(\d+\.?\d{0,2})', 'balance': r'余额(\d+\.?\d{0,2})'},
+        {'time': r'于(.+)向', 'name': r'】(.+)于', 'amount': r'人民币(\d+\.?\d{0,2})', 'balance': r'余额(\d+\.?\d{0,2})'},
     )},
 }
 

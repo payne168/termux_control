@@ -56,84 +56,108 @@ def back_activity():
     print("正在执行回退页面！")
     # internet_timeout()
     print("正在执行登录页检测！")
-    LoginActivity = self.wait_activity(".MainActivity", timeout=5)
-    if LoginActivity:
-        print("检测到登录页，正在为您登录！")
-        login()
-    else:
-        print("无登录页，执行回退！")
-        self.press("back")
+    time.sleep(2)
+    self.press("back")
+    # LoginActivity = self.wait_activity(".MainActivity", timeout=5)
+    # if LoginActivity:
+    #     print("检测到登录页，正在为您登录！")
+    #     login()
+    # else:
+    #     print("无登录页，执行回退！")
+    #     self.press("back")
 
 
 def put_code():
     # y = None
     # width = 0
-    if self(text="8位密码").exists(timeout=5):
-        self(text="q").click()
-        self.send_keys("aa168168", clear=True)
-        self(text="确定").click()
-    button_height = 179
     self(description="下一步").click()
+    if self(description="确定").exists(timeout=10):
+        self(description="确定").click()
     self(description="确认").click()
-    time.sleep(5)
-    info = self(resourceId="CFCA_KEYBOARD_0").info
-    print("-------------------------------->")
-    print(info)
-    x = info['bounds']['left']
-    y = info['bounds']['top']
-    width = int(info['bounds']['right'])
-    height = button_height * 4
-
-    def get_code():
-        img = "verification%s.jpg" % settings.count
-        self.screenshot(img)
-        vc = VerificationCodeAbc(x, y, width, height, img)
-        code = list(str(vc.image_str()))
-        passwd = list(settings.bot.account.payment_pwd)
-        print("<----------------------keyboard_arr passwd_arr-------------------------->")
-        print(code)
-        print(passwd)
-        settings.count += 1
-        print(settings.count)
-        # for i in passwd:
-        #     print("i", i)
-        #     for j in code:
-        #         print("j", j)
-        #         if i == j:
-        #             print("match", j)
-        #             key_inx = code.index(j)
-
-        # switcher = {
-        #     0: [0.162, 0.76],
-        #     1: [0.494, 0.758],
-        #     2: [0.842, 0.766],
-        #     3: [0.168, 0.827],
-        #     4: [0.494, 0.825],
-        #     5: [0.834, 0.825],
-        #     6: [0.168, 0.884],
-        #     7: [0.498, 0.893],
-        #     8: [0.824, 0.89],
-        #     9: [0.49, 0.949],
-        # }
-        # jxy = switcher.get(key_inx, "Invalid key")
-        # time.sleep(1)
-        # print("<----------------------jx jy-------------------------->")
-        # print(jxy[0])
-        # print(jxy[1])
-        # self.click(jxy[0], jxy[1])
-
-    get_code()
-    if self(resourceId="btn_cancel").exists(timeout=5):
-        self(resourceId="btn_cancel").click()
-        # put_code()
-        get_code()
-    # elif self(resourceId="com.alipay.mobile.antui:id/message").exists(timeout=5):
-    #     self(resourceId="com.alipay.mobile.antui:id/ensure").click()
-    #     get_code()
-    else:
+    if self(text="8位密码").exists(timeout=50):
+        u_key_pwd = "aa168168"
+        self(text="a").click()
+        self.send_keys(u_key_pwd, clear=True)
+        time.sleep(5)
+        # self(text="123").click()
+        # for key in u_key_pwd:
+        #     time.sleep(1)
+        #     self(text=key).click()
+        # self.send_keys("aa168168", clear=True)
+        self(text="确定").click()
         print("您已经转账成功了！")
         status_api(trans.order_id, 0)
-        do_transaction()
+        if self(description="转账已受理").exists(timeout=180):
+            print("您已经转账成功了！")
+            status_api(trans.order_id, 0)
+        back_activity()
+        back_activity()
+        back_activity()
+        back_activity()
+
+    else:
+        button_height = 179
+        # self(description="下一步").click()
+        # self(description="确认").click()
+        time.sleep(5)
+        info = self(resourceId="CFCA_KEYBOARD_0").info
+        print("-------------------------------->")
+        print(info)
+        x = info['bounds']['left']
+        y = info['bounds']['top']
+        width = int(info['bounds']['right'])
+        height = button_height * 4
+
+        def get_code():
+            img = "verification%s.jpg" % settings.count
+            self.screenshot(img)
+            vc = VerificationCodeAbc(x, y, width, height, img)
+            code = list(str(vc.image_str()))
+            passwd = list(settings.bot.account.payment_pwd)
+            print("<----------------------keyboard_arr passwd_arr-------------------------->")
+            print(code)
+            print(passwd)
+            settings.count += 1
+            print(settings.count)
+            # for i in passwd:
+            #     print("i", i)
+            #     for j in code:
+            #         print("j", j)
+            #         if i == j:
+            #             print("match", j)
+            #             key_inx = code.index(j)
+
+            # switcher = {
+            #     0: [0.162, 0.76],
+            #     1: [0.494, 0.758],
+            #     2: [0.842, 0.766],
+            #     3: [0.168, 0.827],
+            #     4: [0.494, 0.825],
+            #     5: [0.834, 0.825],
+            #     6: [0.168, 0.884],
+            #     7: [0.498, 0.893],
+            #     8: [0.824, 0.89],
+            #     9: [0.49, 0.949],
+            # }
+            # jxy = switcher.get(key_inx, "Invalid key")
+            # time.sleep(1)
+            # print("<----------------------jx jy-------------------------->")
+            # print(jxy[0])
+            # print(jxy[1])
+            # self.click(jxy[0], jxy[1])
+
+        get_code()
+        if self(resourceId="btn_cancel").exists(timeout=5):
+            self(resourceId="btn_cancel").click()
+            # put_code()
+            get_code()
+        # elif self(resourceId="com.alipay.mobile.antui:id/message").exists(timeout=5):
+        #     self(resourceId="com.alipay.mobile.antui:id/ensure").click()
+        #     get_code()
+        else:
+            print("您已经转账成功了！")
+            status_api(trans.order_id, 0)
+            do_transaction()
 
 
 def input_form():
@@ -146,13 +170,13 @@ def input_form():
         self.send_keys(trans.account, clear=True)
         self.xpath('//android.webkit.WebView/android.view.View[8]/android.widget.Image[1]').click()
         time.sleep(5)
-        self(description="收款银行").click()
-        print(trans.bank_name)
-        time.sleep(5)
-        # self.xpath('//*[@content-desc=%s]' % trans.bank_name).click()
-        self(description=trans.bank_name).click()
+        # self(description="收款银行").click()
+        # print(trans.bank_name)
+        # time.sleep(5)
+        # self(description=trans.bank_name).click()
         self(description="请输入转账金额").click()
         for i in trans.amount:
+            time.sleep(1)
             self(description=i).click()
         self(description="2BsHuD1UCBrbmAAAAAElFTkSuQmCC").click()
         put_code()
