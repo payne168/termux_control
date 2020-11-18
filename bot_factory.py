@@ -27,7 +27,9 @@ class BotFactory:
         self.bank.remove_float_win()
         while self.alive:
             time.sleep(10)
-            status(settings.bot.serial_no, Status.RUNNING.value)
+            print("status---->")
+            res = status(settings.bot.serial_no, Status.RUNNING.value)
+            print("status---->%s" % res)
             for work in self.works_list:
                 print(work)
             if len(self.works_list) > 0:
