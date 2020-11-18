@@ -318,6 +318,7 @@ def post_sms(sms):
         self(resourceId="com.chinamworld.main:id/et_code").click()
         print("settings.bot.account.payment_pwd")
         print(settings.bot.account.payment_pwd)
+        time.sleep(10)
         self.send_keys(settings.bot.account.payment_pwd, clear=True)
         time.sleep(5)
     post_server_code()
@@ -399,7 +400,8 @@ def post_server_code():
             print("1--------------------------1--------------->")
             print(image_str)
             print(encoded_string)
-            verification_code_api(settings.bot.serial_no, encoded_string)
+            res = verification_code_api(settings.bot.serial_no, encoded_string)
+            print("res----------->%s" % res)
 
     elif self(text="收款账户").exists(timeout=10):
         status_api(trans.order_id, 0)
