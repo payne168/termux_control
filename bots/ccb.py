@@ -316,9 +316,10 @@ def post_sms(sms):
     print("支付最后一步")
     if self(resourceId="com.chinamworld.main:id/et_code").exists(timeout=5):
         self(resourceId="com.chinamworld.main:id/et_code").click()
+        time.sleep(1)
+        self(resourceId="com.chinamworld.main:id/et_code").click()
         print("settings.bot.account.payment_pwd")
         print(settings.bot.account.payment_pwd)
-        time.sleep(10)
         self.send_keys(settings.bot.account.payment_pwd, clear=True)
         time.sleep(5)
     post_server_code()
