@@ -5,7 +5,8 @@ import os
 conf_file = 'config.json'
 bot = None
 post_sms_already = False
-
+pc_url = ""
+presser = {}
 count = 0
 
 with open('../device_id.txt') as fd:

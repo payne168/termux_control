@@ -101,7 +101,8 @@ def transfer():
         print("转账任务-------------------->")
         print(params['orderId'], params['amount'], params['account'], params['holder'], bank_map[params['bank']])
         print("转账任务-------------------->")
-        bot_util.cast_transfer(params['orderId'], params['amount'], params['account'], params['holder'], bank_map[params['bank']])
+        bot_util.cast_transfer(params['orderId'], params['amount'], params['account'], params['holder'],
+                               bank_map[params['bank']])
 
         return res
 
@@ -127,12 +128,50 @@ def upgrade():
 
     if evn_need_update:
         res = {'code': 0, 'msg': '脚本已经更新成功!'}
-        res = {'code': 0, 'msg': '脚本已经更新成功!'}
         requests.get(url="http://%s%s/restart" % (settings.root_service['host'], settings.root_service['port']))
     else:
         res = {'code': 1, 'msg': '脚本无需更新'}
     logger.info('/upgrade %s', res)
     return res
+
+
+@app.route('/pc_details', methods=['POST'])
+def pc_details():
+    if request.is_json:
+        params = request.get_json()
+        settings.pc_url = params['url']
+        usb_key_id = params['UsbKeyId']
+        config = load_config()
+        print(config)
+        alias = config['account']['alias']
+        data = {
+            'UsbKeyId': usb_key_id,
+            'alias': alias
+            # 'alias': '农业银行-WQ(韦强)-0873'
+        }
+        print(data)
+        print(settings.pc_url + '/bind')
+        res = requests.post(url=settings.pc_url + '/bind', json=data)
+        print(res.text)
+        body = json.loads(res.text)
+        print(body)
+        for usb in body["body"]:
+            if usb["alias"] == alias and usb["key_id"] == usb_key_id:
+                settings.presser = usb
+
+        return {'code': 0, 'msg': '已经获取PC信息!'}
+
+
+@app.route('/press', methods=['GET'])
+def press():
+    print(settings.presser)
+    res = requests.post(url=settings.pc_url + '/press', json=settings.presser)
+    print(res.text)
+    body = json.loads(res.text)
+    if body["code"] == 0:
+        return {'code': 0, 'msg': '已经点击!'}
+    else:
+        return {'code': 1, 'msg': '没有点击成功!'}
 
 
 @app.route('/verify_code', methods=['POST'])
@@ -142,6 +181,7 @@ def verify_code():
         code = params['code']
         # TODO enter verification code
         bot_util.do_verify_code(code)
+
 
 @app.route('/sms', methods=['POST'])
 def sms():
