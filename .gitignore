@@ -4,3 +4,4 @@ venv/
 __pycache__/
 log/
 config.json
+device_id.txt

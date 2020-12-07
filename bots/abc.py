@@ -1,4 +1,5 @@
 # coding: utf8
+import json
 import time
 import sys
 import requests
@@ -87,9 +88,12 @@ def put_code():
         self(text="确定").click()
         print("您已经转账成功了！")
         status_api(trans.order_id, 0)
-        if self(description="转账已受理").exists(timeout=180):
-            print("您已经转账成功了！")
-            status_api(trans.order_id, 0)
+        res = requests.post(url=settings.pc_url + '/press', json=settings.presser)
+        body = json.loads(res.text)
+        if body["code"] == 0:
+            if self(description="转账已受理").exists(timeout=180):
+                print("您已经转账成功了！")
+                status_api(trans.order_id, 0)
         back_activity()
         back_activity()
         back_activity()

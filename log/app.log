@@ -1,0 +1,224 @@
+[2020-12-01 18:01:22,633 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 18:01:24,707 websock INFO] web socket connection established
+[2020-12-01 18:01:24,707 websock INFO] ready to receive msg
+[2020-12-01 18:05:55,017 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 18:05:55,609 websock INFO] web socket connection established
+[2020-12-01 18:05:55,609 websock INFO] ready to receive msg
+[2020-12-01 18:06:18,476 misc INFO] req https://bot-w.uatcashierapi.com/mobile/start, params={'serialNo': 'RR8M90JGAXR', 'accountAlias': '农业银行-WQ(韦强)-0873', 'nonce': 'XmH6kjv7uQ', 'timestamp': 1606817178}
+[2020-12-01 18:06:19,265 misc INFO] rsp from https://bot-w.uatcashierapi.com/mobile/start, status=200, text={"code":0,"data":{"accountAlias":"农业银行-WQ(韦强)-0873","loginName":"18587988595","loginPassword":"aa168168","paymentPassword":"168168","ukeyPassword":"168168","bank":"ABC","lastTrans":{"direction":1,"time":1599620710000,"amount":1500.00000000,"name":"测试存款","postscript":"转账测试peterson","balance":60000.00000000}},"msg":"success"}, cost 0.7882449626922607 seconds
+[2020-12-01 18:08:33,951 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 18:08:35,145 websock INFO] web socket connection established
+[2020-12-01 18:08:35,145 websock INFO] ready to receive msg
+[2020-12-01 18:08:46,230 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 18:08:46,716 websock INFO] web socket connection established
+[2020-12-01 18:08:46,717 websock INFO] ready to receive msg
+[2020-12-01 18:08:58,923 misc INFO] req https://bot-w.uatcashierapi.com/mobile/start, params={'serialNo': 'RR8M90JGAXR', 'accountAlias': '农业银行-WQ(韦强)-0873', 'nonce': 'SXP32Q1ZFy', 'timestamp': 1606817338}
+[2020-12-01 18:08:59,723 misc INFO] rsp from https://bot-w.uatcashierapi.com/mobile/start, status=200, text={"code":0,"data":{"accountAlias":"农业银行-WQ(韦强)-0873","loginName":"18587988595","loginPassword":"aa168168","paymentPassword":"168168","ukeyPassword":"168168","bank":"ABC","lastTrans":{"direction":1,"time":1599620710000,"amount":1500.00000000,"name":"测试存款","postscript":"转账测试peterson","balance":60000.00000000}},"msg":"success"}, cost 0.7992551326751709 seconds
+[2020-12-01 18:09:00,667 misc INFO] req https://bot-w.uatcashierapi.com/mobile/status, params={'serialNo': 'RR8M90JGAXR', 'status': 3, 'data': None, 'nonce': 'IOcyEpHPVv', 'timestamp': 1606817340}
+[2020-12-01 18:09:01,566 misc INFO] rsp from https://bot-w.uatcashierapi.com/mobile/status, status=200, text={"code":0,"data":null,"msg":"状态上报成功，无订单下发"}, cost 0.8990888595581055 seconds
+[2020-12-01 18:09:11,569 misc INFO] req https://bot-w.uatcashierapi.com/mobile/status, params={'serialNo': 'RR8M90JGAXR', 'status': 3, 'data': None, 'nonce': 'UoxVIfRspa', 'timestamp': 1606817351}
+[2020-12-01 18:09:12,216 misc INFO] rsp from https://bot-w.uatcashierapi.com/mobile/status, status=200, text={"code":0,"data":null,"msg":"状态上报成功，无订单下发"}, cost 0.6466150283813477 seconds
+[2020-12-01 18:09:22,219 misc INFO] req https://bot-w.uatcashierapi.com/mobile/status, params={'serialNo': 'RR8M90JGAXR', 'status': 3, 'data': None, 'nonce': 'dzX0QqUmak', 'timestamp': 1606817362}
+[2020-12-01 18:09:22,967 misc INFO] rsp from https://bot-w.uatcashierapi.com/mobile/status, status=200, text={"code":0,"data":null,"msg":"状态上报成功，无订单下发"}, cost 0.7484447956085205 seconds
+[2020-12-01 18:09:32,972 misc INFO] req https://bot-w.uatcashierapi.com/mobile/status, params={'serialNo': 'RR8M90JGAXR', 'status': 3, 'data': None, 'nonce': 'ex3Ia2cq4X', 'timestamp': 1606817372}
+[2020-12-01 18:09:33,617 misc INFO] rsp from https://bot-w.uatcashierapi.com/mobile/status, status=200, text={"code":0,"data":null,"msg":"状态上报成功，无订单下发"}, cost 0.644162654876709 seconds
+[2020-12-01 18:09:43,622 misc INFO] req https://bot-w.uatcashierapi.com/mobile/status, params={'serialNo': 'RR8M90JGAXR', 'status': 3, 'data': None, 'nonce': 'WRsgdmeY5u', 'timestamp': 1606817383}
+[2020-12-01 18:09:44,368 misc INFO] rsp from https://bot-w.uatcashierapi.com/mobile/status, status=200, text={"code":0,"data":null,"msg":"状态上报成功，无订单下发"}, cost 0.7463850975036621 seconds
+[2020-12-01 18:09:54,372 misc INFO] req https://bot-w.uatcashierapi.com/mobile/status, params={'serialNo': 'RR8M90JGAXR', 'status': 3, 'data': None, 'nonce': 'MhtfiJHjw1', 'timestamp': 1606817394}
+[2020-12-01 18:09:55,001 misc INFO] rsp from https://bot-w.uatcashierapi.com/mobile/status, status=200, text={"code":0,"data":null,"msg":"状态上报成功，无订单下发"}, cost 0.6281580924987793 seconds
+[2020-12-01 18:10:05,002 misc INFO] req https://bot-w.uatcashierapi.com/mobile/status, params={'serialNo': 'RR8M90JGAXR', 'status': 3, 'data': None, 'nonce': 'DsmtX2NLCq', 'timestamp': 1606817405}
+[2020-12-01 18:10:05,975 misc INFO] rsp from https://bot-w.uatcashierapi.com/mobile/status, status=200, text={"code":0,"data":null,"msg":"状态上报成功，无订单下发"}, cost 0.9730360507965088 seconds
+[2020-12-01 18:10:15,978 misc INFO] req https://bot-w.uatcashierapi.com/mobile/status, params={'serialNo': 'RR8M90JGAXR', 'status': 3, 'data': None, 'nonce': 'DS1RluY6sz', 'timestamp': 1606817415}
+[2020-12-01 18:10:16,624 misc INFO] rsp from https://bot-w.uatcashierapi.com/mobile/status, status=200, text={"code":0,"data":null,"msg":"状态上报成功，无订单下发"}, cost 0.6460871696472168 seconds
+[2020-12-01 18:10:26,625 misc INFO] req https://bot-w.uatcashierapi.com/mobile/status, params={'serialNo': 'RR8M90JGAXR', 'status': 3, 'data': None, 'nonce': 'T9xoVgmYBF', 'timestamp': 1606817426}
+[2020-12-01 18:10:27,381 misc INFO] rsp from https://bot-w.uatcashierapi.com/mobile/status, status=200, text={"code":0,"data":null,"msg":"状态上报成功，无订单下发"}, cost 0.7558081150054932 seconds
+[2020-12-01 18:10:37,382 misc INFO] req https://bot-w.uatcashierapi.com/mobile/status, params={'serialNo': 'RR8M90JGAXR', 'status': 3, 'data': None, 'nonce': 'kbVZa2mntr', 'timestamp': 1606817437}
+[2020-12-01 18:10:38,136 misc INFO] rsp from https://bot-w.uatcashierapi.com/mobile/status, status=200, text={"code":0,"data":null,"msg":"状态上报成功，无订单下发"}, cost 0.7533628940582275 seconds
+[2020-12-01 18:10:44,238 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 18:10:44,883 websock INFO] web socket connection established
+[2020-12-01 18:10:44,883 websock INFO] ready to receive msg
+[2020-12-01 18:13:46,373 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 18:13:46,947 websock INFO] web socket connection established
+[2020-12-01 18:13:46,947 websock INFO] ready to receive msg
+[2020-12-01 18:18:46,947 websock INFO] pulse
+[2020-12-01 18:23:46,944 websock INFO] pulse
+[2020-12-01 18:28:46,940 websock INFO] pulse
+[2020-12-01 18:44:09,483 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 18:44:11,572 websock INFO] web socket connection established
+[2020-12-01 18:44:11,572 websock INFO] ready to receive msg
+[2020-12-01 18:49:11,606 websock INFO] pulse
+[2020-12-01 18:54:11,613 websock INFO] pulse
+[2020-12-01 18:59:11,620 websock INFO] pulse
+[2020-12-01 19:01:42,266 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 19:01:43,459 websock INFO] web socket connection established
+[2020-12-01 19:01:43,459 websock INFO] ready to receive msg
+[2020-12-01 19:02:55,565 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 19:02:56,061 websock INFO] web socket connection established
+[2020-12-01 19:02:56,062 websock INFO] ready to receive msg
+[2020-12-01 19:02:59,307 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 19:02:59,530 websock INFO] web socket connection established
+[2020-12-01 19:02:59,530 websock INFO] ready to receive msg
+[2020-12-01 19:03:04,915 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 19:03:05,481 websock INFO] web socket connection established
+[2020-12-01 19:03:05,481 websock INFO] ready to receive msg
+[2020-12-01 19:04:12,904 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 19:04:13,476 websock INFO] web socket connection established
+[2020-12-01 19:04:13,482 websock INFO] ready to receive msg
+[2020-12-01 19:04:17,617 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 19:04:17,808 websock INFO] web socket connection established
+[2020-12-01 19:04:17,808 websock INFO] ready to receive msg
+[2020-12-01 19:08:43,882 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 19:08:45,512 websock INFO] web socket connection established
+[2020-12-01 19:08:45,512 websock INFO] ready to receive msg
+[2020-12-01 19:08:54,577 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 19:08:55,078 websock INFO] web socket connection established
+[2020-12-01 19:08:55,079 websock INFO] ready to receive msg
+[2020-12-01 19:13:55,083 websock INFO] pulse
+[2020-12-01 19:17:05,205 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 19:17:07,012 websock INFO] web socket connection established
+[2020-12-01 19:17:07,013 websock INFO] ready to receive msg
+[2020-12-01 19:17:54,093 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 19:17:54,628 websock INFO] web socket connection established
+[2020-12-01 19:17:54,629 websock INFO] ready to receive msg
+[2020-12-01 19:20:14,234 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 19:20:14,851 websock INFO] web socket connection established
+[2020-12-01 19:20:14,851 websock INFO] ready to receive msg
+[2020-12-01 19:20:19,830 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 19:20:21,303 websock INFO] web socket connection established
+[2020-12-01 19:20:21,303 websock INFO] ready to receive msg
+[2020-12-01 19:21:33,159 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 19:21:33,697 websock INFO] web socket connection established
+[2020-12-01 19:21:33,698 websock INFO] ready to receive msg
+[2020-12-01 19:21:37,702 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 19:21:37,891 websock INFO] web socket connection established
+[2020-12-01 19:21:37,892 websock INFO] ready to receive msg
+[2020-12-01 19:26:37,893 websock INFO] pulse
+[2020-12-01 19:31:37,896 websock INFO] pulse
+[2020-12-01 19:36:37,925 websock INFO] pulse
+[2020-12-01 19:41:37,931 websock INFO] pulse
+[2020-12-01 19:46:37,933 websock INFO] pulse
+[2020-12-01 19:51:37,970 websock INFO] pulse
+[2020-12-01 19:53:37,730 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 19:53:38,661 websock INFO] web socket connection established
+[2020-12-01 19:53:38,661 websock INFO] ready to receive msg
+[2020-12-01 19:53:42,170 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 19:53:42,385 websock INFO] web socket connection established
+[2020-12-01 19:53:42,385 websock INFO] ready to receive msg
+[2020-12-01 19:55:02,652 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 19:55:03,244 websock INFO] web socket connection established
+[2020-12-01 19:55:03,244 websock INFO] ready to receive msg
+[2020-12-01 19:55:07,379 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 19:55:07,571 websock INFO] web socket connection established
+[2020-12-01 19:55:07,571 websock INFO] ready to receive msg
+[2020-12-01 20:00:07,575 websock INFO] pulse
+[2020-12-01 20:05:07,591 websock INFO] pulse
+[2020-12-01 20:10:07,595 websock INFO] pulse
+[2020-12-01 20:15:07,601 websock INFO] pulse
+[2020-12-01 20:20:07,597 websock INFO] pulse
+[2020-12-01 20:25:07,604 websock INFO] pulse
+[2020-12-01 20:30:07,611 websock INFO] pulse
+[2020-12-01 20:35:07,582 websock INFO] pulse
+[2020-12-01 20:40:07,584 websock INFO] pulse
+[2020-12-01 20:45:07,584 websock INFO] pulse
+[2020-12-01 20:50:07,582 websock INFO] pulse
+[2020-12-01 20:55:07,583 websock INFO] pulse
+[2020-12-01 21:00:07,588 websock INFO] pulse
+[2020-12-01 21:03:49,608 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 21:03:50,399 websock INFO] web socket connection established
+[2020-12-01 21:03:50,399 websock INFO] ready to receive msg
+[2020-12-01 21:08:50,399 websock INFO] pulse
+[2020-12-01 21:13:50,398 websock INFO] pulse
+[2020-12-01 21:18:50,311 websock INFO] pulse
+[2020-12-01 21:23:09,041 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 21:23:09,991 websock INFO] web socket connection established
+[2020-12-01 21:23:09,992 websock INFO] ready to receive msg
+[2020-12-01 21:23:14,015 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 21:23:14,309 websock INFO] web socket connection established
+[2020-12-01 21:23:14,309 websock INFO] ready to receive msg
+[2020-12-01 21:24:05,970 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 21:24:06,617 websock INFO] web socket connection established
+[2020-12-01 21:24:06,617 websock INFO] ready to receive msg
+[2020-12-01 21:24:11,702 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 21:24:12,227 websock INFO] web socket connection established
+[2020-12-01 21:24:12,227 websock INFO] ready to receive msg
+[2020-12-01 21:26:33,396 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 21:26:34,069 websock INFO] web socket connection established
+[2020-12-01 21:26:34,069 websock INFO] ready to receive msg
+[2020-12-01 21:26:37,514 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 21:26:37,707 websock INFO] web socket connection established
+[2020-12-01 21:26:37,707 websock INFO] ready to receive msg
+[2020-12-01 21:27:38,460 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 21:27:38,930 websock INFO] web socket connection established
+[2020-12-01 21:27:38,930 websock INFO] ready to receive msg
+[2020-12-01 21:27:42,978 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 21:27:43,275 websock INFO] web socket connection established
+[2020-12-01 21:27:43,275 websock INFO] ready to receive msg
+[2020-12-01 21:28:20,776 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 21:28:21,389 websock INFO] web socket connection established
+[2020-12-01 21:28:21,389 websock INFO] ready to receive msg
+[2020-12-01 21:28:26,303 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 21:28:26,591 websock INFO] web socket connection established
+[2020-12-01 21:28:26,591 websock INFO] ready to receive msg
+[2020-12-01 21:31:30,360 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 21:31:32,050 websock INFO] web socket connection established
+[2020-12-01 21:31:32,050 websock INFO] ready to receive msg
+[2020-12-01 21:33:15,571 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 21:33:16,097 websock INFO] web socket connection established
+[2020-12-01 21:33:16,098 websock INFO] ready to receive msg
+[2020-12-01 21:33:20,565 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 21:33:21,220 websock INFO] web socket connection established
+[2020-12-01 21:33:21,221 websock INFO] ready to receive msg
+[2020-12-01 21:35:19,425 websock INFO] web socket:wss://bot-w.uatcashierapi.com/websocket/RR8M90JGAXR
+[2020-12-01 21:35:19,905 websock INFO] web socket connection established
+[2020-12-01 21:35:19,905 websock INFO] ready to receive msg
+[2020-12-01 21:40:19,900 websock INFO] pulse
+[2020-12-01 21:45:19,900 websock INFO] pulse
+[2020-12-01 21:50:19,967 websock INFO] pulse
+[2020-12-01 21:55:19,971 websock INFO] pulse
+[2020-12-01 22:00:19,972 websock INFO] pulse
+[2020-12-01 22:05:19,980 websock INFO] pulse
+[2020-12-01 22:10:20,001 websock INFO] pulse
+[2020-12-01 22:15:20,018 websock INFO] pulse
+[2020-12-01 22:20:20,022 websock INFO] pulse
+[2020-12-01 22:55:10,789 websock INFO] pulse
+[2020-12-01 22:55:32,066 websock INFO] web socket lost connectivity, reconnect...
+[2020-12-01 22:55:33,028 websock INFO] web socket connection established
+[2020-12-01 22:55:33,028 websock INFO] ready to receive msg
+[2020-12-02 00:31:10,524 websock INFO] web socket lost connectivity, reconnect...
+[2020-12-02 00:31:11,341 websock INFO] web socket connection established
+[2020-12-02 00:31:11,341 websock INFO] ready to receive msg
+[2020-12-02 02:32:04,171 websock INFO] web socket lost connectivity, reconnect...
+[2020-12-02 02:32:04,985 websock INFO] web socket connection established
+[2020-12-02 02:32:04,985 websock INFO] ready to receive msg
+[2020-12-02 04:32:58,667 websock INFO] web socket lost connectivity, reconnect...
+[2020-12-02 04:32:59,729 websock INFO] web socket connection established
+[2020-12-02 04:32:59,730 websock INFO] ready to receive msg
+[2020-12-02 06:33:53,365 websock INFO] web socket lost connectivity, reconnect...
+[2020-12-02 06:33:54,139 websock INFO] web socket connection established
+[2020-12-02 06:33:54,139 websock INFO] ready to receive msg
+[2020-12-02 08:34:06,754 websock INFO] pulse
+[2020-12-02 08:34:27,186 websock INFO] pulse
+[2020-12-02 08:34:47,429 websock INFO] web socket lost connectivity, reconnect...
+[2020-12-02 08:34:48,215 websock INFO] web socket connection established
+[2020-12-02 08:34:48,215 websock INFO] ready to receive msg
+[2020-12-02 10:19:16,379 websock INFO] pulse
+[2020-12-02 10:19:19,943 websock INFO] web socket lost connectivity, reconnect...
+[2020-12-02 10:19:20,571 websock INFO] web socket connection established
+[2020-12-02 10:19:20,571 websock INFO] ready to receive msg
+[2020-12-02 10:20:21,124 websock INFO] pulse
+[2020-12-02 10:21:22,225 websock INFO] pulse
+[2020-12-02 10:22:23,017 websock INFO] pulse
+[2020-12-02 10:23:23,831 websock INFO] pulse
+[2020-12-02 10:24:24,489 websock INFO] pulse
+[2020-12-02 10:29:24,499 websock INFO] pulse
+[2020-12-02 10:34:24,509 websock INFO] pulse
+[2020-12-02 10:39:24,477 websock INFO] pulse
+[2020-12-02 10:44:24,487 websock INFO] pulse
+[2020-12-02 10:49:24,493 websock INFO] pulse
+[2020-12-02 10:54:24,465 websock INFO] pulse
+[2020-12-02 10:59:24,472 websock INFO] pulse
+[2020-12-02 11:04:24,478 websock INFO] pulse
+[2020-12-02 11:09:24,505 websock INFO] pulse
+[2020-12-02 11:14:24,510 websock INFO] pulse
+[2020-12-02 11:19:24,517 websock INFO] pulse
+[2020-12-02 11:20:24,117 websock INFO] web socket lost connectivity, reconnect...
