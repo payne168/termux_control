@@ -140,7 +140,7 @@ def pc_details():
     if request.is_json:
         params = request.get_json()
         settings.pc_url = params['url']
-        usb_key_id = params['UsbKeyId']
+        usb_key_id = params['usbKeyId']
         config = load_config()
         print(config)
         alias = config['account']['alias']
