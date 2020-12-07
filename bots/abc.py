@@ -88,6 +88,7 @@ def put_code():
         self(text="确定").click()
         print("您已经转账成功了！")
         status_api(trans.order_id, 0)
+        time.sleep(10)
         res = requests.post(url=settings.pc_url + '/press', json=settings.presser)
         body = json.loads(res.text)
         if body["code"] == 0:
