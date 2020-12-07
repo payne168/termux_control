@@ -144,6 +144,8 @@ def pc_details():
         config = load_config()
         print(config)
         alias = config['account']['alias']
+        print(params['UsbKeyId'])
+        print(usb_key_id)
         data = {
             'UsbKeyId': usb_key_id,
             'alias': alias
