@@ -55,8 +55,17 @@ def login():
             count += 1
         print(switcher)
         for press in settings.bot.account.login_pwd:
-            self.xpath(
-                '//android.widget.RelativeLayout[1]/android.view.View[%s]' % switcher.get(press, "Invalid key")).click()
+            if press.isupper():
+                self.xpath(
+                    '//android.widget.RelativeLayout[1]/android.view.View[37]').click()
+                self.xpath(
+                    '//android.widget.RelativeLayout[1]/android.view.View[%s]' % switcher.get(press.lower(),
+                                                                                              "Invalid key")).click()
+                self.xpath(
+                    '//android.widget.RelativeLayout[1]/android.view.View[37]').click()
+            else:
+                self.xpath(
+                    '//android.widget.RelativeLayout[1]/android.view.View[%s]' % switcher.get(press, "Invalid key")).click()
         self.xpath(
             '//*[@resource-id="com.icbc:id/movefragment"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[2]').click()
         time.sleep(25)
