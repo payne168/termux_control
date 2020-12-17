@@ -21,11 +21,12 @@ class Bot:
 
 
 class Account:
-    def __init__(self, alias=None, login_name=None, login_pwd=None, payment_pwd=None, currency=None):
+    def __init__(self, alias=None, login_name=None, login_pwd=None, payment_pwd=None, key_pwd=None, currency=None):
         self.alias = alias
         self.login_name = login_name
         self.login_pwd = login_pwd
         self.payment_pwd = payment_pwd
+        self.key_pwd = key_pwd
         self.currency = currency
 
     def __str__(self):

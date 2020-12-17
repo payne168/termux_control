@@ -58,11 +58,13 @@ bank_map = {
 sms_bank = {
     'CCB': r'\[建设银行]$',
     'ABC': r'^【中国农业银行】',
+    'ICBC': r'【工商银行】$',
 }
 
 sms_vc = {
     'CCB': r'验证码(\d{6})',
     'ABC': r'验证码(\d{6})',
+    'ICBC': r'验证码(\d{6})',
 }
 
 sms_trans = {
@@ -73,6 +75,10 @@ sms_trans = {
     'ABC': {'direction': (r'转支', r'转存'), 'pattern': (
         {'time': r'账户(.+)向', 'name': r'向(.+)完成转支', 'amount': r'人民币-(\d+\.?\d{0,2})', 'balance': r'余额(\d+\.?\d{0,2})'},
         {'time': r'于(.+)向', 'name': r'】(.+)于', 'amount': r'人民币(\d+\.?\d{0,2})', 'balance': r'余额(\d+\.?\d{0,2})'},
+    )},
+    'ICBC': {'direction': (r'支出', r'收入'), 'pattern': (
+        {'time': r'卡(\d{1,2}.+:\d{1,2})', 'name': r'对方户名：(.+)，', 'amount': r'支出\D+(\d+\.?\d{0,2})元', 'balance': r'余额(\d+\.?\d{0,2})'},
+        {'time': r'卡(\d{1,2}.+:\d{1,2})', 'name': r'对方户名：(.+)，', 'amount': r'收入\D+(\d+\.?\d{0,2})元', 'balance': r'余额(\d+\.?\d{0,2})'},
     )},
 }
 

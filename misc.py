@@ -57,6 +57,8 @@ def convert_trans_time(bank, trans_time):
         return datetime.strptime(f'{datetime.today().year}年{trans_time}', '%Y年%m月%d日%H时%M分').strftime('%Y-%m-%d %X')
     elif bank == 'ABC':
         return datetime.strptime(f'{datetime.today().year}年{trans_time}', '%Y年%m月%d日%H:%M').strftime('%Y-%m-%d %X')
+    elif bank == 'ICBC':
+        return datetime.strptime(f'{datetime.today().year}年{trans_time}', '%Y年%m月%d日%H:%M').strftime('%Y-%m-%d %X')
     return ''
 
 
@@ -70,11 +72,16 @@ if __name__ == '__main__':
     # print(parse_sms(ccb_span_expenditure))
     # print(parse_sms(ccb_expenditure))
 
-    abc_span_expenditure = "【中国农业银行】您尾号0873账户11月18日20:32向张家将完成转支交易人民币-10.00，余额24.53。"
-    abc_income = "【中国农业银行】吴立娜于11月18日19:41向您尾号0873账户完成转存交易人民币30.00，余额34.53。"
-    print(parse_sms(abc_span_expenditure))
-    print(parse_sms(abc_income))
+    # abc_span_expenditure = "【中国农业银行】您尾号0873账户11月18日20:32向张家将完成转支交易人民币-10.00，余额24.53。"
+    # abc_income = "【中国农业银行】吴立娜于11月18日19:41向您尾号0873账户完成转存交易人民币30.00，余额34.53。"
+    # print(parse_sms(abc_span_expenditure))
+    # print(parse_sms(abc_income))
 
-    other = '温馨提示：您上月结转剩余国内流量1.000G，本月月底前有效。回复"流量查询"或点击http://u.10010.cn/qAagl查询详情。'
+    icbc_span_income = '您尾号4133卡12月8日14:15工商银行收入(他行汇入)10元，余额34元，对方户名：谭世琦，对方账户尾号：9077。【工商银行】'
+    icbc_span_expenditure = '您尾号4133卡12月8日11:57手机银行支出(跨行汇款)1元，余额24元，对方户名：潘家旭，对方账户尾号：7497。【工商银行】'
+    print(parse_sms(icbc_span_income))
+    print(parse_sms(icbc_span_expenditure))
+
+    # other = '温馨提示：您上月结转剩余国内流量1.000G，本月月底前有效。回复"流量查询"或点击http://u.10010.cn/qAagl查询详情。'
     # print(parse_sms(other))
 

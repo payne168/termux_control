@@ -240,7 +240,7 @@ def update_config(api_url, account):
 
 def convert(data):
     account = Account(alias=data['accountAlias'], login_name=data['loginName'], login_pwd=data['loginPassword'],
-                      payment_pwd=data['paymentPassword'])
+                      payment_pwd=data['paymentPassword'], key_pwd=data['ukeyPassword'])
     settings.bot = Bot(serial_no=serial_no, bank=data['bank'], account=account)
     if 'lastTrans' in data and data['lastTrans']:
         tran = data['lastTrans']

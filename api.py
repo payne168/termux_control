@@ -41,7 +41,7 @@ if __name__ == '__main__':
     # data.update(common_data())
     # print(data)
     # print(register("1ad2838c0107", "农业银行-LYF(刘亦菲)-8888"))
-    # print(start('ABC_mobile_1601868756975', '农业银行-LYF(刘亦菲)-8888'))
+    print(start('RR8M90JGAXR', '农业银行-WQ(韦强)-0873'))
     # print(status('RR8M90JGAXR', Status.RUNNING.value))
     # print(transfer_status(94, 0)
     pass
