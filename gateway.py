@@ -86,7 +86,6 @@ def start():
 
 @app.route('/stop', methods=['GET'])
 def stop():
-    print(dir(bot_util))
     bot_util.cast_stop()
 
 

@@ -6,7 +6,7 @@ import pytesseract  # 用于图片转文字
 import time
 from opencv_code import OpencvCode
 
-class VerificationCodeCcb:
+class VerificationCodeCcbManually:
     def __init__(self, x=None, y=None, width=None, height=None, img=None):
         self.x = x
         self.y = y
@@ -81,8 +81,8 @@ class VerificationCodeCcb:
         image = self.delete_spot()
         # image.show()
         image.save(self.img)
-        cv_code = OpencvCode(self.img)
-        result_four = cv_code.read_code()
+        # cv_code = OpencvCode(self.img)
+        # result_four = cv_code.read_code()
         # result = pytesseract.image_to_string(image, lang='engnum', config="--psm 10 --tessdata-dir bots/verification/tessdata")  # 图片转文字
         # print(result)
         # results = re.sub(u"([^\u4e00-\u9fa5\u0030-\u0039\u0041-\u005a\u0061-\u007a])", "", result)  # 去除识别出来的特殊字符

@@ -3,6 +3,7 @@ import base64
 import time
 import sys
 from bots.verification.verification_code_ccb import VerificationCodeCcb
+from bots.verification.verification_code_ccb_manually import VerificationCodeCcbManually
 import requests
 import settings
 
@@ -17,6 +18,7 @@ activity = 'com.ccb.start.MainActivity'
 
 trans = Transferee()
 self = settings.bot.device
+already_sms = False
 
 
 def start():
@@ -300,9 +302,6 @@ def toast_msg(msg):
     self.toast.show(msg)
 
 
-already_sms = False
-
-
 def post_sms(sms):
     if settings.post_sms_already:
         return
@@ -322,7 +321,8 @@ def post_sms(sms):
         print(settings.bot.account.payment_pwd)
         self.send_keys(settings.bot.account.payment_pwd, clear=True)
         time.sleep(5)
-    post_server_code()
+    get_code("ai")
+    # post_server_code()
     # print(self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=5))
     # if self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=20):
     # def put_code():
@@ -382,7 +382,7 @@ def post_sms(sms):
     #     settings.bot.post_sms_already = False
 
 
-def post_server_code():
+def get_code(verify_type):
     if self(resourceId="com.chinamworld.main:id/native_graph_iv").exists(timeout=20):
         self(resourceId="com.chinamworld.main:id/native_graph_iv").click()
         print("开始识别验证码了")
@@ -391,18 +391,13 @@ def post_server_code():
         y = info['bounds']['top']
         img = "verification.jpg"
         self.screenshot(img)
-        vc = VerificationCodeCcb(x, y, 313, 165, img)
-        vc.image_str()
-        # img_file = {'images': }
+        vc = VerificationCodeCcbManually(x, y, 313, 165, img)
+        code = vc.image_str()
 
-        with open(img, "rb") as image_file:
-            image_str = image_file.read()
-            encoded_string = base64.b64encode(image_str).decode("ascii")
-            print("1--------------------------1--------------->")
-            print(image_str)
-            print(encoded_string)
-            res = verification_code_api(settings.bot.serial_no, encoded_string)
-            print("res----------->%s" % res)
+        if verify_type == "ai":
+            ai_verify_code(code)
+        else:
+            post_server_code(img)
 
     elif self(text="收款账户").exists(timeout=10):
         status_api(trans.order_id, 0)
@@ -421,7 +416,26 @@ def post_server_code():
         settings.bot.post_sms_already = False
 
 
+def post_server_code(img):
+    with open(img, "rb") as image_file:
+        image_str = image_file.read()
+        encoded_string = base64.b64encode(image_str).decode("ascii")
+        print("1--------------------------1--------------->")
+        print(image_str)
+        print(encoded_string)
+        res = verification_code_api(settings.bot.serial_no, encoded_string)
+        print("res----------->%s" % res)
+
+
 def post_verify_code(code):
+    do_verify_code(code, "manually")
+
+
+def ai_verify_code(code):
+    do_verify_code(code, "ai")
+
+
+def do_verify_code(code, verify_type):
     if self(resourceId="com.chinamworld.main:id/et_code").exists(timeout=5):
         self(resourceId="com.chinamworld.main:id/native_graph_et").click()
         self(resourceId="com.chinamworld.main:id/default_row_two_1").click()
@@ -431,4 +445,4 @@ def post_verify_code(code):
         if self(resourceId="com.chinamworld.main:id/btn_confirm").click_gone(maxretry=5, interval=1.0):
             success()
         else:
-            post_server_code()
+            get_code(verify_type)
