@@ -2,7 +2,7 @@
 
 from PIL import Image  # 用于打开图片和对图片处理
 import time
-from ..opencv_code import OpencvCode
+from ..verification.opencv_code import OpencvCode
 
 
 class VerificationCodeCcb:
