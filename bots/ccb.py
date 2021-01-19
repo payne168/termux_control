@@ -391,12 +391,14 @@ def get_code(verify_type):
         y = info['bounds']['top']
         img = "verification.jpg"
         self.screenshot(img)
-        vc = VerificationCodeCcbManually(x, y, 313, 165, img)
-        code = vc.image_str()
 
         if verify_type == "ai":
+            vc = VerificationCodeCcb(x, y, 313, 165, img)
+            code = vc.image_str()
             ai_verify_code(code)
         else:
+            vc = VerificationCodeCcbManually(x, y, 313, 165, img)
+            vc.image_str()
             post_server_code(img)
 
     elif self(text="收款账户").exists(timeout=10):

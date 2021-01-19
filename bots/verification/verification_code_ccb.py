@@ -1,10 +1,9 @@
 # coding: utf-8
-import re  # 用于正则
 
 from PIL import Image  # 用于打开图片和对图片处理
-import pytesseract  # 用于图片转文字
 import time
-from opencv_code import OpencvCode
+from ..opencv_code import OpencvCode
+
 
 class VerificationCodeCcb:
     def __init__(self, x=None, y=None, width=None, height=None, img=None):
@@ -74,7 +73,7 @@ class VerificationCodeCcb:
                         black_point += 1
                     if black_point < 1:
                         images.putpixel((x, y), 255)
-                    black_point =0
+                    black_point = 0
         return images
 
     def image_str(self):

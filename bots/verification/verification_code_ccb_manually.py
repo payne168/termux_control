@@ -4,7 +4,6 @@ import re  # 用于正则
 from PIL import Image  # 用于打开图片和对图片处理
 import pytesseract  # 用于图片转文字
 import time
-from opencv_code import OpencvCode
 
 class VerificationCodeCcbManually:
     def __init__(self, x=None, y=None, width=None, height=None, img=None):
@@ -88,9 +87,9 @@ class VerificationCodeCcbManually:
         # results = re.sub(u"([^\u4e00-\u9fa5\u0030-\u0039\u0041-\u005a\u0061-\u007a])", "", result)  # 去除识别出来的特殊字符
         # result_four = results[0:4]  # 只获取前4个字符
         # print(result_four)  # 打印识别的验证码
-        return result_four
+        # return result_four
 
 
 if __name__ == '__main__':
-    a = VerificationCodeCcb()
+    a = VerificationCodeCcbManually()
     a.image_str()
