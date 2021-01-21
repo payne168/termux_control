@@ -229,8 +229,8 @@ def load_config():
 
 
 def update_config(api_url, account):
-    settings.api['base'] = api_url
-    ws = os.path.join(api_url.replace('http', 'ws'), 'websocket')
+    settings.api['base'] = 'https://' + api_url
+    ws = os.path.join('ws://' + api_url, 'websocket')
     settings.api['ws'] = ws
 
     with open(settings.conf_file, 'w') as conf:
