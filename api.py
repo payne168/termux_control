@@ -32,7 +32,10 @@ def verification_code(serial_no, img_base64):
 
 
 def post(url, payload):
-    url = 'https://' + api['base'] + url
+    print('-------------------> req post')
+    print('-------------------> %s' % api['base'])
+    url = api['base'] + url
+    print('-------------------> %s' % url)
     return misc.post(url, payload, True)
 
 
