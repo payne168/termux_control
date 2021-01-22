@@ -3,7 +3,7 @@
 
 class Bot:
     def __init__(self, serial_no=None, device=None, bank=None, account=None, trans=None, last_trans=None):
-        self.s = serial_no
+        self.serial_no = serial_no
         self.device = device
         self.bank = bank
         self.account = account  # Account
