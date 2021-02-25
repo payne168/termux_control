@@ -9,15 +9,13 @@ from settings import Status
 class BotFactory:
 
     def __init__(self):
-        # settings.bot.device = u2.connect('RR8M90JGAXR')
-        settings.bot.device = u2.connect('0.0.0.0')
+        settings.bot.device = u2.connect('RR8M90JGAXR')
+        # settings.bot.device = u2.connect('0.0.0.0')
         module = __import__("bots.%s" % settings.bot.bank.lower())
         robot = getattr(module, settings.bot.bank.lower())
         self.bank = robot
         settings.bot.pid = self.bank.start()
         print("您的银行应用已经由脚本接管")
-        print(settings.bot)
-        print(dir(settings.bot))
         status(settings.bot.serial_no, Status.RUNNING.value)
         self.works_list = []
         self.alive = True

@@ -229,12 +229,12 @@ def load_config():
 
 
 def update_config(api_url, account):
-    settings.api['base'] = 'https://%s' % api_url
+    settings.api['base'] = api_url
     ws = os.path.join('wss://' + api_url, 'websocket')
     settings.api['ws'] = ws
 
     with open(settings.conf_file, 'w') as conf:
-        conf.write(json.dumps({'api': {'base': 'https://%s' % api_url, 'ws': ws}, 'account': {'alias': account}}))
+        conf.write(json.dumps({'api': {'base': api_url, 'ws': ws}, 'account': {'alias': account}}))
 
 
 def convert(data):
