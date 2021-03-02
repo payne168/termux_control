@@ -150,21 +150,16 @@ def put_code():
             if self(description="转账已受理").exists(timeout=60):
                 print("您已经转账成功了！")
                 status_api(trans.order_id, 0)
+                back_activity()
+                back_activity()
+                back_activity()
             else:
                 if self(resourceId="btn_cancel").exists(timeout=5):
                     self(resourceId="btn_cancel").click()
                     # put_code()
                     get_code()
-            # jxy = switcher.get(key_inx, "Invalid key")
-            # time.sleep(1)
-            # print("<----------------------jx jy-------------------------->")
-            # print(jxy[0])
-            # print(jxy[1])
-            # self.click(jxy[0], jxy[1])
         get_code()
-        # elif self(resourceId="com.alipay.mobile.antui:id/message").exists(timeout=5):
-        #     self(resourceId="com.alipay.mobile.antui:id/ensure").click()
-        #     get_code()
+
 
 
 
@@ -226,6 +221,8 @@ def do_transfer(transferee):
             # trans.holder = transferee.holder
             trans.holder = "徐绣策"
             trans.bank_name = transferee.bank_name
+            status_api(trans.order_id, 0)
+            print(">>>>>>>>>---------------> trans.order_id success")
             self.xpath('//android.webkit.WebView/android.view.View[1]/android.view.View[1]').click()
             login()
         return input_form()
