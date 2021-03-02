@@ -2,7 +2,7 @@
 import re  # 用于正则
 
 from PIL import Image  # 用于打开图片和对图片处理
-# import pytesseract  # 用于图片转文字
+import pytesseract  # 用于图片转文字
 import time
 from ..verification.opencv_code import OpencvCode
 
@@ -80,6 +80,7 @@ class VerificationCodeAbc:
         return images
 
     def image_str(self):
+        pytesseract.pytesseract.tesseract_cmd = r"/usr/local/bin/tesseract"  # 设置pyteseract路径
         image = self.delete_spot()
         image.save(self.img)
         cv_code = OpencvCode(self.img)

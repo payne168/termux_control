@@ -75,7 +75,7 @@ def put_code():
     if self(description="确定").exists(timeout=10):
         self(description="确定").click()
     self(description="确认").click()
-    if self(text="8位密码").exists(timeout=50):
+    if self(text="8位密码").exists(timeout=10):
         u_key_pwd = settings.bot.account.key_pwd
         self(text="a").click()
         self.send_keys(u_key_pwd, clear=True)
