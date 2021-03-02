@@ -88,13 +88,14 @@ def put_code():
         self(text="确定").click()
         print("您已经转账成功了！")
         status_api(trans.order_id, 0)
-        time.sleep(10)
-        res = requests.post(url=settings.pc_url + '/press', json=settings.presser)
-        body = json.loads(res.text)
-        if body["code"] == 0:
-            if self(description="转账已受理").exists(timeout=180):
-                print("您已经转账成功了！")
-                status_api(trans.order_id, 0)
+        #u_key 逻辑
+        # time.sleep(10)
+        # res = requests.post(url=settings.pc_url + '/press', json=settings.presser)
+        # body = json.loads(res.text)
+        # if body["code"] == 0:
+        #     if self(description="转账已受理").exists(timeout=180):
+        #         print("您已经转账成功了！")
+        #         status_api(trans.order_id, 0)
         back_activity()
         back_activity()
         back_activity()
@@ -180,7 +181,7 @@ def input_form():
         # time.sleep(5)
         # self(description=trans.bank_name).click()
         self(description="请输入转账金额").click()
-        for i in trans.amount:
+        for i in str(trans.amount):
             time.sleep(1)
             self(description=i).click()
         self(description="2BsHuD1UCBrbmAAAAAElFTkSuQmCC").click()
