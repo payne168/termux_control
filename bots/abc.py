@@ -89,13 +89,13 @@ def put_code():
         print("您已经转账成功了！")
         status_api(trans.order_id, 0)
         #u_key 逻辑
-        # time.sleep(10)
-        # res = requests.post(url=settings.pc_url + '/press', json=settings.presser)
-        # body = json.loads(res.text)
-        # if body["code"] == 0:
-        #     if self(description="转账已受理").exists(timeout=180):
-        #         print("您已经转账成功了！")
-        #         status_api(trans.order_id, 0)
+        time.sleep(10)
+        res = requests.post(url=settings.pc_url + '/press', json=settings.presser)
+        body = json.loads(res.text)
+        if body["code"] == 0:
+            if self(description="转账已受理").exists(timeout=180):
+                print("您已经转账成功了！")
+                status_api(trans.order_id, 0)
         back_activity()
         back_activity()
         back_activity()
@@ -115,7 +115,7 @@ def put_code():
         height = button_height * 4
 
         def get_code():
-            img = "verification%s.jpg" % settings.count
+            img = "verification.jpg"
             self.screenshot(img)
             vc = VerificationCodeAbc(x, y, width, height, img)
             code = list(str(vc.image_str()))
@@ -125,45 +125,45 @@ def put_code():
             print(passwd)
             settings.count += 1
             print(settings.count)
-            # for i in passwd:
-            #     print("i", i)
-            #     for j in code:
-            #         print("j", j)
-            #         if i == j:
-            #             print("match", j)
-            #             key_inx = code.index(j)
-
-            # switcher = {
-            #     0: [0.162, 0.76],
-            #     1: [0.494, 0.758],
-            #     2: [0.842, 0.766],
-            #     3: [0.168, 0.827],
-            #     4: [0.494, 0.825],
-            #     5: [0.834, 0.825],
-            #     6: [0.168, 0.884],
-            #     7: [0.498, 0.893],
-            #     8: [0.824, 0.89],
-            #     9: [0.49, 0.949],
-            # }
-            # jxy = switcher.get(key_inx, "Invalid key")
-            # time.sleep(1)
-            # print("<----------------------jx jy-------------------------->")
-            # print(jxy[0])
-            # print(jxy[1])
-            # self.click(jxy[0], jxy[1])
-
+            for i in passwd:
+                print("i", i)
+                for j in code:
+                    print("j", j)
+                    if i == j:
+                        print("match", j)
+                        key_inx = code.index(j)
+                        switcher = {
+                            0: [0.162, 0.76],
+                            1: [0.494, 0.758],
+                            2: [0.842, 0.766],
+                            3: [0.168, 0.827],
+                            4: [0.494, 0.825],
+                            5: [0.834, 0.825],
+                            6: [0.168, 0.884],
+                            7: [0.498, 0.893],
+                            8: [0.824, 0.89],
+                            9: [0.49, 0.949],
+                        }
+                        jxy = switcher.get(key_inx, "Invalid key")
+                        time.sleep(1)
+                        print("<----------------------jx jy-------------------------->")
+                        print(jxy[0])
+                        print(jxy[1])
+                        self.click(jxy[0], jxy[1])
         get_code()
-        if self(resourceId="btn_cancel").exists(timeout=5):
-            self(resourceId="btn_cancel").click()
-            # put_code()
-            get_code()
+        if self(description="转账已受理").exists(timeout=60):
+            print("您已经转账成功了！")
+            status_api(trans.order_id, 0)
+        else:
+            if self(resourceId="btn_cancel").exists(timeout=5):
+                self(resourceId="btn_cancel").click()
+                # put_code()
+                get_code()
         # elif self(resourceId="com.alipay.mobile.antui:id/message").exists(timeout=5):
         #     self(resourceId="com.alipay.mobile.antui:id/ensure").click()
         #     get_code()
-        else:
-            print("您已经转账成功了！")
-            status_api(trans.order_id, 0)
-            do_transaction()
+
+
 
 
 def input_form():
