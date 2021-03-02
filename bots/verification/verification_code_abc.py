@@ -80,7 +80,7 @@ class VerificationCodeAbc:
         return images
 
     def image_str(self):
-        pytesseract.pytesseract.tesseract_cmd = r"/data/data/com.termux/files/usr/local/bin/tesseract"  # 设置pyteseract路径
+        pytesseract.pytesseract.tesseract_cmd = r"/data/data/com.termux/files/usr/bin/tesseract"  # 设置pyteseract路径
 
         image = self.delete_spot()
         image.save(self.img)
