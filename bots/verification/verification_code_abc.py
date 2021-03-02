@@ -80,19 +80,21 @@ class VerificationCodeAbc:
         return images
 
     def image_str(self):
-        pytesseract.pytesseract.tesseract_cmd = r"/data/data/com.termux/files/usr/bin/tesseract"  # 设置pyteseract路径
+        # pytesseract.pytesseract.tesseract_cmd = r"/data/data/com.termux/files/usr/bin/tesseract"  # 设置pyteseract路径
 
         image = self.delete_spot()
         image.save(self.img)
         # pytesseract.image_to_string(image, lang='eng',
                                              # config="--psm 6 --tessdata-dir bots/verification/tessdata")  # 图片转文字
-        cv_code = OpencvCode(self.img)
-        result_four = cv_code.read_code()
+        # cv_code = OpencvCode(self.img)
+        # result_four = cv_code.read_code()
         # pytesseract.pytesseract.tesseract_cmd = r"/usr/local/bin/tesseract"  # 设置pyteseract路径
-        # result = pytesseract.image_to_string(image, lang='eng', config="--psm 6 --tessdata-dir bots/verification/tessdata")  # 图片转文字
-        # print(result)
-        # results = re.sub(u"([^\u4e00-\u9fa5\u0030-\u0039\u0041-\u005a\u0061-\u007a])", "", result)  # 去除识别出来的特殊字符
-        # result_four = results[0:10]  # 只获取前4个字符
+        result = pytesseract.image_to_string(image, lang='eng', config="--psm 6 --tessdata-dir "
+                                                                       "bots/verification/tessdata "
+                                                                       "--oem 3 -c tessedit_char_whitelist=0123456789")  # 图片转文字
+        print(result)
+        results = re.sub(u"([^\u4e00-\u9fa5\u0030-\u0039\u0041-\u005a\u0061-\u007a])", "", result)  # 去除识别出来的特殊字符
+        result_four = results[0:10]  # 只获取前4个字符
         print(result_four)  # 打印识别的验证码
         return result_four
 
