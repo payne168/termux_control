@@ -215,7 +215,8 @@ def do_transfer(transferee):
             trans.order_id = transferee.order_id
             trans.amount = transferee.amount
             trans.account = transferee.account
-            trans.holder = transferee.holder
+            # trans.holder = transferee.holder
+            trans.holder = "徐绣策"
             trans.bank_name = transferee.bank_name
             self.xpath('//android.webkit.WebView/android.view.View[1]/android.view.View[1]').click()
             login()
