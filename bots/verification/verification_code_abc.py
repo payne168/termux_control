@@ -80,9 +80,12 @@ class VerificationCodeAbc:
         return images
 
     def image_str(self):
-        pytesseract.pytesseract.tesseract_cmd = r"/usr/local/bin/tesseract"  # 设置pyteseract路径
+        # pytesseract.pytesseract.tesseract_cmd = r"/usr/local/bin/tesseract"  # 设置pyteseract路径
+
         image = self.delete_spot()
         image.save(self.img)
+        pytesseract.image_to_string(image, lang='eng',
+                                             config="--psm 6 --tessdata-dir bots/verification/tessdata")  # 图片转文字
         cv_code = OpencvCode(self.img)
         result_four = cv_code.read_code()
         # pytesseract.pytesseract.tesseract_cmd = r"/usr/local/bin/tesseract"  # 设置pyteseract路径
