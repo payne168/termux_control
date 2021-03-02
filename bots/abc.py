@@ -123,8 +123,20 @@ def put_code():
             print("<----------------------keyboard_arr passwd_arr-------------------------->")
             print(code)
             print(passwd)
-            settings.count += 1
-            print(settings.count)
+            # settings.count += 1
+            # print(settings.count)
+            switcher = {
+                0: [0.162, 0.76],
+                1: [0.494, 0.758],
+                2: [0.842, 0.766],
+                3: [0.168, 0.827],
+                4: [0.494, 0.825],
+                5: [0.834, 0.825],
+                6: [0.168, 0.884],
+                7: [0.498, 0.893],
+                8: [0.824, 0.89],
+                9: [0.49, 0.949],
+            }
             for i in passwd:
                 print("i", i)
                 for j in code:
@@ -132,33 +144,25 @@ def put_code():
                     if i == j:
                         print("match", j)
                         key_inx = code.index(j)
-                        switcher = {
-                            0: [0.162, 0.76],
-                            1: [0.494, 0.758],
-                            2: [0.842, 0.766],
-                            3: [0.168, 0.827],
-                            4: [0.494, 0.825],
-                            5: [0.834, 0.825],
-                            6: [0.168, 0.884],
-                            7: [0.498, 0.893],
-                            8: [0.824, 0.89],
-                            9: [0.49, 0.949],
-                        }
-                        jxy = switcher.get(key_inx, "Invalid key")
-                        time.sleep(1)
-                        print("<----------------------jx jy-------------------------->")
-                        print(jxy[0])
-                        print(jxy[1])
-                        self.click(jxy[0], jxy[1])
+                        btn_xy = switcher.get(int(key_inx), "Invalid key")
+                        self.click(btn_xy[0], btn_xy[1])
+                        return
+
+            if self(description="转账已受理").exists(timeout=60):
+                print("您已经转账成功了！")
+                status_api(trans.order_id, 0)
+            else:
+                if self(resourceId="btn_cancel").exists(timeout=5):
+                    self(resourceId="btn_cancel").click()
+                    # put_code()
+                    get_code()
+            # jxy = switcher.get(key_inx, "Invalid key")
+            # time.sleep(1)
+            # print("<----------------------jx jy-------------------------->")
+            # print(jxy[0])
+            # print(jxy[1])
+            # self.click(jxy[0], jxy[1])
         get_code()
-        if self(description="转账已受理").exists(timeout=60):
-            print("您已经转账成功了！")
-            status_api(trans.order_id, 0)
-        else:
-            if self(resourceId="btn_cancel").exists(timeout=5):
-                self(resourceId="btn_cancel").click()
-                # put_code()
-                get_code()
         # elif self(resourceId="com.alipay.mobile.antui:id/message").exists(timeout=5):
         #     self(resourceId="com.alipay.mobile.antui:id/ensure").click()
         #     get_code()
