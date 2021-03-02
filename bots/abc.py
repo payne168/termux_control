@@ -181,7 +181,12 @@ def input_form():
         # time.sleep(5)
         # self(description=trans.bank_name).click()
         self(description="请输入转账金额").click()
-        for i in str(trans.amount):
+        amount_str = str(trans.amount)
+        if amount_str.split(".")[1] == "00":
+            amount = amount_str.split(".")[0]
+        else:
+            amount = amount_str
+        for i in amount:
             time.sleep(1)
             self(description=i).click()
         self(description="2BsHuD1UCBrbmAAAAAElFTkSuQmCC").click()
