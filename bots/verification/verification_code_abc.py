@@ -2,7 +2,7 @@
 import re  # 用于正则
 
 from PIL import Image  # 用于打开图片和对图片处理
-import pytesseract  # 用于图片转文字
+# import pytesseract  # 用于图片转文字
 import time
 from ..verification.opencv_code import OpencvCode
 
