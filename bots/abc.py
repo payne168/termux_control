@@ -146,7 +146,6 @@ def put_code():
                         key_inx = code.index(j)
                         btn_xy = switcher.get(int(key_inx), "Invalid key")
                         self.click(btn_xy[0], btn_xy[1])
-                        return
 
             if self(description="转账已受理").exists(timeout=60):
                 print("您已经转账成功了！")
